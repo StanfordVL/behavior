@@ -33,7 +33,7 @@ def get_metrics_callbacks():
     )
 
 
-class BehaviorChallenge(object):
+class BehaviorBenchmark(object):
     def __init__(self):
         self.config_file = os.environ["CONFIG_FILE"]
         self.split = os.environ["SPLIT"]
@@ -192,5 +192,5 @@ class BehaviorChallenge(object):
 
 
 if __name__ == "__main__":
-    challenge = BehaviorChallenge()
-    challenge.submit(None)
+    benchmark = BehaviorBenchmark()
+    benchmark.submit(None)
