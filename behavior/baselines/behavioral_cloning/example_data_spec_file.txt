@@ -1,0 +1,7 @@
+# Change these to be path of your data
+DIR /home/iGibson/igibson/data/behavior_human_demos_v2/
+# Data files to include for training here (without.hdf5)
+throwing_away_leftovers_0_Ihlen_1_int_2021-06-04_19-48-55
+throwing_away_leftovers_0_Ihlen_1_int_2021-06-04_19-52-40
+hrowing_away_leftovers_0_Ihlen_1_int_2021-06-05_19-10-02
+

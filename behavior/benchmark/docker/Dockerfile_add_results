@@ -1,0 +1,3 @@
+FROM my_submission:latest
+
+ADD results/ /participant_reported_results
