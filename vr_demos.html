@@ -47,10 +47,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#behavior-hdf5-processed-dataset">BEHAVIOR HDF5 Processed Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#behavior-hdf5-processed-dataset">BEHAVIOR HDF5 Processed Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hdf5-content">HDF5 Content</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#behavior-hdf5-raw-dataset">BEHAVIOR HDF5 Raw Dataset</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#accessing-the-behavior-hdf5-demo-files">Accessing the BEHAVIOR hdf5 demo files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">HDF5 Content</a></li>
 </ul>
 </li>
 </ul>
@@ -104,6 +108,8 @@
 <h2>BEHAVIOR HDF5 Processed Dataset<a class="headerlink" href="#behavior-hdf5-processed-dataset" title="Permalink to this headline"></a></h2>
 <p>We provide a processed dataset generated from the raw files and that includes images and proprioceptive sensing.
 Alternative processed datasets can be generated based on the raw files, e.g. with different image resolutions.</p>
+<div class="section" id="hdf5-content">
+<h3>HDF5 Content<a class="headerlink" href="#hdf5-content" title="Permalink to this headline"></a></h3>
 <p>The following are the available keys to index into the hdf5 file. The dimensionality of each component is noted parenthetically, where <code class="docutils literal notranslate"><span class="pre">N</span></code> indicates the number of frames in the demo.</p>
 <ul class="simple">
 <li><p>action (N x 28) – see BehaviorRobot description in the <a class="reference internal" href="agents.html"><span class="doc std std-doc">Embodiments section</span></a> for details about the actuation of this robot. This vector contains two additional dimensions that correspond to the <code class="docutils literal notranslate"><span class="pre">hand</span> <span class="pre">reset</span></code> action in VR: an action that teleports the simulated hands to the exact pose of the VR hand controller when they have diverged. This actions are not used by AI agents but are necessary to understand the demos.</p></li>
@@ -115,6 +121,7 @@ Alternative processed datasets can be generated based on the raw files, e.g. wit
 <li><p>highlight ( N x 128 x 128 x 1) – activity relevant object binary mask, active for all objects included in the activity goal (except the agent and the floor)</p></li>
 <li><p>task_obs (N x 456) – task observations, including ground truth state of the robot, and ground truth poses and grasping state of a maximum of a fixed number of activity relevant objects</p></li>
 </ul>
+</div>
 </div>
 <div class="section" id="behavior-hdf5-raw-dataset">
 <h2>BEHAVIOR HDF5 Raw Dataset<a class="headerlink" href="#behavior-hdf5-raw-dataset" title="Permalink to this headline"></a></h2>
@@ -142,15 +149,138 @@ position_of_hmd = np.array(hf[‘frame_data’][‘vr_device_data’][‘hmd’]
 <p>The metadata can be accessed by keying into the hdf5.attrs with the following keys:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/metadata/start_time</span></code>: the date the demo was recorded</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/physics_timestep</span></code>: the simulated time of each step of the physics simulator (1/300 seconds for all our demos)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/render_timestep</span></code>: the simulaterender timestep used, determines framerate (1/30). <code class="docutils literal notranslate"><span class="pre">render_timestep</span> <span class="pre">/</span> <span class="pre">physics_timestep</span></code> gives the number of physics simulation steps per image frame generated (10)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/git_info</span></code>: the git info for activity definition, iGibson, ig_dataset, and ig_assets. This is used to ensure participants are using a compatible version of iGibson if replaying the demo</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/task_name</span></code>: The name of the activity ‘washing_dishes’, ‘putting_away_groceries’</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/task_instance</span></code>: The instance of the activity (cached scene object combination)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/scene_id</span></code>: The scene (Rs_int, Wainscott_0_int, etc.) where the activity was recorded</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/filter_objects</span></code>: Only activity relevant objects were recorded in the activity</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/physics_timestep</span></code>: the simulated time duration of each step of the physics simulator (1/300 seconds for all our demos)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/render_timestep</span></code>: the simulated time between each rendered image, determines the framerate (1/30 seconds). <code class="docutils literal notranslate"><span class="pre">render_timestep</span> <span class="pre">/</span> <span class="pre">physics_timestep</span></code> gives the number of physics simulation steps between two generated images (10)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/git_info</span></code>: the git info for activity definition, <code class="docutils literal notranslate"><span class="pre">iGibson</span></code>, <code class="docutils literal notranslate"><span class="pre">ig_dataset</span></code>, and <code class="docutils literal notranslate"><span class="pre">ig_assets</span></code>. This is used to ensure participants are using a compatible version of iGibson if replaying the demo</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/task_name</span></code>: The name of the activity, e.g. <code class="docutils literal notranslate"><span class="pre">washing_dishes</span></code>, <code class="docutils literal notranslate"><span class="pre">putting_away_groceries</span></code>…</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/task_instance</span></code>: The instance of the activity that specifies the state (pose, extended state) of the sampled activity relevant objects at initialization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/scene_id</span></code>: The scene (<code class="docutils literal notranslate"><span class="pre">Rs_int</span></code>, <code class="docutils literal notranslate"><span class="pre">Wainscott_0_int</span></code>, etc.) where the activity was recorded</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/filter_objects</span></code>: Whether only activity relevant objects were recorded in the activity</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/metadata/obj_body_id_to_name</span></code>: mapping of pybullet IDs to the semantic object name</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/obj_body_id_to_name</span></code>: Internal VR settings used by iGibson</p></li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h3>HDF5 Content<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<p>The following are the available keys to index into the hdf5 file. The dimensionality of each component is noted parenthetically, where <code class="docutils literal notranslate"><span class="pre">N</span></code> indicates the number of frames in the demo.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">frame_data</span></code> (N x 4)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">goal_status</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">satisfied</span></code> (N x total_goals) – Total satisfied top-level predicates, where total_goals is the number of predicates</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unsatisfied</span></code> (N x total_goals) – Total unsatisfied top-level predicates, where total_goals is the number of predicates</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">physics_data</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code> (bullet_id: total number of activity-relevant scene objects)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">position</span></code> (N x 3) – The 3D position of the object center of mass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">orientation</span></code> (N x 4) – The quaternion orientation of the object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">joint_state</span></code> (N x number of object joints) – The pybullet joint state of each object</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_camera</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">right_eye_view</span></code> (N x 4 x 4) – the view projection matrix</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right_eye_proj</span></code> (N x 4 x 4) – the camera projection matrix</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right_camera_pos</span></code> (N x 3) – The 3D position of the camera</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_device_data</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">hmd</span></code> (N x 17) – see below</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_controller</span></code> (N x 27) – see below</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right_controller</span></code> (N x 27) – see below</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_position_data</span></code> (N x 12) – see below</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">torso_tracker</span></code> (N x 8) – see below</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_button_data</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_controller</span></code> (N x 3) – see below</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right_controller</span></code> (N x 3) – see below</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_eye_tracking_data</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_controller</span></code> (N x 9) – see below</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_event_data</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_controller</span></code> (N x 28) – see below</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right_controller</span></code> (N x 28) – see below</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset_actions</span></code> (N x 2) – reset for left and right controller</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Agent_actions</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_robot</span></code> (N x 28) – see BEHAVIOR robot description in previous section</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">action</span></code> – unused</p></li>
+</ul>
+<p>Additional description of the dimensions of the arrays noted above: the following are not keys but correspond to indices of the associated array:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hmd</span></code> (17)</p>
+<ul>
+<li><p>hmd tracking data is valid (1)</p></li>
+<li><p>translation (3)</p></li>
+<li><p>rotation (4)</p></li>
+<li><p>right vector (3)</p></li>
+<li><p>up vector (3)</p></li>
+<li><p>forward vector (3)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_controller</span></code>/<code class="docutils literal notranslate"><span class="pre">right_controller</span></code> (27)</p>
+<ul>
+<li><p>controller tracking data is valid (1)</p></li>
+<li><p>translation (3)</p></li>
+<li><p>rotation (4)</p></li>
+<li><p>right vector (3)</p></li>
+<li><p>up vector (3)</p></li>
+<li><p>forward vector (3)</p></li>
+<li><p>base_rotation (4)</p></li>
+<li><p>base_rotation * controller_rotation (4)</p></li>
+<li><p>applied_force (6) – p.getConstraintState(controller_constraint_id)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_button_data</span></code></p>
+<ul>
+<li><p>trigger fraction (1) — open: 0 -&gt; closed: 1</p></li>
+<li><p>touchpad x position (1) – left: -1 -&gt; right: 1</p></li>
+<li><p>touchpad y position (1) – bottom: -1 -&gt; right: 1</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Vr_eye_tracking_data</span></code></p>
+<ul>
+<li><p>eye-tracking data is valid (1)</p></li>
+<li><p>origin of gaze in world space (3)</p></li>
+<li><p>direction vector of gaze in world space (3)</p></li>
+<li><p>left pupil diameter (1)</p></li>
+<li><p>right pupil diameter (1)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vr_position_data</span></code> (12)</p>
+<ul>
+<li><p>position of the system in iGibson space (3)</p></li>
+<li><p>offset of the system from the origin (3)</p></li>
+<li><p>applied force to vr body (6) – p.getConstraintState(body_constraint_id)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">torso_tracker</span></code> (8)</p>
+<ul>
+<li><p>torso tracker is valid (1)</p></li>
+<li><p>position (3)</p></li>
+<li><p>rotation (4)</p></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
