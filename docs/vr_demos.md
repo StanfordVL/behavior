@@ -17,6 +17,7 @@ Following the instructions above, we have verified that the 500 demos can be rep
 We provide a processed dataset generated from the raw files and that includes images and proprioceptive sensing.
 Alternative processed datasets can be generated based on the raw files, e.g. with different image resolutions.
 
+### HDF5 Content
 The following are the available keys to index into the hdf5 file. The dimensionality of each component is noted parenthetically, where `N` indicates the number of frames in the demo.
 
 - action (N x 28) -- see BehaviorRobot description in the [Embodiments section](agents.md) for details about the actuation of this robot. This vector contains two additional dimensions that correspond to the `hand reset` action in VR: an action that teleports the simulated hands to the exact pose of the VR hand controller when they have diverged. This actions are not used by AI agents but are necessary to understand the demos.
@@ -51,13 +52,87 @@ position_of_hmd = np.array(hf[‘frame_data’][‘vr_device_data’][‘hmd’]
 ### Metadata
 The metadata can be accessed by keying into the hdf5.attrs with the following keys:
 - `/metadata/start_time`: the date the demo was recorded
-- `/metadata/physics_timestep`: the simulated time of each step of the physics simulator (1/300 seconds for all our demos)
-- `/metadata/render_timestep`: the simulaterender timestep used, determines framerate (1/30). `render_timestep / physics_timestep` gives the number of physics simulation steps per image frame generated (10)
-- `/metadata/git_info`: the git info for activity definition, iGibson, ig_dataset, and ig_assets. This is used to ensure participants are using a compatible version of iGibson if replaying the demo
-- `/metadata/task_name`: The name of the activity ‘washing_dishes’, ‘putting_away_groceries’
-- `/metadata/task_instance`: The instance of the activity (cached scene object combination)
-- `/metadata/scene_id`: The scene (Rs_int, Wainscott_0_int, etc.) where the activity was recorded
-- `/metadata/filter_objects`: Only activity relevant objects were recorded in the activity
+- `/metadata/physics_timestep`: the simulated time duration of each step of the physics simulator (1/300 seconds for all our demos)
+- `/metadata/render_timestep`: the simulated time between each rendered image, determines the framerate (1/30 seconds). `render_timestep / physics_timestep` gives the number of physics simulation steps between two generated images (10)
+- `/metadata/git_info`: the git info for activity definition, `iGibson`, `ig_dataset`, and `ig_assets`. This is used to ensure participants are using a compatible version of iGibson if replaying the demo
+- `/metadata/task_name`: The name of the activity, e.g. `washing_dishes`, `putting_away_groceries`...
+- `/metadata/task_instance`: The instance of the activity that specifies the state (pose, extended state) of the sampled activity relevant objects at initialization
+- `/metadata/scene_id`: The scene (`Rs_int`, `Wainscott_0_int`, etc.) where the activity was recorded
+- `/metadata/filter_objects`: Whether only activity relevant objects were recorded in the activity
 - `/metadata/obj_body_id_to_name`: mapping of pybullet IDs to the semantic object name
-- `/metadata/obj_body_id_to_name`: Internal VR settings used by iGibson
 
+
+### HDF5 Content
+
+The following are the available keys to index into the hdf5 file. The dimensionality of each component is noted parenthetically, where `N` indicates the number of frames in the demo.
+
+- `frame_data` (N x 4) 
+    - `goal_status` 
+        - `satisfied` (N x total_goals) -- Total satisfied top-level predicates, where total_goals is the number of predicates 
+        - `unsatisfied` (N x total_goals) -- Total unsatisfied top-level predicates, where total_goals is the number of predicates 
+- `physics_data` 
+    - `string` (bullet_id: total number of activity-relevant scene objects)
+    - `position` (N x 3) -- The 3D position of the object center of mass
+    - `orientation` (N x 4) -- The quaternion orientation of the object
+    - `joint_state` (N x number of object joints) -- The pybullet joint state of each object 
+- `vr` 
+    - `vr_camera`
+        - `right_eye_view` (N x 4 x 4) -- the view projection matrix
+        - `right_eye_proj` (N x 4 x 4) -- the camera projection matrix 
+        - `right_camera_pos` (N x 3) -- The 3D position of the camera 
+    - `vr_device_data` 
+        - `hmd` (N x 17) -- see below
+        - `left_controller` (N x 27) -- see below
+        - `right_controller` (N x 27) -- see below 
+        - `vr_position_data` (N x 12) -- see below
+        - `torso_tracker` (N x 8) -- see below
+    - `vr_button_data`
+        - `left_controller` (N x 3) -- see below
+        - `right_controller` (N x 3) -- see below
+    - `vr_eye_tracking_data` 
+        - `left_controller` (N x 9) -- see below 
+    - `vr_event_data` 
+        - `left_controller` (N x 28) -- see below
+        - `right_controller` (N x 28) -- see below
+        - `reset_actions` (N x 2) -- reset for left and right controller
+- `Agent_actions`
+    - `vr_robot` (N x 28) -- see BEHAVIOR robot description in previous section
+- `action` -- unused 
+
+Additional description of the dimensions of the arrays noted above: the following are not keys but correspond to indices of the associated array:
+
+- `hmd` (17) 
+    - hmd tracking data is valid (1)
+    - translation (3) 
+    - rotation (4)
+    - right vector (3) 
+    - up vector (3)
+    - forward vector (3)
+- `left_controller`/`right_controller` (27) 
+    - controller tracking data is valid (1)
+    - translation (3)
+    - rotation (4)
+    - right vector (3) 
+    - up vector (3)
+    - forward vector (3)
+    - base_rotation (4)
+    - base_rotation * controller_rotation (4)
+    - applied_force (6) -- p.getConstraintState(controller_constraint_id)
+- `vr_button_data`
+    - trigger fraction (1) --- open: 0 -> closed: 1 
+    - touchpad x position (1) -- left: -1 -> right: 1
+    - touchpad y position (1) -- bottom: -1 -> right: 1
+- `Vr_eye_tracking_data`
+    - eye-tracking data is valid (1)
+    - origin of gaze in world space (3) 
+    - direction vector of gaze in world space (3)
+    - left pupil diameter (1)
+    - right pupil diameter (1) 
+- `vr_position_data` (12)
+    - position of the system in iGibson space (3)
+    - offset of the system from the origin (3)
+    - applied force to vr body (6) -- p.getConstraintState(body_constraint_id)
+- `torso_tracker` (8)
+    - torso tracker is valid (1)
+    - position (3)
+    - rotation (4) 
