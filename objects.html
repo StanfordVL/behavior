@@ -46,6 +46,7 @@
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">BDDL and the BEHAVIOR Dataset of Activity Definitions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The BEHAVIOR Dataset of Objects</a></li>
 </ul>
@@ -82,7 +83,8 @@
              
   <div class="tex2jax_ignore mathjax_ignore section" id="the-behavior-dataset-of-objects">
 <h1>The BEHAVIOR Dataset of Objects<a class="headerlink" href="#the-behavior-dataset-of-objects" title="Permalink to this headline"></a></h1>
-<p>In total, we have curated and made available 1217 object models of 391 different object categories to support 100 BEHAVIOR activities. The categories range from food items to tableware, from home decorations to office supplies, and from decoration to cleaning tools. All models in the BEHAVIOR Dataset are organized following the WordNet, associating them to synsets. This structure allows us to define properties for all models of the same categories, but it also facilitates more general sampling of activity instances fulfilling initial conditions such as onTop(fruit, table) that can be achieved using any model within the branch fruit of WordNet.</p>
+<p><img alt="object_collage_v2.jpg" src="_images/object_collage_v2.jpg" />
+In total, we have curated and made available 1217 object models of 391 different object categories to support 100 BEHAVIOR activities. The categories range from food items to tableware, from home decorations to office supplies, and from decoration to cleaning tools. All models in the BEHAVIOR Dataset are organized following the WordNet, associating them to synsets. This structure allows us to define properties for all models of the same categories, but it also facilitates more general sampling of activity instances fulfilling initial conditions such as onTop(fruit, table) that can be achieved using any model within the branch fruit of WordNet.</p>
 <p>To reach a high level of visual realism, all object models include material information (metallic, roughness) to be used by a physics-based renderer (PBR) such as the renderer in iGibson 2.0. Our goal is that the outcome of the physical interactions with these models is as realistic as possible: the object models have been annotated with realistic scale, mass, center of mass, moment of inertia, and stable orientations to facilitate their sampling. The collision mesh is a simplified version of the visual mesh, obtained with a convex decomposition using the VHACD algorithm. Object models with a shape close to a box are annotated with a primitive box collision mesh, much more efficient and robust for collision checking and physical simulation.</p>
 <p>You can add your own object models to BEHAVIOR by following the instructions <span class="xref myst">here</span>.</p>
 <p>This describes the file structure in the BEHAVIOR Object Dataset:</p>

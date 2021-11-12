@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>BDDL and the BEHAVIOR Dataset of Activity Definitions &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -44,8 +44,9 @@
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating with BEHAVIOR</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BDDL and the BEHAVIOR Dataset of Activity Definitions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
 </ul>
@@ -70,7 +71,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>&lt;no title&gt;</li>
+      <li>BDDL and the BEHAVIOR Dataset of Activity Definitions</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/activities.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -80,7 +81,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
+  <div class="tex2jax_ignore mathjax_ignore section" id="bddl-and-the-behavior-dataset-of-activity-definitions">
+<h1>BDDL and the BEHAVIOR Dataset of Activity Definitions<a class="headerlink" href="#bddl-and-the-behavior-dataset-of-activity-definitions" title="Permalink to this headline"></a></h1>
+<p>Each BEHAVIOR activity is defined as a categorized object list, an initial condition, and a goal condition using the BEHAVIOR Domain Definition Language, a language to define logic-symbolic statements.
+Although BDDL shares some of the syntax and characteristics of the Planning Domain Definition Language (PDDL), e.g., both represent first-order logic, they are different as BDDL does not include action symbols and cannot be used for symbolic planning.</p>
+<p>In BDDL, the initial condition is a set of logical statements that are true for any valid initial state.
+The statements specify positional relationships between pairs of objects (e.g., <code class="docutils literal notranslate"><span class="pre">insideOf(Apple,</span> <span class="pre">Fridge)</span></code>) and non-kinematic states of individual objects (e.g. <code class="docutils literal notranslate"><span class="pre">cooked</span></code>, <code class="docutils literal notranslate"><span class="pre">toggledOn</span></code>, <code class="docutils literal notranslate"><span class="pre">notDusty</span></code>).
+The goal condition is a logical expression that specifies the objective of the activity.
+Since the same logic condition may correspond to multiple simulator states (e.g., multiple poses of objects <code class="docutils literal notranslate"><span class="pre">o1</span></code> and <code class="docutils literal notranslate"><span class="pre">o2</span></code> correspond to <code class="docutils literal notranslate"><span class="pre">insideOf(o1,</span> <span class="pre">o2)</span></code>), BDDL covers a large variety of ways to achieve each activity.</p>
+<p>iGibson 2.0 implements functionalities to read this initial state and sample concrete simulation states (e.g., object poses, temperature, toggling state) that correspond to the logic statements.
+We provide a set of these concrete simulator initial states that we call activity instances or caches.
+We provide a set of instances for training, but you can generate their own instances as well (see how to <a class="reference internal" href="add_act.html"><span class="doc std std-doc">generate your own activity</span></a>).</p>
+<p>For each activity instance, the simulator is instantiated following the concrete specified state, the embodied AI agents perform the activity, and the simulator iGibson 2.0 checks at each step if the logic expression in the goal condition has been fulfilled.
+The episode ends when the expression is fulfilled or the time is up.</p>
+</div>
+
 
            </div>
           </div>
