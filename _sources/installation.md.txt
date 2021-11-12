@@ -6,7 +6,7 @@ There are two alternatives for the installation:
 1) the common and most flexible way, installing the github repositories (or pip installing) manually, 
 2) the fastest but less flexible using a Docker image. This second alternative should be used if you plan to submit to our public leaderboard on EvalAI
 
-### Manual installation of dependencies and code
+### Option 1: Manual installation of dependencies and code
 
 1) Ensure you have the all prerequisites for the installation of iGibson by following the dependencies section [here](http://svl.stanford.edu/igibson/docs/installation.html#installing-dependencies)
 2) Clone all necessary repositories for the benchmark:
@@ -56,9 +56,11 @@ There are two alternatives for the installation:
     ```
     If you are working on your local machine, you can drop the `-m headless` flag and visualize the test on a GUI.
 
+Alternatively, you could install iGibson and BDDL using `pip`. In that case, you can skip the steps of cloning and installing their github repositories and do it only for the `behavior` repository.
+
 If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior.benchmark@gmail.com).
 
-### Using the Docker Image
+### Option 2: Using Docker
 
 1) Clone this repository
 ```

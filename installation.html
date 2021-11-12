@@ -41,8 +41,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">The BEHAVIOR Benchmark</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#manual-installation-of-dependencies-and-code">Manual installation of dependencies and code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#using-the-docker-image">Using the Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#option-1-manual-installation-of-dependencies-and-code">Option 1: Manual installation of dependencies and code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#option-2-using-docker">Option 2: Using Docker</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating with BEHAVIOR</a></li>
@@ -50,6 +50,7 @@
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments in BEHAVIOR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Miscellaneous</span></p>
 <ul>
@@ -90,8 +91,8 @@
 <li><p>the common and most flexible way, installing the github repositories (or pip installing) manually,</p></li>
 <li><p>the fastest but less flexible using a Docker image. This second alternative should be used if you plan to submit to our public leaderboard on EvalAI</p></li>
 </ol>
-<div class="section" id="manual-installation-of-dependencies-and-code">
-<h2>Manual installation of dependencies and code<a class="headerlink" href="#manual-installation-of-dependencies-and-code" title="Permalink to this headline"></a></h2>
+<div class="section" id="option-1-manual-installation-of-dependencies-and-code">
+<h2>Option 1: Manual installation of dependencies and code<a class="headerlink" href="#option-1-manual-installation-of-dependencies-and-code" title="Permalink to this headline"></a></h2>
 <ol>
 <li><p>Ensure you have the all prerequisites for the installation of iGibson by following the dependencies section <a class="reference external" href="http://svl.stanford.edu/igibson/docs/installation.html#installing-dependencies">here</a></p></li>
 <li><p>Clone all necessary repositories for the benchmark:</p>
@@ -142,10 +143,11 @@
 <p>If you are working on your local machine, you can drop the <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">headless</span></code> flag and visualize the test on a GUI.</p>
 </li>
 </ol>
+<p>Alternatively, you could install iGibson and BDDL using <code class="docutils literal notranslate"><span class="pre">pip</span></code>. In that case, you can skip the steps of cloning and installing their github repositories and do it only for the <code class="docutils literal notranslate"><span class="pre">behavior</span></code> repository.</p>
 <p>If you run into any issues, refer to our <span class="xref myst">FAQ</span> or <a class="reference external" href="mailto:behavior&#46;benchmark&#37;&#52;&#48;gmail&#46;com">contact us</a>.</p>
 </div>
-<div class="section" id="using-the-docker-image">
-<h2>Using the Docker Image<a class="headerlink" href="#using-the-docker-image" title="Permalink to this headline"></a></h2>
+<div class="section" id="option-2-using-docker">
+<h2>Option 2: Using Docker<a class="headerlink" href="#option-2-using-docker" title="Permalink to this headline"></a></h2>
 <ol class="simple">
 <li><p>Clone this repository</p></li>
 </ol>
