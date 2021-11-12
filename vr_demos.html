@@ -47,7 +47,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#behavior-hdf5-specification-processed-dataset">BEHAVIOR HDF5 Specification (Processed Dataset)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#behavior-hdf5-processed-dataset">BEHAVIOR HDF5 Processed Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#behavior-hdf5-raw-dataset">BEHAVIOR HDF5 Raw Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#accessing-the-behavior-hdf5-demo-files">Accessing the BEHAVIOR hdf5 demo files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#metadata">Metadata</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
@@ -95,12 +100,14 @@
 <li><p>Download the behavior-replay version of BEHAVIOR dataset bundle (BEHAVIOR Dataset of Objects and iGibson Dataset) via <a class="reference external" href="https://forms.gle/GXAacjpnotKkM2An7">this link</a></p></li>
 </ol>
 <p>Following the instructions above, we have verified that the 500 demos can be replayed and reproduced perfectly.</p>
-<div class="section" id="behavior-hdf5-specification-processed-dataset">
-<h2>BEHAVIOR HDF5 Specification (Processed Dataset)<a class="headerlink" href="#behavior-hdf5-specification-processed-dataset" title="Permalink to this headline"></a></h2>
+<div class="section" id="behavior-hdf5-processed-dataset">
+<h2>BEHAVIOR HDF5 Processed Dataset<a class="headerlink" href="#behavior-hdf5-processed-dataset" title="Permalink to this headline"></a></h2>
+<p>We provide a processed dataset generated from the raw files and that includes images and proprioceptive sensing.
+Alternative processed datasets can be generated based on the raw files, e.g. with different image resolutions.</p>
 <p>The following are the available keys to index into the hdf5 file. The dimensionality of each component is noted parenthetically, where <code class="docutils literal notranslate"><span class="pre">N</span></code> indicates the number of frames in the demo.</p>
 <ul class="simple">
 <li><p>action (N x 28) – see BehaviorRobot description in the <a class="reference internal" href="agents.html"><span class="doc std std-doc">Embodiments section</span></a> for details about the actuation of this robot. This vector contains two additional dimensions that correspond to the <code class="docutils literal notranslate"><span class="pre">hand</span> <span class="pre">reset</span></code> action in VR: an action that teleports the simulated hands to the exact pose of the VR hand controller when they have diverged. This actions are not used by AI agents but are necessary to understand the demos.</p></li>
-<li><p>proprioception (N x 20) – proprioceptive feedback</p></li>
+<li><p>proprioception (N x 20) – proprioceptive feedback. More details in the <a class="reference internal" href="agents.html"><span class="doc std std-doc">Embodiments section</span></a>.</p></li>
 <li><p>rgb (N x 128 x 128 x 3) – rgb image from camera</p></li>
 <li><p>depth (N x 128 x 128 x 1) – depth map</p></li>
 <li><p>seg (N x 128 x 128 x 1) – segmentation of scene</p></li>
@@ -108,6 +115,44 @@
 <li><p>highlight ( N x 128 x 128 x 1) – activity relevant object binary mask, active for all objects included in the activity goal (except the agent and the floor)</p></li>
 <li><p>task_obs (N x 456) – task observations, including ground truth state of the robot, and ground truth poses and grasping state of a maximum of a fixed number of activity relevant objects</p></li>
 </ul>
+</div>
+<div class="section" id="behavior-hdf5-raw-dataset">
+<h2>BEHAVIOR HDF5 Raw Dataset<a class="headerlink" href="#behavior-hdf5-raw-dataset" title="Permalink to this headline"></a></h2>
+<div class="section" id="accessing-the-behavior-hdf5-demo-files">
+<h3>Accessing the BEHAVIOR hdf5 demo files<a class="headerlink" href="#accessing-the-behavior-hdf5-demo-files" title="Permalink to this headline"></a></h3>
+<p>This code snipped provides access to the data using the python’s hdf5 module that is dependency of iGibson:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>import h5py
+import numpy
+
+frame_number = 0
+hf = h5py.File(‘/path/to/behavior/demo.hdf5’)
+
+# see below for metadata description
+activity_name = hf.attrs[‘metadata/task_name’]
+print(activity_name)
+
+# see below for finding indices for array
+position_of_hmd = np.array(hf[‘frame_data’][‘vr_device_data’][‘hmd’][frame_number, 1:4])
+
+</pre></div>
+</div>
+</div>
+<div class="section" id="metadata">
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<p>The metadata can be accessed by keying into the hdf5.attrs with the following keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/start_time</span></code>: the date the demo was recorded</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/physics_timestep</span></code>: the simulated time of each step of the physics simulator (1/300 seconds for all our demos)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/render_timestep</span></code>: the simulaterender timestep used, determines framerate (1/30). <code class="docutils literal notranslate"><span class="pre">render_timestep</span> <span class="pre">/</span> <span class="pre">physics_timestep</span></code> gives the number of physics simulation steps per image frame generated (10)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/git_info</span></code>: the git info for activity definition, iGibson, ig_dataset, and ig_assets. This is used to ensure participants are using a compatible version of iGibson if replaying the demo</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/task_name</span></code>: The name of the activity ‘washing_dishes’, ‘putting_away_groceries’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/task_instance</span></code>: The instance of the activity (cached scene object combination)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/scene_id</span></code>: The scene (Rs_int, Wainscott_0_int, etc.) where the activity was recorded</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/filter_objects</span></code>: Only activity relevant objects were recorded in the activity</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/obj_body_id_to_name</span></code>: mapping of pybullet IDs to the semantic object name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metadata/obj_body_id_to_name</span></code>: Internal VR settings used by iGibson</p></li>
+</ul>
+</div>
 </div>
 </div>
 
