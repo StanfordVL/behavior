@@ -18,12 +18,6 @@ Welcome to the documentation of the BEHAVIOR benchmark
 
 .. toctree::
    :maxdepth: 1
-   :caption: API
-
-   apidoc/modules.rst
-
-.. toctree::
-   :maxdepth: 1
    :caption: Miscellaneous
 
    issues.md

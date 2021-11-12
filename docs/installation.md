@@ -231,9 +231,6 @@ Second, we need to download the robot models and some small objects from [here](
 python -m igibson.utils.assets_utils --download_assets
 ```
 
-Third, we need to download datasets of scenes, and, possibly, more object models. For interactive tasks, you need to download iGibson 2.0 Scenes and the BEHAVIOR Dataset of Objects or iGibson 1.0 Scenes. They include several fully interactive scenes and hundreds of 3D objects to use with our simulator.
-For navigation tasks, we provide back-compatibility to the Gibson Dataset, Stanford 2D-3D-Semantics Dataset and Matterport3D Dataset.
-In any case, please, follow the instructions [here](dataset.md) to download the datasets.
 
 Alternatively, to avoid downloading the entire dataset, you can download a single [high quality small environment R's](https://storage.googleapis.com/gibson_scenes/Rs.tar.gz) for demo and testing purposes.
 To download the demo data, run:
@@ -250,7 +247,6 @@ python
 >> import igibson
 ```
 
-For a full suite of tests and benchmarks, you can refer to [tests](tests.md) for more details. 
 
 ## Uninstalling
 Uninstalling iGibson is easy: `pip uninstall igibson`
