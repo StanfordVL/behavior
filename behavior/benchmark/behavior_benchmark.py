@@ -1,3 +1,4 @@
+import argparse
 import json
 import logging
 import os
@@ -15,6 +16,9 @@ from igibson.metrics.task import TaskMetric
 from igibson.utils.utils import parse_config
 
 logging.getLogger().setLevel(logging.WARNING)
+
+from behavior.benchmark.agents.random_agent import RandomAgent
+from behavior.benchmark.agents.rl_agent import PPOAgent
 
 
 def get_metrics_callbacks():
@@ -254,6 +258,23 @@ class BehaviorBenchmark(object):
             self.evaluate_agent(agent, env_config_file, output_dir, tasks, scene_instance_ids)
 
 
+def get_agent(agent_class, ckpt_path=""):
+    if agent_class == "Random":
+        return RandomAgent()
+    elif agent_class == "PPO":
+        return PPOAgent(ckpt_path)
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--agent-class", type=str, default="Random", choices=["Random", "PPO"])
+    parser.add_argument("--ckpt-path", default="", type=str)
+
+    args = parser.parse_args()
+
+    agent = get_agent(agent_class=args.agent_class, ckpt_path=args.ckpt_path)
+    challenge = BehaviorBenchmark()
+    challenge.benchmark_agent(agent, split='minival')
+
+
 if __name__ == "__main__":
-    benchmark = BehaviorBenchmark()
-    benchmark.benchmark_agent(None)
+    main()

@@ -1,12 +1,14 @@
 import numpy as np
 
+from behavior.benchmark.agents.agent import Agent
+
 ACTION_DIM = 26
 IMG_WIDTH = 128
 IMG_HEIGHT = 128
 PROPRIOCEPTION_DIM = 20
 
 
-class RandomAgent:
+class RandomAgent(Agent):
     def __init__(self):
         pass
 
@@ -18,6 +20,7 @@ class RandomAgent:
         return action
 
 
+# Test to print random actions
 if __name__ == "__main__":
     obs = {
         "rgb": np.ones((IMG_HEIGHT, IMG_WIDTH, 3)),

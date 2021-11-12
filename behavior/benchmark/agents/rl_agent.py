@@ -5,13 +5,14 @@ import numpy as np
 import torch
 from IPython import embed
 from stable_baselines3 import PPO
+from behavior.benchmark.agents.agent import Agent
 
 IMG_WIDTH = 128
 IMG_HEIGHT = 128
 PROPRIOCEPTION_DIM = 20
 
 
-class PPOAgent(object):
+class PPOAgent(Agent):
     def __init__(self, ckpt_path="checkpoints/onboard_sensing_ppo_random"):
         self.agent = PPO.load(ckpt_path)
 
@@ -22,6 +23,7 @@ class PPOAgent(object):
         return self.agent.predict(obs, deterministic=True)[0]
 
 
+# Test to print actions
 if __name__ == "__main__":
     obs = {
         "rgb": np.ones((IMG_HEIGHT, IMG_WIDTH, 3)),

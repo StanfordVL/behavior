@@ -1,29 +1,11 @@
-import argparse
-
-from behavior.benchmark.behavior_benchmark import BehaviorBenchmark
-
-from rl_agent import PPOAgent
-from simple_agent import RandomAgent
 
 
-def get_agent(agent_class, ckpt_path=""):
-    if agent_class == "Random":
-        return RandomAgent()
-    elif agent_class == "PPO":
-        return PPOAgent(ckpt_path)
+class Agent(object):
+    def __init__(self):
+        pass
 
+    def reset(self):
+        pass
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--agent-class", type=str, default="Random", choices=["Random", "PPO"])
-    parser.add_argument("--ckpt-path", default="", type=str)
-
-    args = parser.parse_args()
-
-    agent = get_agent(agent_class=args.agent_class, ckpt_path=args.ckpt_path)
-    challenge = BehaviorBenchmark()
-    challenge.benchmark_agent(agent, split='minival')
-
-
-if __name__ == "__main__":
-    main()
+    def act(self, observations):
+        pass
