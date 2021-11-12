@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-python agent.py
+
+python ../agents/agent.py

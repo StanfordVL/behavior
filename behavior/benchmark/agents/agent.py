@@ -1,6 +1,6 @@
 import argparse
 
-from igibson.challenge.behavior_challenge import BehaviorChallenge
+from behavior.benchmark.behavior_benchmark import BehaviorBenchmark
 
 from rl_agent import PPOAgent
 from simple_agent import RandomAgent
@@ -21,8 +21,8 @@ def main():
     args = parser.parse_args()
 
     agent = get_agent(agent_class=args.agent_class, ckpt_path=args.ckpt_path)
-    challenge = BehaviorChallenge()
-    challenge.submit(agent)
+    challenge = BehaviorBenchmark()
+    challenge.benchmark_agent(agent, split='minival')
 
 
 if __name__ == "__main__":
