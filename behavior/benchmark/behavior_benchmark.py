@@ -87,6 +87,7 @@ class BehaviorBenchmark(object):
 
         for task in tasks:
             human_demo_mean_step = activity_metadata[task]["mean"]  # Mean time invested by humans in the task
+            print("Maximum number of steps is twice the mean of human time: {}".format(human_demo_mean_step * 2))
             env_config["max_step"] = human_demo_mean_step * 2  # adjust env_config['max_step'] based on the human
             # demonstration, we give agent 2x steps of average human demonstration across all possible scenes
 
@@ -95,8 +96,9 @@ class BehaviorBenchmark(object):
                 env_config["task"] = task
                 env_config["task_id"] = 0
                 for instance_id in instance_ids:
-
                     for episode_id in range(episodes_per_instance):
+                        print("New episode: task {}, scene {}, instance {}, episode {}".format(task, scene_id,
+                                                                                               instance_id, episode_id))
                         env = BehaviorEnv(
                             config_file=env_config,
                             mode="headless",
@@ -120,6 +122,7 @@ class BehaviorBenchmark(object):
                             callback(env.task, None)
                         metrics_summary = {}
                         for callback in data_callbacks:
+                            print("Generating report for the episode")
                             metrics_summary.update(callback())
 
                         metrics_summary["task"] = task
