@@ -13,13 +13,23 @@ Welcome to the documentation of BEHAVIOR
    intro.md
    installation.md
    benchmarking.md
-   overview.md
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Components of BEHAVIOR
+
+   agents.md
+   setups.md
+   activities.md
+   add_act.md
+   vr_demos.md
+   create_demos.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Miscellaneous
 
+   examples.md
    issues.md
    projects.md
    acknowledgements.md

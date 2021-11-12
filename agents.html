@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Agents in BEHAVIOR &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -14,7 +14,9 @@
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="setups.html" />
+    <link rel="prev" title="Training and Evaluating with BEHAVIOR" href="benchmarking.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -37,9 +39,25 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">BEHAVIOR Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">The BEHAVIOR Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking with BEHAVIOR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating with BEHAVIOR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Agents in BEHAVIOR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#behaviorrobot">BehaviorRobot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#degrees-of-freedom">Degrees of Freedom</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fetchrobot">FetchRobot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Degrees of Freedom</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#observations">Observations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#grasping-modes">Grasping Modes</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Miscellaneous</span></p>
 <ul>
@@ -62,7 +80,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>&lt;no title&gt;</li>
+      <li>Agents in BEHAVIOR</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/agents.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -72,11 +90,98 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
+  <div class="tex2jax_ignore mathjax_ignore section" id="agents-in-behavior">
+<h1>Agents in BEHAVIOR<a class="headerlink" href="#agents-in-behavior" title="Permalink to this headline"></a></h1>
+<p>In principle, any robot embodiment can be used to participate in BEHAVIOR.
+We provide two embodiments, the <code class="docutils literal notranslate"><span class="pre">BehaviorRobot</span></code> and the <code class="docutils literal notranslate"><span class="pre">FetchRobot</span></code>, fully implemented and functional.
+Consider adding your own robot following the instructions <span class="xref myst">here</span>.</p>
+<div class="section" id="behaviorrobot">
+<h2>BehaviorRobot<a class="headerlink" href="#behaviorrobot" title="Permalink to this headline"></a></h2>
+<p>The BehaviorRobot is composed of two hands, a torso, and a head where the cameras are mounted.
+It has been used as avatar for humans to collect demos in virtual reality (more info <a class="reference internal" href="vr_demos.html"><span class="doc std std-doc">here</span></a>), but can also be controlled by an autonomous AI agent to participate in the BEHAVIOR.</p>
+<div class="section" id="degrees-of-freedom">
+<h3>Degrees of Freedom<a class="headerlink" href="#degrees-of-freedom" title="Permalink to this headline"></a></h3>
+<p>The embodiment has 26 degrees of freedom decomposed as follows:</p>
+<ul class="simple">
+<li><p>Base: 6 DoF pose (position, orientation)</p></li>
+<li><p>Head: 6 DoF pose (position, orientation) - relative to the current torso frame</p></li>
+<li><p>Left and right hands: 6 DoF pose each - relative to the current torso frame</p></li>
+<li><p>Left and right grippers: 1 DoF to close/open each 5-fingered gripper</p></li>
+</ul>
+<p>Reference frames for the robot state in the BehaviorRobot:
+<img alt="brobotframes.png" src="images/brobotframes.png" /></p>
+</div>
+</div>
+<div class="section" id="fetchrobot">
+<h2>FetchRobot<a class="headerlink" href="#fetchrobot" title="Permalink to this headline"></a></h2>
+<p>Fetch is composed of a mobile base, one arm and a movable head where the cameras are mounted.
+It models the real robot Fetch.</p>
+<div class="section" id="id1">
+<h3>Degrees of Freedom<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<p>The embodiment has 12 degrees of freedom decomposed as follows:</p>
+<ul class="simple">
+<li><p>Base: 3 DoF, the position on the floor plane and rotation around the floor plane normal</p></li>
+<li><p>Trunk: 1 DoF of a prismatic joint that affect to both arm and head</p></li>
+<li><p>Head: 2 DoF of pan (horizontal) &amp; tilt (vertical) directions</p></li>
+<li><p>Arm: 6 DoF (revolute joints) for the arm that control the motion of the right hand</p></li>
+<li><p>Gripper: 1 DoF to close/open the two-fingered gripper</p></li>
+</ul>
+<p>Reference frames for the robot state in the BehaviorRobot:
+<img alt="fetchrobotframes.png" src="images/fetchrobotframes.png" /></p>
+</div>
+</div>
+<div class="section" id="observations">
+<h2>Observations<a class="headerlink" href="#observations" title="Permalink to this headline"></a></h2>
+<p>Both agent embodiments have similar sensing capabilities based on virtual sensors on-board:</p>
+<ul class="simple">
+<li><p>Agent’s vision (default: 128x128 resolution, 120 degree FoV)</p>
+<ul>
+<li><p>RGB images</p></li>
+<li><p>Depth images</p></li>
+<li><p>Semantic and instance segmentation images</p></li>
+<li><p>Activity relevant object mask (all objects included in the activity definition except the agent and the floor)</p></li>
+</ul>
+</li>
+<li><p>Agent’s proprioception:</p>
+<ul>
+<li><p>Hand/end-effector pose in base frame (12-dim for BehaviorRobot, 6-dim for FetchRobot)</p></li>
+<li><p>Head pose in base frame (6-dim for BehaviorRobot)</p></li>
+<li><p>Hand aperture state (2-dim for BehaviorRobot, 1-dim for FetchRobot)</p></li>
+<li><p>Hand tactile info (2-dim for BehaviorRobot, 1-dim for FetchRobot)</p></li>
+<li><p>Joint states (9-dim for FetchRobot: trunk, head and arm joints)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="grasping-modes">
+<h2>Grasping Modes<a class="headerlink" href="#grasping-modes" title="Permalink to this headline"></a></h2>
+<p>We acknowledge grasping as one of the most difficult elements in the physical interaction between the agents and the environment.
+To alleviate the difficulty and enable research in other areas (e.g. planning, perception,…), we propose three grasping modes for BEHAVIOR:</p>
+<ul class="simple">
+<li><p>Physical Grasping: This mode does not make any simplification in the grasping process.
+Grasping is the result of a fully simulated interactions between the agent’s hand/fingers and the objects.
+This mode is the most difficult but also the most realistic.</p></li>
+<li><p>Assistive Grasping: We simplify the grasping process with a mechanism that creates a rigid connection between the agent’s hand and an object if: 1) the gripper DoF is closed over a threshold, and 2) the object is “inside” the hand. The joint created by assistive grasping between hand and object is removed if the constraint is violated because of a large force or because the object and the hand move apart (the physics engine cannot enforce the rigid connection due to other constraints), or when the grasping DoF goes under the activation threshold.
+The definition of “inside the hand” depends on the embodiment:</p>
+<ul>
+<li><p>For BehaviorRobot: an object object is “inside the hand” if it is intersected by rays projected from the palm to the fingertips of the hand, and the hand is applying a non-zero force to it.</p></li>
+<li><p>For FetchRobot: and object “inside the hand” if it is in contact with both fingers of the end-effector, and the contact point is in the inner part of the fingers.
+Assistive grasping simplifies the interaction but forces the agent to move in a realistic way to succeed in the grasp by placing the objects inside the hands, between the fingers.</p></li>
+</ul>
+</li>
+<li><p>Sticky Mitten: An alternative simplified grasping that creates a rigid connection between the hand and an object if the grasping DoF goes over a threshold while the hand is in contact with the object.
+Using the sticky mitten, agents do not need to place the fingers around an object to grasp it.</p></li>
+</ul>
+</div>
+</div>
+
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="benchmarking.html" class="btn btn-neutral float-left" title="Training and Evaluating with BEHAVIOR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="setups.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

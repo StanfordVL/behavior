@@ -1,4 +1,4 @@
-# Benchmarking with BEHAVIOR
+# Training and Evaluating with BEHAVIOR
 
 Once you have installed BEHAVIOR and its dependencies, you can start training and evaluating your agents.
 The way to do it will depend to the type of installation you performed: manual installation of the repositories, or automated installation with Docker.
@@ -12,14 +12,15 @@ TODO
 #### Evaluating
 
 You can evaluate locally using the code in this repository (`behavior_benchmark.py`). 
-As an example, the following code evaluates a random agent on a single activity specified in an environment config file with:
+As an example, the following code evaluates a random agent on a single activity specified in an environment config file:
 ```
 python behavior/benchmark/behavior_benchmark.py
 ```
-It evaluates the agent following the official convention on nine instances of the activity with increasing complexity: on three instances of the activity that are expected to be the same as in training, three instances where everything is the same as in training but the small objects change their initial locations, and three instances where the furniture in the scenes is also different.
+The code evaluates the agent following the official [benchmarking setup](setups.md) of nine instances of the activity with increasing complexity: three instances of the activity that are expected to be the same as in training, three instances where everything is the same as in training but the small objects change their initial locations, and three instances where the furniture in the scenes is also different.
 The code also runs the evaluation metrics and saves the values on files.
 
-You can modify the main function, or directly operate with the `BehaviorBenchmark` object to specify the agent to evaluate, and the activities, scene and instances to be evaluated in.
+To evaluate your agent, you can modify the main function in `behavior_benchmark.py`, or directly use the `BehaviorBenchmark` object and specify the agent to evaluate, and the activities, scene and instances to be evaluated in.
+See more examples [here](examples.md).
 
 ### Training and Benchmarking in a Docker Installation
 
