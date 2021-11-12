@@ -38,10 +38,17 @@ If you use BEHAVIOR, its assets and models, consider citing the following public
 }
 ```
 
-### Code Release
-The GitHub repository of iGibson can be found [here](https://github.com/StanfordVL/iGibson). Bug reports, suggestions for improvement, as well as community developments are encouraged and appreciated. 
+### Repositories
+There are three main repositories necessary to evaluate with BEHAVIOR:
+- The `behavior` repository (https://github.com/StanfordVL/behavior) with the code to evaluate and useful baselines to get started.
+- The `igibson` repository (https://github.com/StanfordVL/iGibson) with the code of our simulator.
+- The `bddl` repository (https://github.com/StanfordVL/bddl) with the library for the logic language BDDL used to define activities.
+
+Additionally, you will need to obtain access and download the BEHAVIOR Dataset of Objects, with 3D annotated object models for the evaluation, and the iGibson dataset and assets with house scenes and robot models.
 
 ### Documentation
-The documentation for iGibson can be found [here](http://svl.stanford.edu/igibson/docs/). It includes installation guide (including data download instructions), quickstart guide, code examples, and APIs.
+General information about our benchmark can be found in our webpage: http://behavior.stanford.edu or in our publication available [on arxiv](https://arxiv.org/abs/2108.03332).
 
-If you want to know more about iGibson, you can also check out [our webpage](http://svl.stanford.edu/igibson), the [iGibson 2.0 arxiv preprint](https://arxiv.org/abs/2108.03272) and the [iGibson 1.0 arxiv preprint](https://arxiv.org/abs/2012.02924).
+For specific documentation about the iGibson simulator, please visit http://svl.stanford.edu/igibson/docs or refer to our publications, the [iGibson 2.0 arxiv preprint](https://arxiv.org/abs/2108.03272) and the [iGibson 1.0 arxiv preprint](https://arxiv.org/abs/2012.02924).
+
+More information about BDDL can be found at https://github.com/StanfordVL/bddl and in our [BEHAVIOR publication](https://arxiv.org/abs/2108.03332).
