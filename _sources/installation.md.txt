@@ -1,5 +1,13 @@
 # Installation
 
+Evaluating Embodied AI agents in BEHAVIOR requires to install three code blocks: the iGibson simulator, the BDDL library of logic language, and the benchmarking utilities (this repo).
+
+There are two alternatives for the installation: 
+1) the common and most flexible way, installing the github repositories (or pip installing) manually, 
+2) the fastest but less flexible using a Docker image. This second alternative should be used if you plan to submit to our public leaderboard on EvalAI
+
+### Manual installation of dependencies and code
+
 1) Ensure you have the all prerequisites for the installation of iGibson by following the dependencies section [here](http://svl.stanford.edu/igibson/docs/installation.html#installing-dependencies)
 2) Clone all necessary repositories for the benchmark:
 
@@ -48,4 +56,42 @@
     ```
     If you are working on your local machine, you can drop the `-m headless` flag and visualize the test on a GUI.
 
-If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior@gmail.com).
+If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior.benchmark@gmail.com).
+
+### Using the Docker Image
+
+1) Clone this repository
+```
+git clone git@github.com:stanfordvl/behavior.git
+```
+
+2) Install nvidia-docker2 following the guidelines [here](https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0))
+
+3) Modify the provided Dockerfile to include additional dependencies. A minimal Dockerfile presents the form:
+```
+FROM igibson/behavior_challenge_2021:latest
+ENV PATH /miniconda/envs/gibson/bin:$PATH
+
+ADD agent.py /agent.py
+ADD simple_agent.py /simple_agent.py
+ADD rl_agent.py /rl_agent.py
+
+ADD submission.sh /submission.sh
+WORKDIR /
+```
+   Then build your Docker container with `docker build . -t my_submission` replacing `my_submission` with the name you want to use for the Docker image.
+
+3) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations) 
+    
+    a) Accept the license agreement filling the [form](https://forms.gle/GXAacjpnotKkM2An7). This allows you to use the assets within iGibson for free for your research.
+    
+    b) You will receive a encryption key (`igibson.key`). Move the key into the main folder of this repository `behavior`.
+    
+    c) Download the BEHAVIOR data bundle including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes from [form]().
+    
+    d) Decompress the BEHAVIOR data bundle into this folder:
+    ```
+    unzip behavior_data_bundle.zip -d behavior
+    ```
+   
+If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior.benchmark@gmail.com).

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benchmarking with BEHAVIOR &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Overview" href="overview.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> BEHAVIOR
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">BEHAVIOR Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarking with BEHAVIOR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#training-and-benchmarking-with-a-manual-installation">Training and Benchmarking with a Manual Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evaluating">Evaluating</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#training-and-benchmarking-in-a-docker-installation">Training and Benchmarking in a Docker Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Evaluating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#online-submission-to-the-public-leaderboard-on-evalai">Online Submission to the Public Leaderboard on EvalAI</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="issues.html">Trouble Shooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">Projects using Gibson/iGibson</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgments</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BEHAVIOR</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Benchmarking with BEHAVIOR</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/benchmarking.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="tex2jax_ignore mathjax_ignore section" id="benchmarking-with-behavior">
+<h1>Benchmarking with BEHAVIOR<a class="headerlink" href="#benchmarking-with-behavior" title="Permalink to this headline"></a></h1>
+<p>Once you have installed BEHAVIOR and its dependencies, you can start training and evaluating your agents.
+The way to do it will depend to the type of installation you performed: manual installation of the repositories, or automated installation with Docker.</p>
+<div class="section" id="training-and-benchmarking-with-a-manual-installation">
+<h2>Training and Benchmarking with a Manual Installation<a class="headerlink" href="#training-and-benchmarking-with-a-manual-installation" title="Permalink to this headline"></a></h2>
+<div class="section" id="training">
+<h3>Training<a class="headerlink" href="#training" title="Permalink to this headline"></a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="evaluating">
+<h3>Evaluating<a class="headerlink" href="#evaluating" title="Permalink to this headline"></a></h3>
+<p>You can evaluate locally using the code in this repository (<code class="docutils literal notranslate"><span class="pre">behavior_benchmark.py</span></code>).
+As an example, the following code evaluates a random agent on a single activity specified in an environment config file with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">behavior</span><span class="o">/</span><span class="n">benchmark</span><span class="o">/</span><span class="n">behavior_benchmark</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>It evaluates the agent following the official convention on nine instances of the activity with increasing complexity: on three instances of the activity that are expected to be the same as in training, three instances where everything is the same as in training but the small objects change their initial locations, and three instances where the furniture in the scenes is also different.
+The code also runs the evaluation metrics and saves the values on files.</p>
+<p>You can modify the main function, or directly operate with the <code class="docutils literal notranslate"><span class="pre">BehaviorBenchmark</span></code> object to specify the agent to evaluate, and the activities, scene and instances to be evaluated in.</p>
+</div>
+</div>
+<div class="section" id="training-and-benchmarking-in-a-docker-installation">
+<h2>Training and Benchmarking in a Docker Installation<a class="headerlink" href="#training-and-benchmarking-in-a-docker-installation" title="Permalink to this headline"></a></h2>
+<div class="section" id="id1">
+<h3>Training<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<p>To train on a <code class="docutils literal notranslate"><span class="pre">minival</span></code> split (on a single activity) use the following script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">behavior</span><span class="o">/</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scrips</span><span class="o">/</span><span class="n">train_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span>
+</pre></div>
+</div>
+<p>Note that due to the complexity of all BEHAVIOR activities, the provided training with PPO is NOT expected to converge to success.
+We provide the PPO training pipeline just as a starting point for participants to further build upon.</p>
+</div>
+<div class="section" id="id2">
+<h3>Evaluating<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<p>You can evaluate locally for the <code class="docutils literal notranslate"><span class="pre">minival</span></code> split (one single activity) executing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">behavior</span><span class="o">/</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span>
+</pre></div>
+</div>
+<p>You can also evaluate locally for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> split (all activities) executing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">behavior</span><span class="o">/</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_dev_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="online-submission-to-the-public-leaderboard-on-evalai">
+<h3>Online Submission to the Public Leaderboard on EvalAI<a class="headerlink" href="#online-submission-to-the-public-leaderboard-on-evalai" title="Permalink to this headline"></a></h3>
+<p>If you use the Docker installation, you can submit your solution to be evaluated and included in the public leaderboard.
+For that, you first need to register for our benchmark on EvalAI <a class="reference external" href="https://eval.ai/web/challenges/challenge-page/1190/overview">here</a>.
+You should follow the instructions in the <code class="docutils literal notranslate"><span class="pre">submit</span></code> tab on EvalAI that we summarize here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Installing EvalAI Command Line Interface</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="s2">&quot;evalai&gt;=1.2.3&quot;</span>
+
+<span class="c1"># Set EvalAI account token</span>
+<span class="n">evalai</span> <span class="n">set_token</span> <span class="o">&lt;</span><span class="n">your</span> <span class="n">EvalAI</span> <span class="n">participant</span> <span class="n">token</span><span class="o">&gt;</span>
+
+<span class="c1"># Push docker image to EvalAI docker registry</span>
+<span class="n">evalai</span> <span class="n">push</span> <span class="n">my_submission</span><span class="p">:</span><span class="n">latest</span> <span class="o">--</span><span class="n">phase</span> <span class="o">&lt;</span><span class="n">track</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>There are two valid benchmark tracks depending if your agent uses only onboard sensing or assumes full observabilty: <code class="docutils literal notranslate"><span class="pre">behavior-test-onboard-sensing-1190</span></code>, <code class="docutils literal notranslate"><span class="pre">behavior-test-full-observability-1190</span></code>.
+Once we receive your submission, we evaluate and return the results.
+Due to the time and resource consuming evaluation process, each participant is restricted to submit once per week, maximum 4 times per month.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Stanford University 2018-2021.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

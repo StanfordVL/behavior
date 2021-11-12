@@ -15,7 +15,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Quickstart" href="quickstart.html" />
+    <link rel="next" title="Benchmarking with BEHAVIOR" href="benchmarking.html" />
     <link rel="prev" title="BEHAVIOR Benchmark" href="intro.html" /> 
 </head>
 
@@ -40,8 +40,12 @@
               <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">BEHAVIOR Benchmark</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#manual-installation-of-dependencies-and-code">Manual installation of dependencies and code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-docker-image">Using the Docker Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking with BEHAVIOR</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Miscellaneous</span></p>
@@ -77,6 +81,14 @@
              
   <div class="tex2jax_ignore mathjax_ignore section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<p>Evaluating Embodied AI agents in BEHAVIOR requires to install three code blocks: the iGibson simulator, the BDDL library of logic language, and the benchmarking utilities (this repo).</p>
+<p>There are two alternatives for the installation:</p>
+<ol class="simple">
+<li><p>the common and most flexible way, installing the github repositories (or pip installing) manually,</p></li>
+<li><p>the fastest but less flexible using a Docker image. This second alternative should be used if you plan to submit to our public leaderboard on EvalAI</p></li>
+</ol>
+<div class="section" id="manual-installation-of-dependencies-and-code">
+<h2>Manual installation of dependencies and code<a class="headerlink" href="#manual-installation-of-dependencies-and-code" title="Permalink to this headline"></a></h2>
 <ol>
 <li><p>Ensure you have the all prerequisites for the installation of iGibson by following the dependencies section <a class="reference external" href="http://svl.stanford.edu/igibson/docs/installation.html#installing-dependencies">here</a></p></li>
 <li><p>Clone all necessary repositories for the benchmark:</p>
@@ -127,7 +139,45 @@
 <p>If you are working on your local machine, you can drop the <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">headless</span></code> flag and visualize the test on a GUI.</p>
 </li>
 </ol>
-<p>If you run into any issues, refer to our <span class="xref myst">FAQ</span> or <a class="reference external" href="mailto:behavior&#37;&#52;&#48;gmail&#46;com">contact us</a>.</p>
+<p>If you run into any issues, refer to our <span class="xref myst">FAQ</span> or <a class="reference external" href="mailto:behavior&#46;benchmark&#37;&#52;&#48;gmail&#46;com">contact us</a>.</p>
+</div>
+<div class="section" id="using-the-docker-image">
+<h2>Using the Docker Image<a class="headerlink" href="#using-the-docker-image" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p>Clone this repository</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">stanfordvl</span><span class="o">/</span><span class="n">behavior</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>Install nvidia-docker2 following the guidelines <a class="reference external" href="https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0)">here</a></p></li>
+<li><p>Modify the provided Dockerfile to include additional dependencies. A minimal Dockerfile presents the form:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>FROM igibson/behavior_challenge_2021:latest
+ENV PATH /miniconda/envs/gibson/bin:$PATH
+
+ADD agent.py /agent.py
+ADD simple_agent.py /simple_agent.py
+ADD rl_agent.py /rl_agent.py
+
+ADD submission.sh /submission.sh
+WORKDIR /
+</pre></div>
+</div>
+<p>Then build your Docker container with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">.</span> <span class="pre">-t</span> <span class="pre">my_submission</span></code> replacing <code class="docutils literal notranslate"><span class="pre">my_submission</span></code> with the name you want to use for the Docker image.</p>
+<ol>
+<li><p>Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations)</p>
+<p>a) Accept the license agreement filling the <a class="reference external" href="https://forms.gle/GXAacjpnotKkM2An7">form</a>. This allows you to use the assets within iGibson for free for your research.</p>
+<p>b) You will receive a encryption key (<code class="docutils literal notranslate"><span class="pre">igibson.key</span></code>). Move the key into the main folder of this repository <code class="docutils literal notranslate"><span class="pre">behavior</span></code>.</p>
+<p>c) Download the BEHAVIOR data bundle including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes from <span class="xref myst">form</span>.</p>
+<p>d) Decompress the BEHAVIOR data bundle into this folder:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unzip</span> <span class="n">behavior_data_bundle</span><span class="o">.</span><span class="n">zip</span> <span class="o">-</span><span class="n">d</span> <span class="n">behavior</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>If you run into any issues, refer to our <span class="xref myst">FAQ</span> or <a class="reference external" href="mailto:behavior&#46;benchmark&#37;&#52;&#48;gmail&#46;com">contact us</a>.</p>
+</div>
 </div>
 
 
@@ -135,7 +185,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="intro.html" class="btn btn-neutral float-left" title="BEHAVIOR Benchmark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="quickstart.html" class="btn btn-neutral float-right" title="Quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="benchmarking.html" class="btn btn-neutral float-right" title="Benchmarking with BEHAVIOR" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

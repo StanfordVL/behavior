@@ -12,7 +12,7 @@ Welcome to the documentation of BEHAVIOR
 
    intro.md
    installation.md
-   quickstart.md
+   benchmarking.md
    overview.md
 
 
