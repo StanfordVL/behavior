@@ -17,7 +17,7 @@
 3) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations) 
     a) Accept the license agreement filling the [form](https://forms.gle/GXAacjpnotKkM2An7). This allows you to use the assets within iGibson for free for your research.
     b) You will receive a encryption key (`igibson.key`). Move the key into the data folder of the iGibson repository, `iGibson/igibson/data`.
-    c) Download the BEHAVIOR data bundle including the BEHAVIOR Dataset of Objects and ... from [form]().
+    c) Download the BEHAVIOR data bundle including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes from [form]().
     d) Decompress the BEHAVIOR data bundle:
     ```
     unzip behavior_data_bundle.zip -d iGibson/igibson/data
