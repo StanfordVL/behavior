@@ -1,4 +1,4 @@
-#  BEHAVIOR Benchmark
+#  The BEHAVIOR Benchmark
 
 ### Benchmark for Everyday Household Activities in Virtual, Interactive, and Ecological Environments
 
