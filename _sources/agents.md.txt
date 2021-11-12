@@ -1,4 +1,4 @@
-# Embodiments in BEHAVIOR
+# Embodiments: actuation, sensing, grasping
 
 In principle, any robot embodiment can be used to participate in BEHAVIOR.
 We provide two embodiments, the `BehaviorRobot` and the `FetchRobot`, fully implemented and functional.
@@ -15,11 +15,19 @@ The embodiment has 26 degrees of freedom decomposed as follows:
 - Base: 6 DoF pose (position, orientation)
 - Head: 6 DoF pose (position, orientation) - relative to the current torso frame
 - Left and right hands: 6 DoF pose each - relative to the current torso frame
-- Left and right grippers: 1 DoF to close/open each 5-fingered gripper
+- Left and right grippers: 1 DoF to close/open each gripper by moving simultaneously the 5 fingers
 
 Reference frames for the robot state in the BehaviorRobot:
 ![brobotframes.png](images/brobotframes.png)
 
+### Actuation and Control
+
+Base, head, and hands are directly controlled in Cartesian space.
+We provide a control interface for agents to control the motions of the BehaviorRobot by specifying:
+- Base: Desired change in pose (delta pose, 6D) relative to the base frame in the previous time step.
+- Head: Desired change in pose (delta pose, 6D) relative to the base frame
+- Hands: Desired change in pose (delta pose, 2 x 6D) relative to the base frame
+- Grippers: Binary variable (2 x 1D) specifying if the grippers should close or open (change the gripper DoF) at maximum speed
 
 ## FetchRobot
 
@@ -29,7 +37,7 @@ It models the real robot Fetch.
 ### Degrees of Freedom
 
 The embodiment has 12 degrees of freedom decomposed as follows:
-- Base: 3 DoF, the position on the floor plane and rotation around the floor plane normal
+- Base: the base moves by actuating two active wheels. However, at effects of actuation and robot state, the rotation of the wheels is not relevant to the user; we consider instead the 3 DoF corresponding to the position on the floor plane and rotation around the floor plane normal
 - Trunk: 1 DoF of a prismatic joint that affect to both arm and head
 - Head: 2 DoF of pan (horizontal) & tilt (vertical) directions
 - Arm: 6 DoF (revolute joints) for the arm that control the motion of the right hand
@@ -38,6 +46,15 @@ The embodiment has 12 degrees of freedom decomposed as follows:
 Reference frames for the robot state in the BehaviorRobot:
 ![fetchrobotframes.png](images/fetchrobotframes.png)
 
+### Actuation and Control
+
+TODO!!!!!
+Base, head, and hands are directly controlled in Cartesian space.
+We provide a control interface for agents to control the motions of the BehaviorRobot by specifying:
+- Base: Desired change in pose (delta pose, 6D) relative to the base frame in the previous time step.
+- Head: Desired change in pose (delta pose, 6D) relative to the base frame
+- Hands: Desired change in pose (delta pose, 2 x 6D) relative to the base frame
+- Grippers: Binary variable (2 x 1D) specifying if the grippers should close or open (change the gripper DoF) at maximum speed
 
 ## Observations
 

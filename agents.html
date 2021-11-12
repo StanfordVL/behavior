@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Embodiments in BEHAVIOR &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Embodiments: actuation, sensing, grasping &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -45,13 +45,15 @@
 </ul>
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Embodiments in BEHAVIOR</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Embodiments: actuation, sensing, grasping</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#behaviorrobot">BehaviorRobot</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#degrees-of-freedom">Degrees of Freedom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#actuation-and-control">Actuation and Control</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#fetchrobot">FetchRobot</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">Degrees of Freedom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Actuation and Control</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#observations">Observations</a></li>
@@ -59,6 +61,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#add-your-own-embodiment">Add your own embodiment!</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Miscellaneous</span></p>
@@ -82,7 +85,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Embodiments in BEHAVIOR</li>
+      <li>Embodiments: actuation, sensing, grasping</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/agents.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -92,8 +95,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="tex2jax_ignore mathjax_ignore section" id="embodiments-in-behavior">
-<h1>Embodiments in BEHAVIOR<a class="headerlink" href="#embodiments-in-behavior" title="Permalink to this headline"></a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="embodiments-actuation-sensing-grasping">
+<h1>Embodiments: actuation, sensing, grasping<a class="headerlink" href="#embodiments-actuation-sensing-grasping" title="Permalink to this headline"></a></h1>
 <p>In principle, any robot embodiment can be used to participate in BEHAVIOR.
 We provide two embodiments, the <code class="docutils literal notranslate"><span class="pre">BehaviorRobot</span></code> and the <code class="docutils literal notranslate"><span class="pre">FetchRobot</span></code>, fully implemented and functional.
 Consider adding your own robot following the instructions <span class="xref myst">here</span>.</p>
@@ -108,10 +111,21 @@ It has been used as avatar for humans to collect demos in virtual reality (more 
 <li><p>Base: 6 DoF pose (position, orientation)</p></li>
 <li><p>Head: 6 DoF pose (position, orientation) - relative to the current torso frame</p></li>
 <li><p>Left and right hands: 6 DoF pose each - relative to the current torso frame</p></li>
-<li><p>Left and right grippers: 1 DoF to close/open each 5-fingered gripper</p></li>
+<li><p>Left and right grippers: 1 DoF to close/open each gripper by moving simultaneously the 5 fingers</p></li>
 </ul>
 <p>Reference frames for the robot state in the BehaviorRobot:
 <img alt="brobotframes.png" src="_images/brobotframes.png" /></p>
+</div>
+<div class="section" id="actuation-and-control">
+<h3>Actuation and Control<a class="headerlink" href="#actuation-and-control" title="Permalink to this headline"></a></h3>
+<p>Base, head, and hands are directly controlled in Cartesian space.
+We provide a control interface for agents to control the motions of the BehaviorRobot by specifying:</p>
+<ul class="simple">
+<li><p>Base: Desired change in pose (delta pose, 6D) relative to the base frame in the previous time step.</p></li>
+<li><p>Head: Desired change in pose (delta pose, 6D) relative to the base frame</p></li>
+<li><p>Hands: Desired change in pose (delta pose, 2 x 6D) relative to the base frame</p></li>
+<li><p>Grippers: Binary variable (2 x 1D) specifying if the grippers should close or open (change the gripper DoF) at maximum speed</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="fetchrobot">
@@ -122,7 +136,7 @@ It models the real robot Fetch.</p>
 <h3>Degrees of Freedom<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <p>The embodiment has 12 degrees of freedom decomposed as follows:</p>
 <ul class="simple">
-<li><p>Base: 3 DoF, the position on the floor plane and rotation around the floor plane normal</p></li>
+<li><p>Base: the base moves by actuating two active wheels. However, at effects of actuation and robot state, the rotation of the wheels is not relevant to the user; we consider instead the 3 DoF corresponding to the position on the floor plane and rotation around the floor plane normal</p></li>
 <li><p>Trunk: 1 DoF of a prismatic joint that affect to both arm and head</p></li>
 <li><p>Head: 2 DoF of pan (horizontal) &amp; tilt (vertical) directions</p></li>
 <li><p>Arm: 6 DoF (revolute joints) for the arm that control the motion of the right hand</p></li>
@@ -130,6 +144,18 @@ It models the real robot Fetch.</p>
 </ul>
 <p>Reference frames for the robot state in the BehaviorRobot:
 <img alt="fetchrobotframes.png" src="_images/fetchrobotframes.png" /></p>
+</div>
+<div class="section" id="id2">
+<h3>Actuation and Control<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<p>TODO!!!!!
+Base, head, and hands are directly controlled in Cartesian space.
+We provide a control interface for agents to control the motions of the BehaviorRobot by specifying:</p>
+<ul class="simple">
+<li><p>Base: Desired change in pose (delta pose, 6D) relative to the base frame in the previous time step.</p></li>
+<li><p>Head: Desired change in pose (delta pose, 6D) relative to the base frame</p></li>
+<li><p>Hands: Desired change in pose (delta pose, 2 x 6D) relative to the base frame</p></li>
+<li><p>Grippers: Binary variable (2 x 1D) specifying if the grippers should close or open (change the gripper DoF) at maximum speed</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="observations">

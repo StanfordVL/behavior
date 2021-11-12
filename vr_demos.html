@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -44,8 +44,12 @@
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating with BEHAVIOR</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments in BEHAVIOR</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#behavior-hdf5-specification-processed-dataset">BEHAVIOR HDF5 Specification (Processed Dataset)</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Miscellaneous</span></p>
@@ -69,7 +73,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>&lt;no title&gt;</li>
+      <li>The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/vr_demos.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -79,7 +83,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
+  <div class="tex2jax_ignore mathjax_ignore section" id="the-behavior-dataset-of-human-demonstrations-in-virtual-reality">
+<h1>The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality<a class="headerlink" href="#the-behavior-dataset-of-human-demonstrations-in-virtual-reality" title="Permalink to this headline"></a></h1>
+<p>The BEHAVIOR dataset includes 500 demonstrations of human participants performing BEHAVIOR-100 activities in iGibson 2.0 using a virtual reality interface. The data was collected by 5 participants using an HTC Vive Pro Eye headset with 2 HTC Vive Wand controllers and 1 torso tracker strapped to the participant’s waist. The participants were cued by a VR overlay describing activity goal conditions. Activity relevant objects corresponding to a goal condition were highlighted on the user view on-demand, guiding human execution. The text of the corresponding part of the condition switched from red to green at the completion of a given part.</p>
+<p>There are two available HDF5 datasets. The first is processed for imitation learning, containing rendered sensor modalities matching the observation of the agent, as well as the recorded action. The second is the “raw” unprocessed observations which include additional data from the VR recordings and simulator state of the activity-relevant objects.</p>
+<p>Note: Since every small change in the simulator may cause deviating changes in execution, if you want to replay the demos (run the actions stored in the demonstration file, and reproduce the exact same outcomes, e.g. states/images), this comes with some caveats. You must:</p>
+<ol class="simple">
+<li><p>Be on Windows</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">pybullet-svl</span></code> fork (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pybullet-svl</span></code>, as in setup.py of iGibson)</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">behavior-replay</span></code> branch of iGibson</p></li>
+<li><p>Download the behavior-replay version of BEHAVIOR dataset bundle (BEHAVIOR Dataset of Objects and iGibson Dataset) via <a class="reference external" href="https://forms.gle/GXAacjpnotKkM2An7">this link</a></p></li>
+</ol>
+<p>Following the instructions above, we have verified that the 500 demos can be replayed and reproduced perfectly.</p>
+<div class="section" id="behavior-hdf5-specification-processed-dataset">
+<h2>BEHAVIOR HDF5 Specification (Processed Dataset)<a class="headerlink" href="#behavior-hdf5-specification-processed-dataset" title="Permalink to this headline"></a></h2>
+<p>The following are the available keys to index into the hdf5 file. The dimensionality of each component is noted parenthetically, where <code class="docutils literal notranslate"><span class="pre">N</span></code> indicates the number of frames in the demo.</p>
+<ul class="simple">
+<li><p>action (N x 28) – see BehaviorRobot description in the <a class="reference internal" href="agents.html"><span class="doc std std-doc">Embodiments section</span></a> for details about the actuation of this robot. This vector contains two additional dimensions that correspond to the <code class="docutils literal notranslate"><span class="pre">hand</span> <span class="pre">reset</span></code> action in VR: an action that teleports the simulated hands to the exact pose of the VR hand controller when they have diverged. This actions are not used by AI agents but are necessary to understand the demos.</p></li>
+<li><p>proprioception (N x 20) – proprioceptive feedback</p></li>
+<li><p>rgb (N x 128 x 128 x 3) – rgb image from camera</p></li>
+<li><p>depth (N x 128 x 128 x 1) – depth map</p></li>
+<li><p>seg (N x 128 x 128 x 1) – segmentation of scene</p></li>
+<li><p>ins_seg (N x 128 x 128 x 1) – instance segmentation</p></li>
+<li><p>highlight ( N x 128 x 128 x 1) – activity relevant object binary mask, active for all objects included in the activity goal (except the agent and the floor)</p></li>
+<li><p>task_obs (N x 456) – task observations, including ground truth state of the robot, and ground truth poses and grasping state of a maximum of a fixed number of activity relevant objects</p></li>
+</ul>
+</div>
+</div>
+
 
            </div>
           </div>
