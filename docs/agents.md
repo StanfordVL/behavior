@@ -71,3 +71,7 @@ This mode is the most difficult but also the most realistic.
 - Sticky Mitten: An alternative simplified grasping that creates a rigid connection between the hand and an object if the grasping DoF goes over a threshold while the hand is in contact with the object.
 Using the sticky mitten, agents do not need to place the fingers around an object to grasp it.
 
+## Add your own embodiment!
+
+You can add your own embodiment to BEHAVIOR. For that, you will need to add it to iGibson following the specific instructions [here]().
+
