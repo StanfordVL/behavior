@@ -25,6 +25,7 @@ Welcome to the documentation of BEHAVIOR
    vr_demos.md
    create_demos.md
    objects.md
+   metrics.md
 
 .. toctree::
    :maxdepth: 1
