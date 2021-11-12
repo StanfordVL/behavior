@@ -1,4 +1,4 @@
-# Agents in BEHAVIOR
+# Embodiments in BEHAVIOR
 
 In principle, any robot embodiment can be used to participate in BEHAVIOR.
 We provide two embodiments, the `BehaviorRobot` and the `FetchRobot`, fully implemented and functional.
