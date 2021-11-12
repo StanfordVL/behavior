@@ -34,7 +34,7 @@ jobs:
     name: Deploy prod documentation
     needs: build-docs
     runs-on: ubuntu-latest
-    if: github.repository == 'StanfordVL/behavior' && github.ref == 'refs/heads/master'
+    if: github.repository == 'StanfordVL/behavior' && github.ref == 'refs/heads/main'
     
     steps:
     - name: Download artifact
