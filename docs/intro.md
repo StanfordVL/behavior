@@ -65,8 +65,8 @@ More information and links in the [BEHAVIOR Dataset of Human Demos Section](vr_d
 
 
 ### Documentation
-General information about our benchmark can be found in our webpage: http://behavior.stanford.edu or in our publication available [on arxiv](https://arxiv.org/abs/2108.03332).
+General information about our benchmark can be found in our webpage: [http://behavior.stanford.edu](http://behavior.stanford.edu) or in our publication available [on arxiv](https://arxiv.org/abs/2108.03332).
 
-For specific documentation about the iGibson simulator, please visit http://svl.stanford.edu/igibson/docs or refer to our publications, the [iGibson 2.0 arxiv preprint](https://arxiv.org/abs/2108.03272) and the [iGibson 1.0 arxiv preprint](https://arxiv.org/abs/2012.02924).
+For specific documentation about the iGibson simulator, please visit [http://svl.stanford.edu/igibson/docs](http://svl.stanford.edu/igibson/docs) or refer to our publications, the [iGibson 2.0 arxiv preprint](https://arxiv.org/abs/2108.03272) and the [iGibson 1.0 arxiv preprint](https://arxiv.org/abs/2012.02924).
 
-More information about BDDL can be found at https://github.com/StanfordVL/bddl and in our [BEHAVIOR publication](https://arxiv.org/abs/2108.03332).
+More information about BDDL can be found at [https://github.com/StanfordVL/bddl](https://github.com/StanfordVL/bddl) and in our [BEHAVIOR publication](https://arxiv.org/abs/2108.03332).

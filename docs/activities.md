@@ -1,4 +1,4 @@
-# BDDL and the BEHAVIOR Dataset of Activity Definitions
+# The BEHAVIOR Dataset of Activity Definitions and BDDL
 
 Each BEHAVIOR activity is defined as a categorized object list, an initial condition, and a goal condition using the BEHAVIOR Domain Definition Language, a language to define logic-symbolic statements. 
 Although BDDL shares some of the syntax and characteristics of the Planning Domain Definition Language (PDDL), e.g., both represent first-order logic, they are different as BDDL does not include action symbols and cannot be used for symbolic planning. 
