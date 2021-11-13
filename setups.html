@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setups &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Benchmark Setup &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -15,7 +15,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="BDDL and the BEHAVIOR Dataset of Activity Definitions" href="activities.html" />
+    <link rel="next" title="The BEHAVIOR Dataset of Activity Definitions and BDDL" href="activities.html" />
     <link rel="prev" title="Embodiments: actuation, sensing, grasping" href="agents.html" /> 
 </head>
 
@@ -41,13 +41,22 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">The BEHAVIOR Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating with BEHAVIOR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating Agents with BEHAVIOR</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Setups</a></li>
-<li class="toctree-l1"><a class="reference internal" href="activities.html">BDDL and the BEHAVIOR Dataset of Activity Definitions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmark Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#evaluating-generalization">Evaluating Generalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alternative-benchmark-setups">Alternative Benchmark Setups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#original-setup">Original Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changing-observations">Changing Observations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changing-actuation">Changing Actuation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">The BEHAVIOR Dataset of Activity Definitions and BDDL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
@@ -73,7 +82,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Setups</li>
+      <li>Benchmark Setup</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/setups.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -83,8 +92,74 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="tex2jax_ignore mathjax_ignore section" id="setups">
-<h1>Setups<a class="headerlink" href="#setups" title="Permalink to this headline"></a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="benchmark-setup">
+<h1>Benchmark Setup<a class="headerlink" href="#benchmark-setup" title="Permalink to this headline"></a></h1>
+<div class="section" id="evaluating-generalization">
+<h2>Evaluating Generalization<a class="headerlink" href="#evaluating-generalization" title="Permalink to this headline"></a></h2>
+<p>The goal in BEHAVIOR is to help developing general, robust and versatile AI agents.
+However, generalization may have two interpretations:</p>
+<ul class="simple">
+<li><p>Versatility: the same solution is general enough to solve to multiple problems</p></li>
+<li><p>Extrapolation: the same solution is general enough to solve to problems not seen during development/training</p></li>
+</ul>
+<p>When it comes to the household activities in BEHAVIOR, generalization can be measured along different dimensions, for example, different setups of the same activities, or different activities (what is usually studied in meta-learning and transfer learning).
+In increasing order of difficulty, all these are possible levels of generalization of setups within the same activities:</p>
+<ul class="simple">
+<li><p>Generalizing to object poses</p></li>
+<li><p>Generalizing to object instances/classes</p></li>
+<li><p>Generalizing to furniture poses</p></li>
+<li><p>Generalizing to furniture instances/classes</p></li>
+<li><p>Generalizing to scene layouts</p></li>
+</ul>
+<p>Our proposed setup to evaluate generalization (versatility and exploration) is the following:</p>
+<ul class="simple">
+<li><p>Agents should be evaluated in the 100 activities. This avoids tailored solutions for a single activity.</p></li>
+<li><p>For each activity, the agent should be evaluated in <strong>three different simulated houses</strong>.</p></li>
+<li><p>For each simulated house, the agent should be evaluated in <strong>three levels of generalization</strong>:</p>
+<ul>
+<li><p>Three activity instances (furniture pieces and arrangement, object models and arrangement) that have been used/seen during development/training.</p></li>
+<li><p>Three activity instances where the furniture and object models are the same as during development/training, but the arrangement of the objects is new.</p></li>
+<li><p>Three activity instances where the furniture is new.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="alternative-benchmark-setups">
+<h2>Alternative Benchmark Setups<a class="headerlink" href="#alternative-benchmark-setups" title="Permalink to this headline"></a></h2>
+<p>The ultimate setup in BEHAVIOR is to perform the 100 activities in their full complexity as they should be solved in the real-world: using only onboard sensing, planning the best strategies to achieve the long horizon goals, and controlling the execution of these strategies through motion of the robot at each step that produces the right effect in the physical simulated world.
+However, we acknowledge the extreme complexity of this setup.
+Therefore, we propose a set of alternative setups to study different aspects of the BEHAVIOR activities with more emphasis in perception, planning or control.</p>
+<div class="section" id="original-setup">
+<h3>Original Setup<a class="headerlink" href="#original-setup" title="Permalink to this headline"></a></h3>
+<p>Our ultimate setup:</p>
+<ul class="simple">
+<li><p>Given: None</p></li>
+<li><p>Observations: Onboard sensor signals</p></li>
+<li><p>Actuation: Control commands at 30 Hz</p></li>
+</ul>
+</div>
+<div class="section" id="changing-observations">
+<h3>Changing Observations<a class="headerlink" href="#changing-observations" title="Permalink to this headline"></a></h3>
+<p>The setup could be simplified to an easier perceptual challenge by changing the observations available to the agent.
+Alternatives for the observations include:</p>
+<ul class="simple">
+<li><p>Localization of the agent in the scene.</p></li>
+<li><p>List of objects in the environment.</p></li>
+<li><p>Full scene graph of the environment. The scene graph includes all objects, their properties, and the relationships to other objects.</p></li>
+<li><p>Full observability: The observations include any information that can be queried from the simulator, e.g., full object models, their state, …</p></li>
+</ul>
+</div>
+<div class="section" id="changing-actuation">
+<h3>Changing Actuation<a class="headerlink" href="#changing-actuation" title="Permalink to this headline"></a></h3>
+<p>The setup could be simplified to an easier control challenge by changing the actuation available to the agent.
+Alternatives for the actuation include:</p>
+<ul class="simple">
+<li><p>Predefined set of parameterized action primitives. The agent selects one primitive and its parameters, and the primitive executes for a extended period of time.
+We provide an initial set of primitives with semantic outcomes (<code class="docutils literal notranslate"><span class="pre">pick</span></code>, <code class="docutils literal notranslate"><span class="pre">place</span></code>, <code class="docutils literal notranslate"><span class="pre">open</span></code>, <code class="docutils literal notranslate"><span class="pre">close</span></code>, <code class="docutils literal notranslate"><span class="pre">navigate</span> <span class="pre">to</span></code>).
+Critical for the performance of the agents here is the available set of primitives and their implementation.</p></li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -92,7 +167,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="agents.html" class="btn btn-neutral float-left" title="Embodiments: actuation, sensing, grasping" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="activities.html" class="btn btn-neutral float-right" title="BDDL and the BEHAVIOR Dataset of Activity Definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="activities.html" class="btn btn-neutral float-right" title="The BEHAVIOR Dataset of Activity Definitions and BDDL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,4 +1,4 @@
-# Training and Evaluating with BEHAVIOR
+# Training and Evaluating Agents with BEHAVIOR
 
 Once you have installed BEHAVIOR and its dependencies, you can start training and evaluating your agents.
 The way to do it will depend to the type of installation you performed: manual installation of the repositories, or automated installation with Docker.
