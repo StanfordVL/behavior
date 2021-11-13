@@ -14,3 +14,5 @@ We provide a set of instances for training, but you can generate their own insta
 
 For each activity instance, the simulator is instantiated following the concrete specified state, the embodied AI agents perform the activity, and the simulator iGibson 2.0 checks at each step if the logic expression in the goal condition has been fulfilled. 
 The episode ends when the expression is fulfilled or the time is up. 
+
+## Add your own activity!
