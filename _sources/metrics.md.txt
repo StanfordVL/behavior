@@ -74,4 +74,5 @@ For additional information, see the corresponding implementation under `iGibson/
     - `simulator_steps`
     - `simulator_time`
 
+Note that computing some of these metrics will strongly affect your runtime performance as they query simulator state, so it is recommended to only compute them in your evaluation, not during traning.
 
