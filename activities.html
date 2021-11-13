@@ -46,7 +46,10 @@
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">BDDL and the BEHAVIOR Dataset of Activity Definitions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BDDL and the BEHAVIOR Dataset of Activity Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#add-your-own-activity">Add your own activity!</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
@@ -95,6 +98,9 @@ We provide a set of these concrete simulator initial states that we call activit
 We provide a set of instances for training, but you can generate their own instances as well (see how to <a class="reference internal" href="add_act.html"><span class="doc std std-doc">generate your own activity</span></a>).</p>
 <p>For each activity instance, the simulator is instantiated following the concrete specified state, the embodied AI agents perform the activity, and the simulator iGibson 2.0 checks at each step if the logic expression in the goal condition has been fulfilled.
 The episode ends when the expression is fulfilled or the time is up.</p>
+<div class="section" id="add-your-own-activity">
+<h2>Add your own activity!<a class="headerlink" href="#add-your-own-activity" title="Permalink to this headline"></a></h2>
+</div>
 </div>
 
 
