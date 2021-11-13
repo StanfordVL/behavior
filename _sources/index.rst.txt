@@ -27,6 +27,15 @@ Welcome to the documentation of BEHAVIOR
 
 .. toctree::
    :maxdepth: 1
+   :caption: Baselines
+
+   intro_baselines.md
+   il_baselines.md
+   rl_baselines.md
+   rl_mp_baselines.md
+
+.. toctree::
+   :maxdepth: 1
    :caption: Miscellaneous
 
    examples.md

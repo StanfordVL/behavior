@@ -43,6 +43,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#benchmark-for-everyday-household-activities-in-virtual-interactive-and-ecological-environments">Benchmark for Everyday Household Activities in Virtual, Interactive, and Ecological Environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#repositories">Repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 </ul>
 </li>
@@ -52,6 +53,7 @@
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setups.html">Setups</a></li>
 <li class="toctree-l1"><a class="reference internal" href="activities.html">BDDL and the BEHAVIOR Dataset of Activity Definitions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
@@ -128,11 +130,33 @@ This documentation includes also useful information to get started with examples
 <h2>Repositories<a class="headerlink" href="#repositories" title="Permalink to this headline"></a></h2>
 <p>There are three main repositories necessary to evaluate with BEHAVIOR:</p>
 <ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">behavior</span></code> repository (https://github.com/StanfordVL/behavior) with the code to evaluate and useful baselines to get started.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">igibson</span></code> repository (https://github.com/StanfordVL/iGibson) with the code of our simulator.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">bddl</span></code> repository (https://github.com/StanfordVL/bddl) with the library for the logic language BDDL used to define activities.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">behavior</span></code> repository (<a class="reference external" href="https://github.com/StanfordVL/behavior">https://github.com/StanfordVL/behavior</a>) with the code to evaluate and useful baselines to get started.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">igibson</span></code> repository (<a class="reference external" href="https://github.com/StanfordVL/iGibson">https://github.com/StanfordVL/iGibson</a>) with the code of our simulator.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">bddl</span></code> repository (<a class="reference external" href="https://github.com/StanfordVL/bddl">https://github.com/StanfordVL/bddl</a>) with the library for the logic language BDDL used to define activities.</p></li>
 </ul>
-<p>Additionally, you will need to obtain access and download the BEHAVIOR Dataset of Objects, with 3D annotated object models for the evaluation, and the iGibson dataset and assets with house scenes and robot models.</p>
+</div>
+<div class="section" id="datasets">
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline"></a></h2>
+<p>There are three datasets necessary to evaluate agents in BEHAVIOR:</p>
+<ul class="simple">
+<li><p><strong>The iGibson 2.0 Dataset of Scenes</strong>: New versions of the fully interactive scenes, more densely populated with objects. They are downloaded as part of the installation procedure above.</p></li>
+<li><p><strong>The BEHAVIOR Dataset of Objects</strong>: Collection of object models annotated with physical and semantic properties.
+The 3D models are free to use within iGibson 2.0 for BEHAVIOR. However, to preserver the artists’ copyright, models are encrypted and allowed only to be used within iGibson2.0.
+Details on how to get access to the iGibson and BEHAVIOR datasets in a bundle can be found in the <a class="reference internal" href="installation.html"><span class="doc std std-doc">Installation Section</span></a>.</p></li>
+<li><p><strong>The BEHAVIOR Dataset of Activity Definitions</strong>: Collection of definitions in logic language (in BDDL, our BEHAVIOR Domain Definition Language) that specifies the initial configuration of the scene, and the valid final goal of the activity.
+This dataset is shipped with the <code class="docutils literal notranslate"><span class="pre">bddl</span></code> package (<a class="reference external" href="https://github.com/StanfordVL/bddl">https://github.com/StanfordVL/bddl</a>)
+Activities cannot be defined uniquely: different people may provide different definitions.
+Therefore, we provide two valid definitions per activity generated by human annotators and filtered to be executable in our scenes, i.e., initial states are guaranteed be sampleable and goal states to be reacheable.
+These definitions have been used to create the activity instances that humans solved in virtual reality to generate the BEHAVIOR Dataset of Human Demonstrations (see below).</p></li>
+</ul>
+<p>Apart from these necessary datasets, we provide an additional dataset in BEHAVIOR:</p>
+<ul class="simple">
+<li><p><strong>The BEHAVIOR Dataset of Human Demonstrations</strong>: Collection of 500 human successful executions of the activities of BEHAVIOR in iGibson 2.0 using a virtual reality interface.
+Humans control the BEHAVIOR Robot embodiment (see <a class="reference internal" href="agents.html"><span class="doc std std-doc">Embodiments Section</span></a>).
+The dataset includes all state and action pairs and can be deterministically replayed to generate any new observations.
+We also include a first set of processed observations.
+More information and links in the <a class="reference internal" href="vr_demos.html"><span class="doc std std-doc">BEHAVIOR Dataset of Human Demos Section</span></a>.</p></li>
+</ul>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
