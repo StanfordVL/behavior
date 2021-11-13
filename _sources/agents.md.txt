@@ -90,5 +90,5 @@ Using the sticky mitten, agents do not need to place the fingers around an objec
 
 ## Add your own embodiment!
 
-You can add your own embodiment to BEHAVIOR. For that, you will need to add it to iGibson following the specific instructions [here]()TODO.
+You can add your own embodiment to BEHAVIOR. For that, you will need to add it to iGibson following the specific instructions [here]() (coming soon!).
 

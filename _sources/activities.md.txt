@@ -16,3 +16,5 @@ For each activity instance, the simulator is instantiated following the concrete
 The episode ends when the expression is fulfilled or the time is up. 
 
 ## Add your own activity!
+
+Coming soon!
