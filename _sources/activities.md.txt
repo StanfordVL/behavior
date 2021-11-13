@@ -10,7 +10,7 @@ Since the same logic condition may correspond to multiple simulator states (e.g.
 
 iGibson 2.0 implements functionalities to read this initial state and sample concrete simulation states (e.g., object poses, temperature, toggling state) that correspond to the logic statements. 
 We provide a set of these concrete simulator initial states that we call activity instances or caches. 
-We provide a set of instances for training, but you can generate their own instances as well (see how to [generate your own activity](add_act.md)). 
+We provide a set of instances for training, but you can generate their own instances as well (see how to [generate your own activity](##Add your own activity!)). 
 
 For each activity instance, the simulator is instantiated following the concrete specified state, the embodied AI agents perform the activity, and the simulator iGibson 2.0 checks at each step if the logic expression in the goal condition has been fulfilled. 
 The episode ends when the expression is fulfilled or the time is up. 

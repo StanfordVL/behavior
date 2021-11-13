@@ -15,7 +15,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="add_act.html" />
+    <link rel="next" title="The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality" href="vr_demos.html" />
     <link rel="prev" title="&lt;no title&gt;" href="setups.html" /> 
 </head>
 
@@ -95,7 +95,7 @@ The goal condition is a logical expression that specifies the objective of the a
 Since the same logic condition may correspond to multiple simulator states (e.g., multiple poses of objects <code class="docutils literal notranslate"><span class="pre">o1</span></code> and <code class="docutils literal notranslate"><span class="pre">o2</span></code> correspond to <code class="docutils literal notranslate"><span class="pre">insideOf(o1,</span> <span class="pre">o2)</span></code>), BDDL covers a large variety of ways to achieve each activity.</p>
 <p>iGibson 2.0 implements functionalities to read this initial state and sample concrete simulation states (e.g., object poses, temperature, toggling state) that correspond to the logic statements.
 We provide a set of these concrete simulator initial states that we call activity instances or caches.
-We provide a set of instances for training, but you can generate their own instances as well (see how to <a class="reference internal" href="add_act.html"><span class="doc std std-doc">generate your own activity</span></a>).</p>
+We provide a set of instances for training, but you can generate their own instances as well (see how to [generate your own activity](##Add your own activity!)).</p>
 <p>For each activity instance, the simulator is instantiated following the concrete specified state, the embodied AI agents perform the activity, and the simulator iGibson 2.0 checks at each step if the logic expression in the goal condition has been fulfilled.
 The episode ends when the expression is fulfilled or the time is up.</p>
 <div class="section" id="add-your-own-activity">
@@ -108,7 +108,7 @@ The episode ends when the expression is fulfilled or the time is up.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="setups.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="add_act.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="vr_demos.html" class="btn btn-neutral float-right" title="The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
