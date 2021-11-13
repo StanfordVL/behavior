@@ -6,6 +6,11 @@
 Welcome to the documentation of BEHAVIOR
 ========================================
 
+In this documentation, you will find information to use BEHAVIOR to train, develop and evaluate your solutions.
+You will have to install and use iGibson, our open source simulation environment, and the BEHAVIOR Dataset of Objects (more in the [installation instructions](installation.md)).
+You will also find details about the benchmark setup such as the [embodiments available](agents.md), the control and sensing alternatives, the metrics, and the [activities](activities.md).
+This documentation includes also useful information to get started with examples.
+
 .. toctree::
    :maxdepth: 1
    :caption: Introduction
