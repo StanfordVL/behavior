@@ -62,6 +62,8 @@ If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior
 
 ### Option 2: Using Docker
 
+This section needs to be updated. Please, follow the instructions above or modify the instructions below to adapt to the new Docker images.
+
 1) Clone this repository
 ```
 git clone git@github.com:stanfordvl/behavior.git

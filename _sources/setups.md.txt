@@ -31,8 +31,6 @@ Therefore, we propose a set of alternative setups to study different aspects of 
 
 #### Original Setup
 
-Our ultimate setup:
-- Given: None
 - Observations: Onboard sensor signals
 - Actuation: Control commands at 30 Hz
 
