@@ -21,9 +21,7 @@ Welcome to the documentation of BEHAVIOR
    agents.md
    setups.md
    activities.md
-   add_act.md
    vr_demos.md
-   create_demos.md
    objects.md
    metrics.md
 
