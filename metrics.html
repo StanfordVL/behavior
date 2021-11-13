@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metrics &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="examples.html" />
+    <link rel="prev" title="The BEHAVIOR Dataset of Objects" href="objects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> BEHAVIOR
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">The BEHAVIOR Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating with BEHAVIOR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Embodiments: actuation, sensing, grasping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="activities.html">BDDL and the BEHAVIOR Dataset of Activity Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#primary-metric-degree-of-success">Primary Metric: Degree of Success</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#secondary-metrics-efficiency">Secondary Metrics: Efficiency</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="issues.html">Trouble Shooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects.html">Projects using Gibson/iGibson</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgments</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BEHAVIOR</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Metrics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/metrics.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="tex2jax_ignore mathjax_ignore section" id="metrics">
+<h1>Metrics<a class="headerlink" href="#metrics" title="Permalink to this headline"></a></h1>
+<p>We used a combination of metrics to measure the performance of the agent, a primary metric based on the degree of completion of the activity, and a set of secondary metrics that evaluate different aspects of the efficiency of the solution.</p>
+<div class="section" id="primary-metric-degree-of-success">
+<h2>Primary Metric: Degree of Success<a class="headerlink" href="#primary-metric-degree-of-success" title="Permalink to this headline"></a></h2>
+<p>The primary metric for BEHAVIOR is the (maximum) fraction of satisfied logical predicates of the activity’s goal definition (Q).
+In the case that a goal is multi-part (e.g., “put one apple on a table or put two pears on a table”), Q is automatically calculated by choosing the combination of goal conditions that maximize Q.</p>
+</div>
+<div class="section" id="secondary-metrics-efficiency">
+<h2>Secondary Metrics: Efficiency<a class="headerlink" href="#secondary-metrics-efficiency" title="Permalink to this headline"></a></h2>
+<p>The secondary metrics capture how efficiently an agent performs the activity relative to the best human demonstration.</p>
+<ul class="simple">
+<li><p>Simulated time (<strong>Tsim</strong>): The total simulated (not wall-clock) time, how quickly the agent solves the activity.</p></li>
+<li><p>Kinematic disarrangement (<strong>DK</strong>): Displacement caused by the agent in the environment. This can be accumulated over time, or differential i.e. computed between two timesteps, e.g. initial, final.</p></li>
+<li><p>Logical disarrangement, <strong>DL</strong>: Amount of changes caused by the agent in the logical state of the environment. This can be accumulated over time or differential between two time steps. This captures kinematic state changes (putting an item on top of another item, taking an item out of a cupboard) as well as non-kinematic state changes like toggling a stove on, making an item wet, freezing an item. All kinematic state changes are grouped as 1 unit of logical disarrangement per item.</p></li>
+<li><p>Distance navigated</p>
+<ul>
+<li><p><strong>L<sub>body</sub></strong>: Accumulated distance traveled by the agent’s base body. This metric evaluates the efficiency of the agent in navigating the environment.</p></li>
+<li><p>Displacement of hands, <strong>L<sub>left</sub></strong> and <strong>L<sub>right</sub></strong>: Accumulated displacement of each of the agent’s hands while in contact with another object for manipulation (i.e., grasping, pushing, etc). This metric evaluates the efficiency of the agent in its interaction with the environment.</p></li>
+</ul>
+</li>
+</ul>
+<p>If you want to compute the metrics on your own, it is recommended that you follow the example in <code class="docutils literal notranslate"><span class="pre">igibson/examples/behavior/behavior_env_metrics.py</span></code>.
+This example shows how to leverage the start/step/end callbacks and aggregator to collect metrics on a behavior run.</p>
+<p>Secondary metrics can be computed in three different modes:</p>
+<ul class="simple">
+<li><p>per <code class="docutils literal notranslate"><span class="pre">timestep</span></code> – this provides the raw value of a metric for a given timestep</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code> over time – this is the sum of the absolute value of the metric over time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">relative</span></code> change between two timesteps – this is the difference of the per timestep metric between the start and the current timestep</p></li>
+</ul>
+<p>The following is a description of the report of metrics returned at the end of an episode.
+For additional information, see the corresponding implementation under <code class="docutils literal notranslate"><span class="pre">iGibson/metrics</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">q_score</span></code> – Primary metric: Degree of Success</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kinematic_disarrangement</span></code> – see above</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">relative</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logical_disarrangment</span></code> – see above</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">relative</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_objects</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_states</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">agent_distance</span></code> – distance traveled by torso of the behavior_robot</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grasp_distance</span></code> – distance traveled by manipulators of behavior_robot while grasping</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">right_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">body</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">work</span></code> – F*d per frame performed by all body parts</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">right_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">body</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pos</span></code> – 3D position of agent parts</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">right_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">body</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">local_pos</span></code> – 3D position of agent parts in frame of reference of body</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">right_hand</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grasping</span></code> – Whether hand is grasping (or touching) object</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">right_hand</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset</span></code> – Demos allow a user to reset the bullet position of a robot part to the VR controller position to avoid getting “stuck” on objects</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">left_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">right_hand</span></code>/<code class="docutils literal notranslate"><span class="pre">body</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">satisfied_predicates</span></code> – the top-level satisfied goal indices in the activity goal condition</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestep</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integrated</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code> – simulator time in both simulation steps and simulated time</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">simulator_steps</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">simulator_time</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="objects.html" class="btn btn-neutral float-left" title="The BEHAVIOR Dataset of Objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Stanford University 2018-2021.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
