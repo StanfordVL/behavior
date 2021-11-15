@@ -41,6 +41,12 @@ This documentation includes also useful information to get started with examples
 
 .. toctree::
    :maxdepth: 1
+   :caption: API
+
+   apidoc/modules.rst
+
+.. toctree::
+   :maxdepth: 1
    :caption: Miscellaneous
 
    examples.md
