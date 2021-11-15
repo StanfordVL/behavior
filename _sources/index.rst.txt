@@ -18,6 +18,7 @@ This documentation includes also useful information to get started with examples
    intro.md
    installation.md
    benchmarking.md
+   baselines.md
 
 .. toctree::
    :maxdepth: 1
@@ -29,15 +30,6 @@ This documentation includes also useful information to get started with examples
    vr_demos.md
    objects.md
    metrics.md
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Baselines
-
-   intro_baselines.md
-   il_baselines.md
-   rl_baselines.md
-   rl_mp_baselines.md
 
 .. toctree::
    :maxdepth: 1

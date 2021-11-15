@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Baselines &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -15,8 +15,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="rl_mp_baselines.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="il_baselines.html" /> 
+    <link rel="next" title="Embodiments: actuation, sensing, grasping" href="agents.html" />
+    <link rel="prev" title="Training and Evaluating Agents with BEHAVIOR" href="benchmarking.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,10 +38,16 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Introduction</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">The BEHAVIOR Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating Agents with BEHAVIOR</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Baselines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#imitation-learning-baseline">Imitation Learning Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reinforcement-learning-baseline-in-the-original-action-space">Reinforcement Learning Baseline in the Original Action Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reinforcement-learning-baseline-with-action-primitives">Reinforcement Learning Baseline with Action Primitives</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
 <ul>
@@ -67,9 +73,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>&lt;no title&gt;</li>
+      <li>Baselines</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/rl_baselines.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/baselines.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -77,13 +83,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
+  <div class="tex2jax_ignore mathjax_ignore section" id="baselines">
+<h1>Baselines<a class="headerlink" href="#baselines" title="Permalink to this headline"></a></h1>
+<p>We provide a set of common baselines from the Robot Learning literature to help creating a developing new solutions for BEHAVIOR.
+Our baselines include imitation learning and reinforcement learning, both in the original low-level action space of the benchmark, and making use of our provided set of action primitives based on sampling-based motion planning.
+Here, we briefly describe the baselines you can find in this repository.</p>
+<div class="section" id="imitation-learning-baseline">
+<h2>Imitation Learning Baseline<a class="headerlink" href="#imitation-learning-baseline" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="reinforcement-learning-baseline-in-the-original-action-space">
+<h2>Reinforcement Learning Baseline in the Original Action Space<a class="headerlink" href="#reinforcement-learning-baseline-in-the-original-action-space" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="reinforcement-learning-baseline-with-action-primitives">
+<h2>Reinforcement Learning Baseline with Action Primitives<a class="headerlink" href="#reinforcement-learning-baseline-with-action-primitives" title="Permalink to this headline"></a></h2>
+</div>
+</div>
+
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="il_baselines.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rl_mp_baselines.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="benchmarking.html" class="btn btn-neutral float-left" title="Training and Evaluating Agents with BEHAVIOR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="agents.html" class="btn btn-neutral float-right" title="Embodiments: actuation, sensing, grasping" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
