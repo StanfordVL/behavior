@@ -87,11 +87,12 @@
 <p>Evaluating Embodied AI agents in BEHAVIOR requires to install three code blocks: the iGibson simulator, the BDDL library of logic language, and the benchmarking utilities (this repo).</p>
 <p>There are two alternatives for the installation:</p>
 <ol class="simple">
-<li><p>the common and most flexible way, installing the github repositories (or pip installing) manually,</p></li>
-<li><p>the fastest but less flexible using a Docker image. This second alternative should be used if you plan to submit to our public leaderboard on EvalAI</p></li>
+<li><p>the common and most flexible way, installing the github repositories (or pip installing) manually. This is available under MacOS, Linux and Windows.</p></li>
+<li><p>the fastest but less flexible using a Docker image. This second alternative is only available for Linux and Windows users. It is the preferred mode if you plan to submit to our public leaderboard on EvalAI.</p></li>
 </ol>
 <div class="section" id="option-1-manual-installation-of-dependencies-and-code">
 <h2>Option 1: Manual installation of dependencies and code<a class="headerlink" href="#option-1-manual-installation-of-dependencies-and-code" title="Permalink to this headline"></a></h2>
+<p>In the following, we summarize the steps to install iGibson, BDDL, and the BEHAVIOR code. If you have any issues with iGibson or BDDL, please refer to the extend installation instructions in the respective repositories (<a class="reference external" href="http://svl.stanford.edu/igibson/docs/installation.html">docs for iGibson installation</a> and <a class="reference external" href="https://github.com/StanfordVL/bddl/blob/master/README.md">docs for BDDL installation</a>).</p>
 <ol>
 <li><p>Ensure you have the all prerequisites for the installation of iGibson by following the dependencies section <a class="reference external" href="http://svl.stanford.edu/igibson/docs/installation.html#installing-dependencies">here</a></p></li>
 <li><p>Clone all necessary repositories for the benchmark:</p>
@@ -147,7 +148,7 @@
 </div>
 <div class="section" id="option-2-using-docker">
 <h2>Option 2: Using Docker<a class="headerlink" href="#option-2-using-docker" title="Permalink to this headline"></a></h2>
-<p>This section needs to be updated. Please, follow the instructions above or modify the instructions below to adapt to the new Docker images.</p>
+<p><strong>This section needs to be updated. Until that is done, please, follow the instructions above or modify the instructions below to adapt to the new Docker images.</strong></p>
 <ol>
 <li><p>Clone this repository</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">stanfordvl</span><span class="o">/</span><span class="n">behavior</span><span class="o">.</span><span class="n">git</span>
@@ -155,15 +156,16 @@
 </div>
 </li>
 <li><p>Install nvidia-docker2 following the guidelines <a class="reference external" href="https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0)">here</a></p></li>
-<li><p>Modify the provided Dockerfile to include additional dependencies. A minimal Dockerfile presents the form:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>FROM igibson/behavior_challenge_2021:latest
-ENV PATH /miniconda/envs/gibson/bin:$PATH
+<li><p>Modify the provided Dockerfile to include any additional dependencies and your own agent. A minimal Dockerfile presents the form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>FROM stanfordvl/behavior:latest
+ENV PATH /miniconda/envs/igibson/bin:$PATH
 
-ADD agent.py /agent.py
-ADD simple_agent.py /simple_agent.py
-ADD rl_agent.py /rl_agent.py
+ADD benchmark/agents/agent.py /agent.py
+ADD benchmark/agents/random_agent.py /random_agent.py
+ADD benchmark/agents/rl_agent.py /rl_agent.py
+ADD benchmark/behavior_benchmark.py /behavior_benchmark.py
 
-ADD submission.sh /submission.sh
+ADD benchmark/scripts/submission.sh /submission.sh
 WORKDIR /
 </pre></div>
 </div>
