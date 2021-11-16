@@ -65,27 +65,27 @@ If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior
 This section needs to be updated. Please, follow the instructions above or modify the instructions below to adapt to the new Docker images.
 
 1) Clone this repository
-```
-git clone git@github.com:stanfordvl/behavior.git
-```
+    ```
+    git clone git@github.com:stanfordvl/behavior.git
+    ```
 
 2) Install nvidia-docker2 following the guidelines [here](https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0))
 
 3) Modify the provided Dockerfile to include additional dependencies. A minimal Dockerfile presents the form:
-```
-FROM igibson/behavior_challenge_2021:latest
-ENV PATH /miniconda/envs/gibson/bin:$PATH
-
-ADD agent.py /agent.py
-ADD simple_agent.py /simple_agent.py
-ADD rl_agent.py /rl_agent.py
-
-ADD submission.sh /submission.sh
-WORKDIR /
-```
+    ```
+    FROM igibson/behavior_challenge_2021:latest
+    ENV PATH /miniconda/envs/gibson/bin:$PATH
+    
+    ADD agent.py /agent.py
+    ADD simple_agent.py /simple_agent.py
+    ADD rl_agent.py /rl_agent.py
+    
+    ADD submission.sh /submission.sh
+    WORKDIR /
+    ```
    Then build your Docker container with `docker build . -t my_submission` replacing `my_submission` with the name you want to use for the Docker image.
 
-3) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations) 
+4) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations) 
     
     a) Accept the license agreement filling the [form](https://forms.gle/GXAacjpnotKkM2An7). This allows you to use the assets within iGibson for free for your research.
     

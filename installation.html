@@ -148,16 +148,14 @@
 <div class="section" id="option-2-using-docker">
 <h2>Option 2: Using Docker<a class="headerlink" href="#option-2-using-docker" title="Permalink to this headline"></a></h2>
 <p>This section needs to be updated. Please, follow the instructions above or modify the instructions below to adapt to the new Docker images.</p>
-<ol class="simple">
-<li><p>Clone this repository</p></li>
-</ol>
+<ol>
+<li><p>Clone this repository</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">stanfordvl</span><span class="o">/</span><span class="n">behavior</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<ol class="simple">
+</li>
 <li><p>Install nvidia-docker2 following the guidelines <a class="reference external" href="https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0)">here</a></p></li>
-<li><p>Modify the provided Dockerfile to include additional dependencies. A minimal Dockerfile presents the form:</p></li>
-</ol>
+<li><p>Modify the provided Dockerfile to include additional dependencies. A minimal Dockerfile presents the form:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>FROM igibson/behavior_challenge_2021:latest
 ENV PATH /miniconda/envs/gibson/bin:$PATH
 
@@ -170,7 +168,7 @@ WORKDIR /
 </pre></div>
 </div>
 <p>Then build your Docker container with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">.</span> <span class="pre">-t</span> <span class="pre">my_submission</span></code> replacing <code class="docutils literal notranslate"><span class="pre">my_submission</span></code> with the name you want to use for the Docker image.</p>
-<ol>
+</li>
 <li><p>Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations)</p>
 <p>a) Accept the license agreement filling the <a class="reference external" href="https://forms.gle/GXAacjpnotKkM2An7">form</a>. This allows you to use the assets within iGibson for free for your research.</p>
 <p>b) You will receive a encryption key (<code class="docutils literal notranslate"><span class="pre">igibson.key</span></code>). Move the key into the main folder of this repository <code class="docutils literal notranslate"><span class="pre">behavior</span></code>.</p>
