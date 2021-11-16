@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 
-python ../agents/agent.py
+python ../behavior_benchmark.py
