@@ -28,8 +28,8 @@ esac
 done
 
 
-docker run -v ${DATASET_PATH}/igibson.key:/opt/iGibson/igibson/data/igibson.key -v ${DATASET_PATH}/ig_dataset:/opt/iGibson/igibson/data/ig_datasetbs \
-    --gpus=all \
+docker run -v ${DATASET_PATH}/igibson.key:/opt/iGibson/igibson/data/igibson.key -v ${DATASET_PATH}/ig_dataset:/opt/iGibson/igibson/data/ig_dataset \
+    \
     ${DOCKER_NAME} \
     /bin/bash -c \
     "export CONFIG_FILE=/opt/iGibson/igibson/examples/configs/behavior_onboard_sensing.yaml; export SPLIT=minival; cd /opt/iGibson/igibson/examples/demo; python stable_baselines3_behavior_example.py"
