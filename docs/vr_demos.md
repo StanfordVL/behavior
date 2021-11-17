@@ -20,7 +20,7 @@ Alternative processed datasets can be generated based on the raw files, e.g. wit
 ### HDF5 Content
 The following are the available keys to index into the hdf5 file. The dimensionality of each component is noted parenthetically, where `N` indicates the number of frames in the demo.
 
-- action (N x 28) -- see BehaviorRobot description in the [Embodiments section](agents.md) for details about the actuation of this robot. This vector contains two additional dimensions that correspond to the `hand reset` action in VR: an action that teleports the simulated hands to the exact pose of the VR hand controller when they have diverged. This actions are not used by AI agents but are necessary to understand the demos.
+- action (N x 28) -- see BehaviorRobot description in the [Embodiments section](agents.md) for details about the actuation of this robot. This vector contains two additional dimensions that correspond to the `hand reset` action in VR: an action that teleports the simulated hands to the exact pose of the VR hand controller when they have diverged. These actions are not used by AI agents but are necessary to understand the demos.
 - proprioception (N x 20) -- proprioceptive feedback. More details in the [Embodiments section](agents.md).
 - rgb (N x 128 x 128 x 3) -- rgb image from camera
 - depth (N x 128 x 128 x 1) -- depth map
