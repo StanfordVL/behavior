@@ -64,10 +64,14 @@ Both agent embodiments have similar sensing capabilities based on virtual sensor
     - Depth images
     - Semantic and instance segmentation images
     - Activity relevant object mask (all objects included in the activity definition except the agent and the floor)
-- Agent's proprioception:
-    - Hand/end-effector pose in base frame (12-dim for BehaviorRobot, 6-dim for FetchRobot)
-    - Head pose in base frame (6-dim for BehaviorRobot)
-    - Hand aperture state (2-dim for BehaviorRobot, 1-dim for FetchRobot)
+- BehaviorRobot's proprioception:
+    - Hand/end-effector pose in base frame (12-dim)
+    - Head pose in base frame (6-dim)
+    - Hand closing fraction (2-dim)
+    - Whether the hand is grasping (2-dim)
+- FetchRobot's proprioception:
+    - Hand/end-effector pose in base frame (6-dim)
+    - Hand aperture state (1-dim for FetchRobot)
     - Joint states (9-dim for FetchRobot: trunk, head and arm joints)
     
 ## Grasping Modes
