@@ -44,7 +44,7 @@ To evaluate and benchmark your own agent, you can modify the code in `behavior_b
 Your agent should implement the functions `reset()` and `act(observations)`, ideally inheriting from the class `Agent` in `agent.py`.
 See more examples [here](examples.md).
 
-### Training and Benchmarking in a Docker Installation
+### Training and Benchmarking with a Docker Installation
 
 #### Training
 
@@ -52,23 +52,29 @@ To train on a `minival` split (on a single activity) use the following script:
 ```
 ./benchmark/scripts/train_minival_locally.sh --docker-name my_submission --dataset-path my/path/to/dataset
 ```
+where `my_submission` is the name of the docker image, and `my/path/to/dataset` corresponds to the path to the BEHAVIOR bundle (3D objects and scenes dataset) and the `igibson.key` from the [installation instructions](installation.md).
 
 Note that due to the complexity of all BEHAVIOR activities, the provided parallel training with PPO from Stable Baselines 3 is NOT expected to converge. 
 We provide this training pipeline just as a starting point for participants to further build upon.
+
+Modify the script to change the activity or activities the agent is trained on, and other parameters.
 
 
 #### Evaluating
 
 You can evaluate locally for the `minival` split (one single activity) executing:
 ```
-./benchmark/scripts/test_minival_locally.sh --docker-name my_submission
+./benchmark/scripts/test_minival_locally.sh --docker-name my_submission --dataset-path my/path/to/dataset
 ```
+where `my_submission` is the name of the docker image, and `my/path/to/dataset` corresponds to the path to the BEHAVIOR bundle (3D objects and scenes dataset) and the `igibson.key` from the [installation instructions](installation.md).
 
 You can also evaluate locally for the `dev` split (all activities) executing:
 
 ```
 ./benchmark/scripts/test_dev_locally.sh --docker-name my_submission --dataset-path my/path/to/dataset
 ```
+
+Modify the scripts to use your agent.
 
 #### Online Submission to the Public Leaderboard on EvalAI
 

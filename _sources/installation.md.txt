@@ -100,6 +100,6 @@ If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior
     ```
     e) Place the `igibson.key` in the folder you decompressed the bundle (`dataset` in our example) 
     
-5) You are ready to train and test your solutions, or create a submission to EvalAI. See [Section Training and Evaluating](#Training and Evaluating Agents with BEHAVIOR)
+5) You are ready to train and test your solutions, or create a submission to EvalAI. See [Section Training and Evaluating](benchmarking.md)
    
 If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior.benchmark@gmail.com).

@@ -47,7 +47,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#evaluating-and-benchmarking">Evaluating and Benchmarking</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#training-and-benchmarking-in-a-docker-installation">Training and Benchmarking in a Docker Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#training-and-benchmarking-with-a-docker-installation">Training and Benchmarking with a Docker Installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">Training</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#evaluating">Evaluating</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#online-submission-to-the-public-leaderboard-on-evalai">Online Submission to the Public Leaderboard on EvalAI</a></li>
@@ -133,27 +133,31 @@ Your agent should implement the functions <code class="docutils literal notransl
 See more examples <a class="reference internal" href="examples.html"><span class="doc std std-doc">here</span></a>.</p>
 </div>
 </div>
-<div class="section" id="training-and-benchmarking-in-a-docker-installation">
-<h2>Training and Benchmarking in a Docker Installation<a class="headerlink" href="#training-and-benchmarking-in-a-docker-installation" title="Permalink to this headline"></a></h2>
+<div class="section" id="training-and-benchmarking-with-a-docker-installation">
+<h2>Training and Benchmarking with a Docker Installation<a class="headerlink" href="#training-and-benchmarking-with-a-docker-installation" title="Permalink to this headline"></a></h2>
 <div class="section" id="id1">
 <h3>Training<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <p>To train on a <code class="docutils literal notranslate"><span class="pre">minival</span></code> split (on a single activity) use the following script:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">train_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span> <span class="o">--</span><span class="n">dataset</span><span class="o">-</span><span class="n">path</span> <span class="n">my</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">dataset</span>
 </pre></div>
 </div>
+<p>where <code class="docutils literal notranslate"><span class="pre">my_submission</span></code> is the name of the docker image, and <code class="docutils literal notranslate"><span class="pre">my/path/to/dataset</span></code> corresponds to the path to the BEHAVIOR bundle (3D objects and scenes dataset) and the <code class="docutils literal notranslate"><span class="pre">igibson.key</span></code> from the <a class="reference internal" href="installation.html"><span class="doc std std-doc">installation instructions</span></a>.</p>
 <p>Note that due to the complexity of all BEHAVIOR activities, the provided parallel training with PPO from Stable Baselines 3 is NOT expected to converge.
 We provide this training pipeline just as a starting point for participants to further build upon.</p>
+<p>Modify the script to change the activity or activities the agent is trained on, and other parameters.</p>
 </div>
 <div class="section" id="evaluating">
 <h3>Evaluating<a class="headerlink" href="#evaluating" title="Permalink to this headline"></a></h3>
 <p>You can evaluate locally for the <code class="docutils literal notranslate"><span class="pre">minival</span></code> split (one single activity) executing:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span> <span class="o">--</span><span class="n">dataset</span><span class="o">-</span><span class="n">path</span> <span class="n">my</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">dataset</span>
 </pre></div>
 </div>
+<p>where <code class="docutils literal notranslate"><span class="pre">my_submission</span></code> is the name of the docker image, and <code class="docutils literal notranslate"><span class="pre">my/path/to/dataset</span></code> corresponds to the path to the BEHAVIOR bundle (3D objects and scenes dataset) and the <code class="docutils literal notranslate"><span class="pre">igibson.key</span></code> from the <a class="reference internal" href="installation.html"><span class="doc std std-doc">installation instructions</span></a>.</p>
 <p>You can also evaluate locally for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> split (all activities) executing:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_dev_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span> <span class="o">--</span><span class="n">dataset</span><span class="o">-</span><span class="n">path</span> <span class="n">my</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">dataset</span>
 </pre></div>
 </div>
+<p>Modify the scripts to use your agent.</p>
 </div>
 <div class="section" id="online-submission-to-the-public-leaderboard-on-evalai">
 <h3>Online Submission to the Public Leaderboard on EvalAI<a class="headerlink" href="#online-submission-to-the-public-leaderboard-on-evalai" title="Permalink to this headline"></a></h3>
