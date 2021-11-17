@@ -112,7 +112,7 @@ Alternative processed datasets can be generated based on the raw files, e.g. wit
 <p>The following are the available keys to index into the hdf5 file. The dimensionality of each component is noted parenthetically, where <code class="docutils literal notranslate"><span class="pre">N</span></code> indicates the number of frames in the demo.</p>
 <ul class="simple">
 <li><p>action (N x 28) – see BehaviorRobot description in the <a class="reference internal" href="agents.html"><span class="doc std std-doc">Embodiments section</span></a> for details about the actuation of this robot. This vector contains two additional dimensions that correspond to the <code class="docutils literal notranslate"><span class="pre">hand</span> <span class="pre">reset</span></code> action in VR: an action that teleports the simulated hands to the exact pose of the VR hand controller when they have diverged. These actions are not used by AI agents but are necessary to understand the demos.</p></li>
-<li><p>proprioception (N x 20) – proprioceptive feedback. More details in the <a class="reference internal" href="agents.html"><span class="doc std std-doc">Embodiments section</span></a>.</p></li>
+<li><p>proprioception (N x 22) – proprioceptive feedback. More details in the <a class="reference internal" href="agents.html"><span class="doc std std-doc">Embodiments section</span></a>.</p></li>
 <li><p>rgb (N x 128 x 128 x 3) – rgb image from camera</p></li>
 <li><p>depth (N x 128 x 128 x 1) – depth map</p></li>
 <li><p>seg (N x 128 x 128 x 1) – segmentation of scene</p></li>
