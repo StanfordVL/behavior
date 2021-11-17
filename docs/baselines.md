@@ -8,11 +8,9 @@ Here, we briefly describe the baselines you can find in this repository.
 A simple behavioral cloning (BC) baseline can be found [here](https://github.com/StanfordVL/behavior-baselines/tree/main/behavior_baselines/behavioral_cloning).
 Please note that you need to download our [imitation learning dataset](https://behavior.stanford.edu/vr-demos) first. 
 
-There are two BC agents in (`simple_bc_agent.py`):
-
-1)(`BCNet_rgbp`): A BC agent that uses an RGB image (128x128) and proprioception feedback (20) as state space. 
-
-2)(`BCNet_taskObs`): A BC agent that uses task observations (456) and proprioception feedback (20) as state space. 
+There are two BC agents in `simple_bc_agent.py`:
+- `BCNet_rgbp`: A BC agent that uses an RGB image (128x128) and proprioception feedback (20) as state space. 
+- `BCNet_taskObs`: A BC agent that uses task observations (456) and proprioception feedback (20) as state space. 
 
 Details about state information can be found [here](https://stanfordvl.github.io/behavior/vr_demos.html). Feel free to include additional state information such as depth, instance segmentation, etc.
 
