@@ -20,7 +20,7 @@ esac
 done
 
 
-docker run -v $(pwd)/igibson.key:/opt/iGibson/igibson/data/igibson.key -v $(pwd)/ig_dataset:/opt/iGibson/igibson/data/ig_dataset -v $(pwd)/results:/results \
+docker run -v ${DATASET_PATH}/igibson.key:/opt/iGibson/igibson/data/igibson.key -v ${DATASET_PATH}/ig_dataset:/opt/iGibson/igibson/data/ig_dataset -v $(pwd)/results:/results \
     --gpus=all \
     ${DOCKER_NAME} \
     /bin/bash -c \

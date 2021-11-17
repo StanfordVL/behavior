@@ -73,10 +73,10 @@ If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior
 
 2) Install nvidia-docker2 following the guidelines [here](https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0))
 
-3) Modify the provided Dockerfile to include any additional dependencies and your own agent. A minimal Dockerfile presents the form:
+3) Modify the provided Dockerfile to include any additional dependencies, and your own agent. A minimal Dockerfile presents the form:
     ```
     FROM stanfordvl/behavior:latest
-    ENV PATH /miniconda/envs/igibson/bin:$PATH
+    ENV PATH /miniconda/envs/gibson/bin:$PATH
     
     ADD benchmark/agents/agent.py /agent.py
     ADD benchmark/agents/random_agent.py /random_agent.py
@@ -88,17 +88,18 @@ If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior
     ```
    Then build your Docker container with `docker build . -t my_submission` replacing `my_submission` with the name you want to use for the Docker image.
 
-4) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations) 
+4) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations). If you already did this before, for example because you also installed the repositories, you can skip this step. Otherwise:
     
     a) Accept the license agreement filling the [form](https://forms.gle/GXAacjpnotKkM2An7). This allows you to use the assets within iGibson for free for your research.
     
-    b) You will receive a encryption key (`igibson.key`). Move the key into the main folder of this repository `behavior`.
+    b) After signing and uploading the agreement, you will get access to the encryption key (`igibson.key`) and a data bundle for BEHAVIOR (`behavior_data_bundle.zip`) including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes. Download both.
     
-    c) Download the BEHAVIOR data bundle including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes from [form]().
+    c) Decompress the BEHAVIOR data bundle into a folder, e.g. `dataset`:
+    ```
+    unzip behavior_data_bundle.zip -d dataset
+    ```
+    e) Place the `igibson.key` in the folder you decompressed the bundle (`dataset` in our example) 
     
-    d) Decompress the BEHAVIOR data bundle into this folder:
-    ```
-    unzip behavior_data_bundle.zip -d behavior
-    ```
+5) You are ready to train and test your solutions, or create a submission to EvalAI. See [Section Training and Evaluating][Training and Evaluating Agents with BEHAVIOR]
    
 If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior.benchmark@gmail.com).
