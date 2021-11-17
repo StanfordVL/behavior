@@ -28,7 +28,7 @@ See more examples [here](examples.md).
 
 To train on a `minival` split (on a single activity) use the following script: 
 ```
-./behavior/benchmark/scrips/train_minival_locally.sh --docker-name my_submission
+./benchmark/scripts/train_minival_locally.sh --docker-name my_submission --dataset-path my/path/to/dataset
 ```
 
 Note that due to the complexity of all BEHAVIOR activities, the provided training with PPO is NOT expected to converge to success. 
@@ -45,7 +45,7 @@ You can evaluate locally for the `minival` split (one single activity) executing
 You can also evaluate locally for the `dev` split (all activities) executing:
 
 ```
-./behavior/benchmark/scripts/test_dev_locally.sh --docker-name my_submission
+./benchmark/scripts/test_dev_locally.sh --docker-name my_submission --dataset-path my/path/to/dataset
 ```
 
 #### Online Submission to the Public Leaderboard on EvalAI

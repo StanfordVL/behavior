@@ -119,7 +119,7 @@ See more examples <a class="reference internal" href="examples.html"><span class
 <div class="section" id="id1">
 <h3>Training<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <p>To train on a <code class="docutils literal notranslate"><span class="pre">minival</span></code> split (on a single activity) use the following script:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">behavior</span><span class="o">/</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scrips</span><span class="o">/</span><span class="n">train_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">train_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span> <span class="o">--</span><span class="n">dataset</span><span class="o">-</span><span class="n">path</span> <span class="n">my</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">dataset</span>
 </pre></div>
 </div>
 <p>Note that due to the complexity of all BEHAVIOR activities, the provided training with PPO is NOT expected to converge to success.
@@ -132,7 +132,7 @@ We provide the PPO training pipeline just as a starting point for participants t
 </pre></div>
 </div>
 <p>You can also evaluate locally for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> split (all activities) executing:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">behavior</span><span class="o">/</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_dev_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_dev_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span> <span class="o">--</span><span class="n">dataset</span><span class="o">-</span><span class="n">path</span> <span class="n">my</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">dataset</span>
 </pre></div>
 </div>
 </div>
