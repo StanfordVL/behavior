@@ -68,7 +68,6 @@ Both agent embodiments have similar sensing capabilities based on virtual sensor
     - Hand/end-effector pose in base frame (12-dim for BehaviorRobot, 6-dim for FetchRobot)
     - Head pose in base frame (6-dim for BehaviorRobot)
     - Hand aperture state (2-dim for BehaviorRobot, 1-dim for FetchRobot)
-    - Hand tactile info (2-dim for BehaviorRobot, 1-dim for FetchRobot)
     - Joint states (9-dim for FetchRobot: trunk, head and arm joints)
     
 ## Grasping Modes
