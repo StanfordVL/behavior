@@ -6,7 +6,7 @@ There are two alternatives for the installation:
 1) the common and most flexible way, installing the github repositories (or pip installing) manually. This is available under MacOS, Linux and Windows.
 2) the fastest but less flexible using a Docker image. This second alternative is only available for Linux and Windows users. It is the preferred mode if you plan to submit to our public leaderboard on EvalAI.
 
-### Option 1: Manual installation of dependencies and code
+### Option 1: Manual installation
 
 In the following, we summarize the steps to install iGibson, BDDL, and the BEHAVIOR code. If you have any issues with iGibson or BDDL, please refer to the extend installation instructions in the respective repositories ([docs for iGibson installation](http://svl.stanford.edu/igibson/docs/installation.html) and [docs for BDDL installation](https://github.com/StanfordVL/bddl/blob/master/README.md)).
 
