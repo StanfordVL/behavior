@@ -50,7 +50,10 @@
 <li class="toctree-l1"><a class="reference internal" href="setups.html">Benchmark Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="activities.html">The BEHAVIOR Dataset of Activity Definitions and BDDL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">The BEHAVIOR Dataset of Objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The BEHAVIOR Dataset of Objects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#add-your-own-object">Add your own object!</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
 </ul>
 
@@ -83,7 +86,6 @@
 <p><img alt="object_collage_v2.jpg" src="_images/object_collage_v2.jpg" />
 In total, we have curated and made available 1217 object models of 391 different object categories to support 100 BEHAVIOR activities. The categories range from food items to tableware, from home decorations to office supplies, and from decoration to cleaning tools. All models in the BEHAVIOR Dataset are organized following the WordNet, associating them to synsets. This structure allows us to define properties for all models of the same categories, but it also facilitates more general sampling of activity instances fulfilling initial conditions such as onTop(fruit, table) that can be achieved using any model within the branch fruit of WordNet.</p>
 <p>To reach a high level of visual realism, all object models include material information (metallic, roughness) to be used by a physics-based renderer (PBR) such as the renderer in iGibson 2.0. Our goal is that the outcome of the physical interactions with these models is as realistic as possible: the object models have been annotated with realistic scale, mass, center of mass, moment of inertia, and stable orientations to facilitate their sampling. The collision mesh is a simplified version of the visual mesh, obtained with a convex decomposition using the VHACD algorithm. Object models with a shape close to a box are annotated with a primitive box collision mesh, much more efficient and robust for collision checking and physical simulation.</p>
-<p>You can add your own object models to BEHAVIOR by following the instructions <span class="xref myst">here</span>.</p>
 <p>This describes the file structure in the BEHAVIOR Object Dataset:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>OBJECT_NAME
 │   # Unified Robot Description Format (URDF)
@@ -138,6 +140,10 @@ In total, we have curated and made available 1217 object models of 391 different
 │   │   00.png
 │   │   OBJECT_NAME.mp4
 </pre></div>
+</div>
+<div class="section" id="add-your-own-object">
+<h2>Add your own object!<a class="headerlink" href="#add-your-own-object" title="Permalink to this headline"></a></h2>
+<p>Coming soon!</p>
 </div>
 </div>
 

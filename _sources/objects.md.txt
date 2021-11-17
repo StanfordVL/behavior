@@ -4,8 +4,6 @@ In total, we have curated and made available 1217 object models of 391 different
 
 To reach a high level of visual realism, all object models include material information (metallic, roughness) to be used by a physics-based renderer (PBR) such as the renderer in iGibson 2.0. Our goal is that the outcome of the physical interactions with these models is as realistic as possible: the object models have been annotated with realistic scale, mass, center of mass, moment of inertia, and stable orientations to facilitate their sampling. The collision mesh is a simplified version of the visual mesh, obtained with a convex decomposition using the VHACD algorithm. Object models with a shape close to a box are annotated with a primitive box collision mesh, much more efficient and robust for collision checking and physical simulation.
 
-You can add your own object models to BEHAVIOR by following the instructions [here]().
-
 This describes the file structure in the BEHAVIOR Object Dataset:
 ```
 OBJECT_NAME
@@ -61,3 +59,7 @@ OBJECT_NAME
 │   │   00.png
 │   │   OBJECT_NAME.mp4
 ```
+
+## Add your own object!
+
+Coming soon!
