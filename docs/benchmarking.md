@@ -18,15 +18,29 @@ Please, be aware that this code won't converge to a solution ;).
 
 #### Evaluating and Benchmarking
 
-You can evaluate locally using the code in this repository (`behavior_benchmark.py`). 
-As an example, the following code evaluates a random agent on a single activity specified in an environment config file:
+You can evaluate and benchmark locally using the code in this repository (`behavior_benchmark.py`). 
+As an example, the following code benchmarks a random agent on a single activity specified in an environment config file:
 ```
-python behavior/benchmark/behavior_benchmark.py
+export CONFIG_FILE=path/to/your/config/for/example/igibson/examples/configs/behavior_onboard_sensing.yaml
+export OUTPUT_DIR=path/to/your/output/dir/for/example/tmp
+python -m behavior.benchmark.behavior_benchmark
 ```
-The code evaluates the agent following the official [benchmarking setup](setups.md) of nine instances of the activity with increasing complexity: three instances of the activity that are expected to be the same as in training, three instances where everything is the same as in training but the small objects change their initial locations, and three instances where the furniture in the scenes is also different.
-The code also runs the evaluation metrics and saves the values on files.
+The code benchmarks the agent following the official [setup](setups.md), evaluating the agent in nine instances of the activity with increasing complexity: three instances of the activity that are expected to be the same as in training, three instances where everything is the same as in training but the small objects change their initial locations, and three instances where the furniture in the scenes is also different.
+The code also runs the benchmark metrics and saves the values on files in the `OUTPUT_DIR`.
 
-To evaluate your agent, you can modify the main function in `behavior_benchmark.py`, or directly use the `BehaviorBenchmark` object in your code and specify the agent to evaluate, and the activities, scene and instances to be evaluated in.
+The given code benchmarks the agent in a single activity as default, specified in the environment's config file.
+However, you can select the activity you want to benchmark the agent on with the option `--split` and the name of the activity (check all activities [here](https://behavior.stanford.edu/activity_list.html) and video examples [here](https://behavior.stanford.edu/behavior-gallery/activity.html)), or benchmark on the entire set of 100 activities by specifying `--split dev` or `--split test`, to use developing or test activity instances. 
+
+For example, to benchmark a PPO agent (reinforcement learning) loading a specific policy checkpoint only for activity `cleaning_toilet`:
+```
+export CONFIG_FILE=path/to/your/config/for/example/igibson/examples/configs/behavior_onboard_sensing.yaml
+export OUTPUT_DIR=path/to/your/output/dir/for/example/tmp
+python -m behavior.benchmark.behavior_benchmark --agent-class PPO --ckpt-path /tmp/my_checkpoint --split cleaning_toilet
+```
+
+You can also evaluate an agent in a specific set of activity instances (instead of benchmarking it in nine instances) by calling directly the method `BehaviorBenchmark.evaluate_agent()`.
+
+To evaluate and benchmark your own agent, you can modify the code in `behavior_benchmark.py` to add a new class of agents, or directly use the `BehaviorBenchmark` object in your code, passing the agent to evaluate, and the activities, scene and instances to be evaluated in.
 Your agent should implement the functions `reset()` and `act(observations)`, ideally inheriting from the class `Agent` in `agent.py`.
 See more examples [here](examples.md).
 

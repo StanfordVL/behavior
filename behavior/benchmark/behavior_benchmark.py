@@ -41,9 +41,6 @@ class BehaviorBenchmark(object):
     def __init__(self):
         '''
         Constructor
-        :param env_config_file: File with the configuration of the environment
-        :param output_dir: Directory to place the output files
-        :param split: Type of split to evaluate on (dev, minival, ...)
         '''
 
     def evaluate_agent(self, agent, env_config_file, output_dir, tasks, scene_instance_ids, episodes_per_instance=1):
@@ -192,13 +189,21 @@ class BehaviorBenchmark(object):
         '''
         # Takes variables set as environment variables or passed as params in initialization
         if env_config_file == "":
+            print("Environment's config file is not an argument. Obtaining it from the environmental variables.")
             env_config_file = os.environ["CONFIG_FILE"]
 
+        print("Using environment's config file: " + env_config_file)
+
         if output_dir == "":
+            print("Output directory is not an argument. Obtaining it from the environmental variables.")
             output_dir = os.environ["OUTPUT_DIR"]
 
+        print("Using output dir: " + output_dir)
+
         if split == "":
+            print("Split is not an argument. Obtaining it from the environmental variables.")
             split = os.environ["SPLIT"]
+            print("Using split: " + split)
 
         # Get list of all 100 activities
         tasks = sorted(
@@ -215,14 +220,18 @@ class BehaviorBenchmark(object):
             if len(tasks) == 0:
                 env_config = parse_config(env_config_file)
                 tasks = [env_config["task"]]
+            print("Evaluating agent on activity {}".format(tasks[0]))
         elif split in tasks:
             # Only evaluate a single activity specified by name
-            tasks = split
+            tasks = [split]
+            print("Evaluating agent on activity {}".format(tasks[0]))
         elif all(elem in tasks for elem in split):
             # Split is a list of valid tasks
             tasks = split
-        # elif self.split in ['dev', 'test']:
-        #     # Evaluate all activities
+            print("Evaluating agent on activities {}".format(tasks))
+        elif self.split in ['dev', 'test']:
+            # Evaluate all activities
+            print("Evaluating agent on all activities")
 
         # This provides a dictionary of scenes where each activity can be successfully performed
         scene_json = os.path.join(os.path.dirname(bddl.__file__), "../utils", "activity_to_preselected_scenes.json")
@@ -230,7 +239,7 @@ class BehaviorBenchmark(object):
             activity_to_scenes = json.load(f)
 
         for task in tasks:
-            assert task in activity_to_scenes
+            assert task in activity_to_scenes.keys()
             scenes = sorted(set(activity_to_scenes[task]))  # Scenes where the activity can be performed
             num_scenes = len(scenes)
             assert num_scenes <= 3
@@ -263,17 +272,24 @@ def get_agent(agent_class, ckpt_path=""):
         return RandomAgent()
     elif agent_class == "PPO":
         return PPOAgent(ckpt_path)
+    else:
+        print("Agent class not recognize. Consider adding it.")
+        exit(-1)
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--agent-class", type=str, default="Random", choices=["Random", "PPO"])
     parser.add_argument("--ckpt-path", default="", type=str)
+    parser.add_argument("--split", default="minival", type=str)
 
     args = parser.parse_args()
 
+    print("Evaluating agent of type {} on split {}".format(args.agent_class, args.split))
+
     agent = get_agent(agent_class=args.agent_class, ckpt_path=args.ckpt_path)
     challenge = BehaviorBenchmark()
-    challenge.benchmark_agent(agent, split='minival')
+    challenge.benchmark_agent(agent, split=args.split)
 
 
 if __name__ == "__main__":
