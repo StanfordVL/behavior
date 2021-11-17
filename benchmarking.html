@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training and Evaluating Agents with BEHAVIOR &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Training and Evaluating Agents &mdash; BEHAVIOR 0.0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -41,15 +41,15 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">The BEHAVIOR Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Training and Evaluating Agents with BEHAVIOR</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#training-and-benchmarking-with-a-manual-installation">Training and Benchmarking with a Manual Installation</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Training and Evaluating Agents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#training-and-benchmarking-after-a-manual-installation">Training and Benchmarking after a Manual Installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#training">Training</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#evaluating">Evaluating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evaluating-and-benchmarking">Evaluating and Benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#training-and-benchmarking-in-a-docker-installation">Training and Benchmarking in a Docker Installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">Training</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Evaluating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evaluating">Evaluating</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#online-submission-to-the-public-leaderboard-on-evalai">Online Submission to the Public Leaderboard on EvalAI</a></li>
 </ul>
 </li>
@@ -81,7 +81,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Training and Evaluating Agents with BEHAVIOR</li>
+      <li>Training and Evaluating Agents</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/benchmarking.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -91,18 +91,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="tex2jax_ignore mathjax_ignore section" id="training-and-evaluating-agents-with-behavior">
-<h1>Training and Evaluating Agents with BEHAVIOR<a class="headerlink" href="#training-and-evaluating-agents-with-behavior" title="Permalink to this headline"></a></h1>
-<p>Once you have installed BEHAVIOR and its dependencies, you can start training and evaluating your agents.
-The way to do it will depend to the type of installation you performed: manual installation of the repositories, or automated installation with Docker.</p>
-<div class="section" id="training-and-benchmarking-with-a-manual-installation">
-<h2>Training and Benchmarking with a Manual Installation<a class="headerlink" href="#training-and-benchmarking-with-a-manual-installation" title="Permalink to this headline"></a></h2>
+  <div class="tex2jax_ignore mathjax_ignore section" id="training-and-evaluating-agents">
+<h1>Training and Evaluating Agents<a class="headerlink" href="#training-and-evaluating-agents" title="Permalink to this headline"></a></h1>
+<p>Once you have installed BEHAVIOR and its dependencies, you can start training and evaluating agents.
+The way to do it will depend on your type of installation: manual or Docker installation.
+In the following, we include instructions for training and evaluation for both installation types.</p>
+<div class="section" id="training-and-benchmarking-after-a-manual-installation">
+<h2>Training and Benchmarking after a Manual Installation<a class="headerlink" href="#training-and-benchmarking-after-a-manual-installation" title="Permalink to this headline"></a></h2>
 <div class="section" id="training">
 <h3>Training<a class="headerlink" href="#training" title="Permalink to this headline"></a></h3>
-<p>TODO</p>
+<p>The training procedure will strongly depend on your type of solution.
+However, we provide an example of parallel training code with <code class="docutils literal notranslate"><span class="pre">Stable</span> <span class="pre">Baselines</span> <span class="pre">3</span></code> that may help you derive your own.
+You can run our example by executing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">igibson</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">demo</span><span class="o">.</span><span class="n">stable_baselines3_behavior_example</span>
+</pre></div>
 </div>
-<div class="section" id="evaluating">
-<h3>Evaluating<a class="headerlink" href="#evaluating" title="Permalink to this headline"></a></h3>
+<p>Please, be aware that this code won’t converge to a solution ;).</p>
+</div>
+<div class="section" id="evaluating-and-benchmarking">
+<h3>Evaluating and Benchmarking<a class="headerlink" href="#evaluating-and-benchmarking" title="Permalink to this headline"></a></h3>
 <p>You can evaluate locally using the code in this repository (<code class="docutils literal notranslate"><span class="pre">behavior_benchmark.py</span></code>).
 As an example, the following code evaluates a random agent on a single activity specified in an environment config file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">behavior</span><span class="o">/</span><span class="n">benchmark</span><span class="o">/</span><span class="n">behavior_benchmark</span><span class="o">.</span><span class="n">py</span>
@@ -110,7 +117,8 @@ As an example, the following code evaluates a random agent on a single activity 
 </div>
 <p>The code evaluates the agent following the official <a class="reference internal" href="setups.html"><span class="doc std std-doc">benchmarking setup</span></a> of nine instances of the activity with increasing complexity: three instances of the activity that are expected to be the same as in training, three instances where everything is the same as in training but the small objects change their initial locations, and three instances where the furniture in the scenes is also different.
 The code also runs the evaluation metrics and saves the values on files.</p>
-<p>To evaluate your agent, you can modify the main function in <code class="docutils literal notranslate"><span class="pre">behavior_benchmark.py</span></code>, or directly use the <code class="docutils literal notranslate"><span class="pre">BehaviorBenchmark</span></code> object and specify the agent to evaluate, and the activities, scene and instances to be evaluated in.
+<p>To evaluate your agent, you can modify the main function in <code class="docutils literal notranslate"><span class="pre">behavior_benchmark.py</span></code>, or directly use the <code class="docutils literal notranslate"><span class="pre">BehaviorBenchmark</span></code> object in your code and specify the agent to evaluate, and the activities, scene and instances to be evaluated in.
+Your agent should implement the functions <code class="docutils literal notranslate"><span class="pre">reset()</span></code> and <code class="docutils literal notranslate"><span class="pre">act(observations)</span></code>, ideally inheriting from the class <code class="docutils literal notranslate"><span class="pre">Agent</span></code> in <code class="docutils literal notranslate"><span class="pre">agent.py</span></code>.
 See more examples <a class="reference internal" href="examples.html"><span class="doc std std-doc">here</span></a>.</p>
 </div>
 </div>
@@ -122,13 +130,13 @@ See more examples <a class="reference internal" href="examples.html"><span class
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">train_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span> <span class="o">--</span><span class="n">dataset</span><span class="o">-</span><span class="n">path</span> <span class="n">my</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">dataset</span>
 </pre></div>
 </div>
-<p>Note that due to the complexity of all BEHAVIOR activities, the provided training with PPO is NOT expected to converge to success.
-We provide the PPO training pipeline just as a starting point for participants to further build upon.</p>
+<p>Note that due to the complexity of all BEHAVIOR activities, the provided parallel training with PPO from Stable Baselines 3 is NOT expected to converge.
+We provide this training pipeline just as a starting point for participants to further build upon.</p>
 </div>
-<div class="section" id="id2">
-<h3>Evaluating<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<div class="section" id="evaluating">
+<h3>Evaluating<a class="headerlink" href="#evaluating" title="Permalink to this headline"></a></h3>
 <p>You can evaluate locally for the <code class="docutils literal notranslate"><span class="pre">minival</span></code> split (one single activity) executing:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">behavior</span><span class="o">/</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">benchmark</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">test_minival_locally</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">docker</span><span class="o">-</span><span class="n">name</span> <span class="n">my_submission</span>
 </pre></div>
 </div>
 <p>You can also evaluate locally for the <code class="docutils literal notranslate"><span class="pre">dev</span></code> split (all activities) executing:</p>
