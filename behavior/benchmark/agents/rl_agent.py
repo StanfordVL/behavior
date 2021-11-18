@@ -5,6 +5,7 @@ import numpy as np
 import torch
 from IPython import embed
 from stable_baselines3 import PPO
+
 from behavior.benchmark.agents.agent import Agent
 
 IMG_WIDTH = 128
