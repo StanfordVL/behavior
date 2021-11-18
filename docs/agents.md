@@ -72,7 +72,7 @@ Both agent embodiments have similar sensing capabilities based on virtual sensor
 - FetchRobot's proprioception:
     - Hand/end-effector pose in base frame (6-dim)
     - Hand aperture state (1-dim for FetchRobot)
-    - Joint states (9-dim for FetchRobot: trunk, head and arm joints)
+    - Joint states (position, velocity and torque x 11 joints: trunk, head, arm and fingers)
     
 ## Grasping Modes
 
