@@ -9,7 +9,6 @@ from pathlib import Path
 
 import bddl
 import pandas as pd
-
 from igibson.examples.behavior.behavior_demo_replay import replay_demo
 
 
@@ -60,19 +59,30 @@ def behavior_demo_batch(
         log_path = os.path.join(out_dir, demo_name + ".json")
 
         if skip_existing and os.path.exists(log_path):
-            print("Skipping existing demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
+            print(
+                "Skipping existing demo: {}, {} out of {}".format(
+                    demo, idx, len(demo_list["demos"])
+                )
+            )
             continue
 
-        print("Replaying demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
+        print(
+            "Replaying demo: {}, {} out of {}".format(
+                demo, idx, len(demo_list["demos"])
+            )
+        )
 
         curr_frame_save_path = None
         if save_frames:
             curr_frame_save_path = os.path.join(out_dir, demo_name + ".mp4")
 
         try:
-            start_callbacks, step_callbacks, end_callbacks, data_callbacks = get_callbacks_callback(
-                demo_name=demo_name, out_dir=out_dir
-            )
+            (
+                start_callbacks,
+                step_callbacks,
+                end_callbacks,
+                data_callbacks,
+            ) = get_callbacks_callback(demo_name=demo_name, out_dir=out_dir)
             demo_information = replay_demo(
                 in_log_path=demo_path,
                 out_log_path=replay_path,
@@ -94,7 +104,11 @@ def behavior_demo_batch(
         except Exception as e:
             if ignore_errors:
                 print("Demo failed with the error: ", str(e))
-                demo_information = {"demo_id": Path(demo).name, "failed": True, "failure_reason": str(e)}
+                demo_information = {
+                    "demo_id": Path(demo).name,
+                    "failed": True,
+                    "failure_reason": str(e),
+                }
             else:
                 raise
 

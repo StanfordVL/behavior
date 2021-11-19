@@ -4,11 +4,13 @@ import os
 import parser
 
 import bddl
-
 import igibson
 from igibson.envs.behavior_env import BehaviorEnv
 from igibson.metrics.agent import BehaviorRobotMetric, FetchRobotMetric
-from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
+from igibson.metrics.disarrangement import (
+    KinematicDisarrangement,
+    LogicalDisarrangement,
+)
 from igibson.metrics.task import TaskMetric
 
 
@@ -44,13 +46,23 @@ if __name__ == "__main__":
     parser.add_argument(
         "--config",
         "-c",
-        default=os.path.join(igibson.root_path, "examples", "configs", "behavior_onboard_sensing_fetch.yaml"),
+        default=os.path.join(
+            igibson.root_path,
+            "examples",
+            "configs",
+            "behavior_onboard_sensing_fetch.yaml",
+        ),
         help="which config file to use [default: use yaml files in examples/configs]",
     )
     parser.add_argument(
         "--mode",
         "-m",
-        choices=["headless", "headless_tensor", "gui_interactive", "gui_non_interactive"],
+        choices=[
+            "headless",
+            "headless_tensor",
+            "gui_interactive",
+            "gui_non_interactive",
+        ],
         default="gui_non_interactive",
         help="which mode for simulation (default: headless)",
     )
@@ -63,7 +75,12 @@ if __name__ == "__main__":
         physics_timestep=1.0 / 120.0,
     )
 
-    start_callbacks, step_callbacks, end_callbacks, data_callbacks = get_metrics_callbacks(env.config)
+    (
+        start_callbacks,
+        step_callbacks,
+        end_callbacks,
+        data_callbacks,
+    ) = get_metrics_callbacks(env.config)
 
     per_episode_metrics = {}
     for callback in start_callbacks:

@@ -2,7 +2,6 @@
 import os
 
 import bddl
-
 import igibson
 from igibson.examples.demo.vr_demos.atus.behavior_demo_replay import safe_replay_demo
 from igibson.utils.checkpoint_utils import save_checkpoint
@@ -23,7 +22,11 @@ def create_checkpoints(demo_file, checkpoint_directory, checkpoint_every_n_steps
 
 
 def main():
-    demo_file = os.path.join(igibson.ig_dataset_path, "tests", "storing_food_0_Rs_int_2021-05-31_11-49-30.hdf5")
+    demo_file = os.path.join(
+        igibson.ig_dataset_path,
+        "tests",
+        "storing_food_0_Rs_int_2021-05-31_11-49-30.hdf5",
+    )
     checkpoint_directory = "checkpoints"
     if not os.path.exists(checkpoint_directory):
         os.mkdir(checkpoint_directory)

@@ -7,12 +7,20 @@ import pandas as pd
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Script to generate manifest for batch replay demos")
-    parser.add_argument(
-        "--demo_directory", type=str, required=True, help="Plain text file consisting of list of demos to replay"
+    parser = argparse.ArgumentParser(
+        description="Script to generate manifest for batch replay demos"
     )
     parser.add_argument(
-        "--split", type=int, default=0, help="Number of times to split the manifest for distributing replay"
+        "--demo_directory",
+        type=str,
+        required=True,
+        help="Plain text file consisting of list of demos to replay",
+    )
+    parser.add_argument(
+        "--split",
+        type=int,
+        default=0,
+        help="Number of times to split the manifest for distributing replay",
     )
     return parser.parse_args()
 

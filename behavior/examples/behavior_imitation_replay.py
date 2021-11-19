@@ -12,10 +12,9 @@ from pathlib import Path
 
 import bddl
 import h5py
+import igibson
 import numpy as np
 import pandas as pd
-
-import igibson
 from igibson.activity.activity_base import iGBEHAVIORActivityInstance
 from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
 from igibson.render.mesh_renderer.mesh_renderer_vr import VrSettings
@@ -48,12 +47,18 @@ def replay_imitation_demo(
     @return if disable_save is True, returns None. Otherwise, returns a boolean indicating if replay was deterministic.
     """
     # HDR files for PBR rendering
-    hdr_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr")
-    hdr_texture2 = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr")
+    hdr_texture = os.path.join(
+        igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr"
+    )
+    hdr_texture2 = os.path.join(
+        igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr"
+    )
     light_modulation_map_filename = os.path.join(
         igibson.ig_dataset_path, "scenes", "Rs_int", "layout", "floor_lighttype_0.png"
     )
-    background_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "urban_street_01.jpg")
+    background_texture = os.path.join(
+        igibson.ig_dataset_path, "scenes", "background", "urban_street_01.jpg"
+    )
 
     # VR rendering settings
     vr_rendering_settings = MeshRendererSettings(
@@ -73,19 +78,29 @@ def replay_imitation_demo(
     assert mode in ["headless", "headless_tensor", "vr", "gui_non_interactive"]
 
     # Initialize settings to save action replay frames
-    vr_settings = VrSettings(config_str=IGLogReader.read_metadata_attr(in_log_path, "/metadata/vr_settings"))
+    vr_settings = VrSettings(
+        config_str=IGLogReader.read_metadata_attr(in_log_path, "/metadata/vr_settings")
+    )
     vr_settings.set_frame_save_path(frame_save_path)
 
     activity = IGLogReader.read_metadata_attr(in_log_path, "/metadata/atus_activity")
-    activity_id = IGLogReader.read_metadata_attr(in_log_path, "/metadata/activity_definition")
+    activity_id = IGLogReader.read_metadata_attr(
+        in_log_path, "/metadata/activity_definition"
+    )
     scene = IGLogReader.read_metadata_attr(in_log_path, "/metadata/scene_id")
-    physics_timestep = IGLogReader.read_metadata_attr(in_log_path, "/metadata/physics_timestep")
-    render_timestep = IGLogReader.read_metadata_attr(in_log_path, "/metadata/render_timestep")
+    physics_timestep = IGLogReader.read_metadata_attr(
+        in_log_path, "/metadata/physics_timestep"
+    )
+    render_timestep = IGLogReader.read_metadata_attr(
+        in_log_path, "/metadata/render_timestep"
+    )
     instance_id = IGLogReader.read_metadata_attr(in_log_path, "/metadata/instance_id")
     urdf_file = IGLogReader.read_metadata_attr(in_log_path, "/metadata/urdf_file")
 
     if urdf_file is None:
-        urdf_file = "{}_task_{}_{}_0_fixed_furniture".format(scene, activity, activity_id)
+        urdf_file = "{}_task_{}_{}_0_fixed_furniture".format(
+            scene, activity, activity_id
+        )
 
     if instance_id is None:
         instance_id = 0
@@ -106,7 +121,11 @@ def replay_imitation_demo(
         logged_git_info[key].pop("directory", None)
         git_info[key].pop("directory", None)
         if logged_git_info[key] != git_info[key] and verbose:
-            print("Warning, difference in git commits for repo: {}. This may impact deterministic replay".format(key))
+            print(
+                "Warning, difference in git commits for repo: {}. This may impact deterministic replay".format(
+                    key
+                )
+            )
             print("Logged git info:\n")
             pp.pprint(logged_git_info[key])
             print("Current git info:\n")
@@ -153,7 +172,9 @@ def replay_imitation_demo(
     hf.attrs["/metadata/activity"] = activity
     hf.attrs["/metadata/activity_id"] = activity_id
     hf.attrs["/metadata/scene_id"] = scene
-    hf.attrs["/metadata/vr_settings"] = igbhvr_act_inst.simulator.vr_settings.dump_vr_settings()
+    hf.attrs[
+        "/metadata/vr_settings"
+    ] = igbhvr_act_inst.simulator.vr_settings.dump_vr_settings()
 
     state_history = {}
     task_done = False
@@ -211,7 +232,9 @@ def replay_imitation_demo(
     return demo_statistics
 
 
-def generate_imitation_dataset(demo_root, log_manifest, out_dir, skip_existing=True, save_frames=False):
+def generate_imitation_dataset(
+    demo_root, log_manifest, out_dir, skip_existing=True, save_frames=False
+):
     """
     Execute imitation dataset generation on a batch of BEHAVIOR demos.
 
@@ -237,10 +260,18 @@ def generate_imitation_dataset(demo_root, log_manifest, out_dir, skip_existing=T
         log_path = os.path.join(out_dir, demo_name + ".json")
 
         if skip_existing and os.path.exists(log_path):
-            print("Skipping existing demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
+            print(
+                "Skipping existing demo: {}, {} out of {}".format(
+                    demo, idx, len(demo_list["demos"])
+                )
+            )
             continue
 
-        print("Replaying demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
+        print(
+            "Replaying demo: {}, {} out of {}".format(
+                demo, idx, len(demo_list["demos"])
+            )
+        )
 
         curr_frame_save_path = None
         if save_frames:
@@ -258,16 +289,30 @@ def generate_imitation_dataset(demo_root, log_manifest, out_dir, skip_existing=T
 
         except Exception as e:
             print("Demo failed withe error: ", e)
-            demo_information = {"demo_id": Path(demo).name, "failed": True, "failure_reason": str(e)}
+            demo_information = {
+                "demo_id": Path(demo).name,
+                "failed": True,
+                "failure_reason": str(e),
+            }
 
         with open(log_path, "w") as file:
             json.dump(demo_information, file)
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Collect metrics from BEHAVIOR demos in manifest.")
-    parser.add_argument("--demo_root", type=str, help="Directory containing demos listed in the manifest.")
-    parser.add_argument("--log_manifest", type=str, help="Plain text file consisting of list of demos to replay.")
+    parser = argparse.ArgumentParser(
+        description="Collect metrics from BEHAVIOR demos in manifest."
+    )
+    parser.add_argument(
+        "--demo_root",
+        type=str,
+        help="Directory containing demos listed in the manifest.",
+    )
+    parser.add_argument(
+        "--log_manifest",
+        type=str,
+        help="Plain text file consisting of list of demos to replay.",
+    )
     parser.add_argument("--out_dir", type=str, help="Directory to store results in.")
     return parser.parse_args()
 

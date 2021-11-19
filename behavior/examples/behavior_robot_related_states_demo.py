@@ -1,7 +1,6 @@
 import os
 
 import bddl
-
 import igibson
 from igibson import object_states
 from igibson.examples.behavior import behavior_demo_replay
@@ -40,10 +39,17 @@ def robot_states_callback(igbhvr_act_inst, _):
 
 
 def main():
-    DEMO_FILE = os.path.join(igibson.ig_dataset_path, "tests", "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5")
+    DEMO_FILE = os.path.join(
+        igibson.ig_dataset_path,
+        "tests",
+        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
+    )
 
     behavior_demo_replay.replay_demo(
-        DEMO_FILE, disable_save=True, step_callbacks=[robot_states_callback], mode="headless"
+        DEMO_FILE,
+        disable_save=True,
+        step_callbacks=[robot_states_callback],
+        mode="headless",
     )
 
 

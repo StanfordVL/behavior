@@ -9,9 +9,8 @@ import pprint
 
 import bddl
 import h5py
-import numpy as np
-
 import igibson
+import numpy as np
 from igibson.activity.activity_base import iGBEHAVIORActivityInstance
 from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
 from igibson.render.mesh_renderer.mesh_renderer_vr import VrSettings
@@ -27,7 +26,8 @@ def verify_determinism(in_log_path, out_log_path):
         for obj in original_file["physics_data"]:
             for attribute in original_file["physics_data"][obj]:
                 is_close = np.isclose(
-                    original_file["physics_data"][obj][attribute], new_file["physics_data"][obj][attribute]
+                    original_file["physics_data"][obj][attribute],
+                    new_file["physics_data"][obj][attribute],
                 )
                 is_deterministic = is_deterministic and is_close.all()
                 if not is_close.all():
@@ -41,9 +41,13 @@ def verify_determinism(in_log_path, out_log_path):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Run and collect an ATUS demo")
-    parser.add_argument("--vr_log_path", type=str, help="Path (and filename) of vr log to replay")
     parser.add_argument(
-        "--vr_replay_log_path", type=str, help="Path (and filename) of file to save replay to (for debugging)"
+        "--vr_log_path", type=str, help="Path (and filename) of vr log to replay"
+    )
+    parser.add_argument(
+        "--vr_replay_log_path",
+        type=str,
+        help="Path (and filename) of file to save replay to (for debugging)",
     )
     parser.add_argument(
         "--frame_save_path",
@@ -55,7 +59,9 @@ def parse_args():
         action="store_true",
         help="Whether to disable saving log of replayed trajectory, used for validation.",
     )
-    parser.add_argument("--profile", action="store_true", help="Whether to print profiling data.")
+    parser.add_argument(
+        "--profile", action="store_true", help="Whether to print profiling data."
+    )
     parser.add_argument(
         "--mode",
         type=str,
@@ -103,12 +109,18 @@ def replay_demo(
     @return if disable_save is True, returns None. Otherwise, returns a boolean indicating if replay was deterministic.
     """
     # HDR files for PBR rendering
-    hdr_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr")
-    hdr_texture2 = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr")
+    hdr_texture = os.path.join(
+        igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr"
+    )
+    hdr_texture2 = os.path.join(
+        igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr"
+    )
     light_modulation_map_filename = os.path.join(
         igibson.ig_dataset_path, "scenes", "Rs_int", "layout", "floor_lighttype_0.png"
     )
-    background_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "urban_street_01.jpg")
+    background_texture = os.path.join(
+        igibson.ig_dataset_path, "scenes", "background", "urban_street_01.jpg"
+    )
 
     # VR rendering settings
     vr_rendering_settings = MeshRendererSettings(
@@ -128,15 +140,25 @@ def replay_demo(
     assert mode in ["headless", "headless_tensor", "vr", "gui_non_interactive"]
 
     # Initialize settings to save action replay frames
-    vr_settings = VrSettings(config_str=IGLogReader.read_metadata_attr(in_log_path, "/metadata/vr_settings"))
+    vr_settings = VrSettings(
+        config_str=IGLogReader.read_metadata_attr(in_log_path, "/metadata/vr_settings")
+    )
     vr_settings.set_frame_save_path(frame_save_path)
 
     task = IGLogReader.read_metadata_attr(in_log_path, "/metadata/atus_activity")
-    task_id = IGLogReader.read_metadata_attr(in_log_path, "/metadata/activity_definition")
+    task_id = IGLogReader.read_metadata_attr(
+        in_log_path, "/metadata/activity_definition"
+    )
     scene = IGLogReader.read_metadata_attr(in_log_path, "/metadata/scene_id")
-    physics_timestep = IGLogReader.read_metadata_attr(in_log_path, "/metadata/physics_timestep")
-    render_timestep = IGLogReader.read_metadata_attr(in_log_path, "/metadata/render_timestep")
-    filter_objects = IGLogReader.read_metadata_attr(in_log_path, "/metadata/filter_objects")
+    physics_timestep = IGLogReader.read_metadata_attr(
+        in_log_path, "/metadata/physics_timestep"
+    )
+    render_timestep = IGLogReader.read_metadata_attr(
+        in_log_path, "/metadata/render_timestep"
+    )
+    filter_objects = IGLogReader.read_metadata_attr(
+        in_log_path, "/metadata/filter_objects"
+    )
     instance_id = IGLogReader.read_metadata_attr(in_log_path, "/metadata/instance_id")
     urdf_file = IGLogReader.read_metadata_attr(in_log_path, "/metadata/urdf_file")
 
@@ -162,7 +184,11 @@ def replay_demo(
         logged_git_info[key].pop("directory", None)
         git_info[key].pop("directory", None)
         if logged_git_info[key] != git_info[key] and verbose:
-            print("Warning, difference in git commits for repo: {}. This may impact deterministic replay".format(key))
+            print(
+                "Warning, difference in git commits for repo: {}. This may impact deterministic replay".format(
+                    key
+                )
+            )
             print("Logged git info:\n")
             pp.pprint(logged_git_info[key])
             print("Current git info:\n")
@@ -196,7 +222,9 @@ def replay_demo(
     if not disable_save:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         if out_log_path == None:
-            out_log_path = "{}_{}_{}_{}_{}_replay.hdf5".format(task, task_id, scene, instance_id, timestamp)
+            out_log_path = "{}_{}_{}_{}_{}_replay.hdf5".format(
+                task, task_id, scene, instance_id, timestamp
+            )
 
         log_writer = IGLogWriter(
             s,
