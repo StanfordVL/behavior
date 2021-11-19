@@ -3,7 +3,8 @@ import os
 import bddl
 import igibson
 from igibson import object_states
-from igibson.examples.behavior import behavior_demo_replay
+
+from behavior.examples import behavior_demo_replay
 
 bddl.set_backend("iGibson")
 

@@ -1,22 +1,16 @@
 import argparse
 
-from igibson.examples.behavior.behavior_demo_batch import behavior_demo_batch
 from igibson.metrics.agent import BehaviorRobotMetric
-from igibson.metrics.disarrangement import (
-    KinematicDisarrangement,
-    LogicalDisarrangement,
-)
+from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.gaze import GazeMetric
 from igibson.metrics.task import TaskMetric
 
+from behavior.examples.behavior_demo_batch import behavior_demo_batch
+
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Collect metrics from BEHAVIOR demos in manifest."
-    )
-    parser.add_argument(
-        "demo_root", type=str, help="Directory containing demos listed in the manifest."
-    )
+    parser = argparse.ArgumentParser(description="Collect metrics from BEHAVIOR demos in manifest.")
+    parser.add_argument("demo_root", type=str, help="Directory containing demos listed in the manifest.")
     parser.add_argument(
         "log_manifest",
         type=str,
@@ -45,9 +39,7 @@ def main():
             [metric.gather_results for metric in metrics],
         )
 
-    behavior_demo_batch(
-        args.demo_root, args.log_manifest, args.out_dir, get_metrics_callbacks
-    )
+    behavior_demo_batch(args.demo_root, args.log_manifest, args.out_dir, get_metrics_callbacks)
 
 
 if __name__ == "__main__":

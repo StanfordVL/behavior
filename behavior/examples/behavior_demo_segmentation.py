@@ -10,24 +10,16 @@ import printree
 import pyinstrument
 from igibson import object_states
 from igibson.activity.activity_base import iGBEHAVIORActivityInstance
-from igibson.activity.bddl_backend import (
-    ObjectStateBinaryPredicate,
-    ObjectStateUnaryPredicate,
-)
-from igibson.examples.behavior import behavior_demo_replay
+from igibson.activity.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
 from igibson.object_states import ROOM_STATES, factory
-from igibson.object_states.object_state_base import (
-    AbsoluteObjectState,
-    BooleanState,
-    RelativeObjectState,
-)
+from igibson.object_states.object_state_base import AbsoluteObjectState, BooleanState, RelativeObjectState
 from igibson.robots.behavior_robot import BRBody
+
+from behavior.examples import behavior_demo_replay
 
 StateRecord = namedtuple("StateRecord", ["state_type", "objects", "value"])
 StateEntry = namedtuple("StateEntry", ["frame_count", "state_records"])
-Segment = namedtuple(
-    "DiffEntry", ["start", "duration", "end", "state_records", "sub_segments"]
-)
+Segment = namedtuple("DiffEntry", ["start", "duration", "end", "state_records", "sub_segments"])
 
 
 class SegmentationObjectSelection(Enum):
@@ -70,9 +62,7 @@ STATE_DIRECTIONS = {
     # Touching: SegmentationStateDirection.BOTH_DIRECTIONS,
     object_states.Under: SegmentationStateDirection.FALSE_TO_TRUE,
 }
-STATE_DIRECTIONS.update(
-    {state: SegmentationStateDirection.FALSE_TO_TRUE for state in ROOM_STATES}
-)
+STATE_DIRECTIONS.update({state: SegmentationStateDirection.FALSE_TO_TRUE for state in ROOM_STATES})
 
 ALLOWED_SUB_SEGMENTS_BY_STATE = {
     object_states.Burnt: {
@@ -196,9 +186,7 @@ def _get_goal_condition_states(igbhvr_act_inst: iGBEHAVIORActivityInstance):
 
     while q:
         pred = q.popleft()
-        if isinstance(pred, ObjectStateUnaryPredicate) or isinstance(
-            pred, ObjectStateBinaryPredicate
-        ):
+        if isinstance(pred, ObjectStateUnaryPredicate) or isinstance(pred, ObjectStateBinaryPredicate):
             state_types.add(pred.STATE_CLASS)
 
         q.extend(pred.children)
@@ -241,23 +229,15 @@ class DemoSegmentationProcessor(object):
             for state in factory.get_all_states()
             if (
                 issubclass(state, BooleanState)
-                and (
-                    issubclass(state, AbsoluteObjectState)
-                    or issubclass(state, RelativeObjectState)
-                )
+                and (issubclass(state, AbsoluteObjectState) or issubclass(state, RelativeObjectState))
             )
         ]
 
-        if isinstance(self.state_types_option, list) or isinstance(
-            self.state_types_option, set
-        ):
+        if isinstance(self.state_types_option, list) or isinstance(self.state_types_option, set):
             self.state_types = self.state_types_option
         elif self.state_types_option == SegmentationStateSelection.ALL_STATES:
             self.state_types = self.all_state_types
-        elif (
-            self.state_types_option
-            == SegmentationStateSelection.GOAL_CONDITION_RELEVANT_STATES
-        ):
+        elif self.state_types_option == SegmentationStateSelection.GOAL_CONDITION_RELEVANT_STATES:
             self.state_types = _get_goal_condition_states(igbhvr_act_inst)
         else:
             raise ValueError("Unknown segmentation state selection.")
@@ -267,33 +247,19 @@ class DemoSegmentationProcessor(object):
             self.profiler.start()
 
         if self.object_selection == SegmentationObjectSelection.TASK_RELEVANT_OBJECTS:
-            objects = [
-                obj
-                for obj in igbhvr_act_inst.object_scope.values()
-                if not isinstance(obj, BRBody)
-            ]
+            objects = [obj for obj in igbhvr_act_inst.object_scope.values() if not isinstance(obj, BRBody)]
         elif self.object_selection == SegmentationObjectSelection.ROBOTS:
-            objects = [
-                obj
-                for obj in igbhvr_act_inst.object_scope.values()
-                if isinstance(obj, BRBody)
-            ]
+            objects = [obj for obj in igbhvr_act_inst.object_scope.values() if isinstance(obj, BRBody)]
         elif self.object_selection == SegmentationObjectSelection.ALL_OBJECTS:
             objects = igbhvr_act_inst.simulator.scene.get_objects()
         else:
-            raise ValueError(
-                "Incorrect SegmentationObjectSelection %r" % self.object_selection
-            )
+            raise ValueError("Incorrect SegmentationObjectSelection %r" % self.object_selection)
 
         # Get the processed state.
-        state_types_to_use = (
-            self.state_types if not self.hierarchical else self.all_state_types
-        )
+        state_types_to_use = self.state_types if not self.hierarchical else self.all_state_types
         processed_state = process_states(objects, state_types_to_use)
         if self.last_state is None or (processed_state - self.last_state):
-            self.state_history.append(
-                StateEntry(igbhvr_act_inst.simulator.frame_count, processed_state)
-            )
+            self.state_history.append(StateEntry(igbhvr_act_inst.simulator.frame_count, processed_state))
 
         self.last_state = processed_state
 
@@ -318,17 +284,13 @@ class DemoSegmentationProcessor(object):
             after = state_entries[after_idx]
 
             # Check if there is a valid diff at this range.
-            diffs = self.filter_diffs(
-                after.state_records - before.state_records, state_types
-            )
+            diffs = self.filter_diffs(after.state_records - before.state_records, state_types)
             if diffs is not None:
                 # If there is a diff, prepare to do sub-segmentation on the segment.
                 sub_segment_states = set()
                 if self.hierarchical:
                     for state_record in diffs:
-                        corresponding_sub_states = ALLOWED_SUB_SEGMENTS_BY_STATE[
-                            state_record.state_type
-                        ]
+                        corresponding_sub_states = ALLOWED_SUB_SEGMENTS_BY_STATE[state_record.state_type]
                         sub_segment_states.update(corresponding_sub_states)
 
                 sub_segments = self._hierarchical_segments(
@@ -405,10 +367,7 @@ class DemoSegmentationProcessor(object):
             "end": segment.end,
             "duration": segment.duration,
             "state_records": stringified_entries,
-            "sub_segments": [
-                self._serialize_segment(sub_segment)
-                for sub_segment in segment.sub_segments
-            ],
+            "sub_segments": [self._serialize_segment(sub_segment) for sub_segment in segment.sub_segments],
         }
 
     def _segment_to_dict_tree(self, segment, output_dict):
@@ -436,9 +395,7 @@ class DemoSegmentationProcessor(object):
         out = ""
         out += "---------------------------------------------------\n"
         out += "Segmentation of %s\n" % self.object_selection.name
-        out += "Considered states: %s\n" % ", ".join(
-            x.__name__ for x in self.state_types
-        )
+        out += "Considered states: %s\n" % ", ".join(x.__name__ for x in self.state_types)
         out += "---------------------------------------------------\n"
         output = {}
         self._segment_to_dict_tree(self.get_segments(), output)
