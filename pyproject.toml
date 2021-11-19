@@ -1,0 +1,24 @@
+[tool.black]
+line-length = 120
+target-version = ['py27', 'py36', 'py37']
+extend-exclude = 'behavior/(data|external|render/(cpp|cryptopp|glad|glfw|glm|openvr|pybind11|sranipal))'
+
+[tool.isort]
+profile = "black"
+line_length = 120
+py_version = 'all'
+extend_skip = [
+    'behavior/data',
+]
+
+[tool.pyright]
+exclude = [
+  'behavior/data',
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+addopts = '--cov=behavior --cov-report=xml'
+
