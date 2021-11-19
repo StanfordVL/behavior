@@ -7,9 +7,7 @@ import pandas as pd
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Script to generate manifest for batch replay demos"
-    )
+    parser = argparse.ArgumentParser(description="Script to generate manifest for batch replay demos")
     parser.add_argument(
         "--demo_directory",
         type=str,

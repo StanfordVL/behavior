@@ -23,22 +23,14 @@ def main():
     collect_demo(scene_id="Rs_int")
 
 
-def collect_demo(
-    scene_id, vr_log_path=None, disable_save=False, no_vr=False, profile=False
-):
+def collect_demo(scene_id, vr_log_path=None, disable_save=False, no_vr=False, profile=False):
     # HDR files for PBR rendering
-    hdr_texture = os.path.join(
-        igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr"
-    )
-    hdr_texture2 = os.path.join(
-        igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr"
-    )
+    hdr_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr")
+    hdr_texture2 = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr")
     light_modulation_map_filename = os.path.join(
         igibson.ig_dataset_path, "scenes", "Rs_int", "layout", "floor_lighttype_0.png"
     )
-    background_texture = os.path.join(
-        igibson.ig_dataset_path, "scenes", "background", "urban_street_01.jpg"
-    )
+    background_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "urban_street_01.jpg")
 
     # VR rendering settings
     vr_rendering_settings = MeshRendererSettings(
@@ -78,9 +70,7 @@ def collect_demo(
     if not disable_save:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         if vr_log_path is None:
-            vr_log_path = "{}_{}_{}.hdf5".format(
-                "behavior_dummy_demo", scene_id, timestamp
-            )
+            vr_log_path = "{}_{}_{}.hdf5".format("behavior_dummy_demo", scene_id, timestamp)
         log_writer = IGLogWriter(
             s,
             log_filepath=vr_log_path,

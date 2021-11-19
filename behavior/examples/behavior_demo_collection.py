@@ -12,10 +12,7 @@ import igibson
 import numpy as np
 from igibson.activity.activity_base import iGBEHAVIORActivityInstance
 from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
-from igibson.render.mesh_renderer.mesh_renderer_vr import (
-    VrConditionSwitcher,
-    VrSettings,
-)
+from igibson.render.mesh_renderer.mesh_renderer_vr import VrConditionSwitcher, VrSettings
 from igibson.simulator import Simulator
 from igibson.simulator_vr import SimulatorVR
 from igibson.utils.ig_logging import IGLogWriter
@@ -84,9 +81,7 @@ def parse_args():
         action="store_true",
         help="Whether to disable using pre-initialized scene caches.",
     )
-    parser.add_argument(
-        "--profile", action="store_true", help="Whether to print profiling data."
-    )
+    parser.add_argument("--profile", action="store_true", help="Whether to print profiling data.")
     parser.add_argument(
         "--no_vr",
         action="store_true",
@@ -131,18 +126,12 @@ def collect_demo(
     profile=False,
 ):
     # HDR files for PBR rendering
-    hdr_texture = os.path.join(
-        igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr"
-    )
-    hdr_texture2 = os.path.join(
-        igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr"
-    )
+    hdr_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr")
+    hdr_texture2 = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr")
     light_modulation_map_filename = os.path.join(
         igibson.ig_dataset_path, "scenes", "Rs_int", "layout", "floor_lighttype_0.png"
     )
-    background_texture = os.path.join(
-        igibson.ig_dataset_path, "scenes", "background", "urban_street_01.jpg"
-    )
+    background_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "urban_street_01.jpg")
 
     # VR rendering settings
     vr_rendering_settings = MeshRendererSettings(
@@ -180,9 +169,7 @@ def collect_demo(
 
     if not disable_scene_cache:
         scene_kwargs = {
-            "urdf_file": "{}_task_{}_{}_{}_fixed_furniture".format(
-                scene, task, task_id, instance_id
-            ),
+            "urdf_file": "{}_task_{}_{}_{}_fixed_furniture".format(scene, task, task_id, instance_id),
         }
         online_sampling = False
 
@@ -206,9 +193,7 @@ def collect_demo(
     if not disable_save:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         if vr_log_path is None:
-            vr_log_path = "{}_{}_{}_{}_{}.hdf5".format(
-                task, task_id, scene, instance_id, timestamp
-            )
+            vr_log_path = "{}_{}_{}_{}_{}.hdf5".format(task, task_id, scene, instance_id, timestamp)
         log_writer = IGLogWriter(
             s,
             log_filepath=vr_log_path,
@@ -249,14 +234,10 @@ def collect_demo(
                 vr_cs.refresh_condition(switch=False)
                 satisfied_predicates_cached = satisfied_predicates
 
-            if igbhvr_act_inst.simulator.query_vr_event(
-                "right_controller", "overlay_toggle"
-            ):
+            if igbhvr_act_inst.simulator.query_vr_event("right_controller", "overlay_toggle"):
                 vr_cs.refresh_condition()
 
-            if igbhvr_act_inst.simulator.query_vr_event(
-                "left_controller", "overlay_toggle"
-            ):
+            if igbhvr_act_inst.simulator.query_vr_event("left_controller", "overlay_toggle"):
                 vr_cs.toggle_show_state()
 
         if log_writer and not disable_save:

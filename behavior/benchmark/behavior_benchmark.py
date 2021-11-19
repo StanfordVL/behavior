@@ -10,10 +10,7 @@ import igibson
 import numpy as np
 from igibson.envs.behavior_env import BehaviorEnv
 from igibson.metrics.agent import BehaviorRobotMetric
-from igibson.metrics.disarrangement import (
-    KinematicDisarrangement,
-    LogicalDisarrangement,
-)
+from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.task import TaskMetric
 from igibson.utils.utils import parse_config
 
@@ -78,20 +75,14 @@ class BehaviorBenchmark(object):
         )
         if os.path.exists(self_reported_log_path):
             shutil.copyfile(self_reported_log_path, log_path)
-            print(
-                "Per episode eval results copied from self-reported results %s"
-                % log_path
-            )
+            print("Per episode eval results copied from self-reported results %s" % log_path)
             with open(self_reported_log_path) as f:
                 self_reported_log = json.load(f)
                 assert len(self_reported_log) == len(tasks) * 9
 
         if os.path.exists(self_reported_summary_log_path):
             shutil.copyfile(self_reported_summary_log_path, summary_log_path)
-            print(
-                "Aggregated eval results copied from self-reported results %s"
-                % summary_log_path
-            )
+            print("Aggregated eval results copied from self-reported results %s" % summary_log_path)
             return
 
         # Evaluation ##################################################################################################
@@ -99,25 +90,13 @@ class BehaviorBenchmark(object):
         per_episode_metrics = {}
 
         # This provides metadata about the activities, including the time humans require to perform them
-        with open(
-            os.path.join(
-                igibson.ig_dataset_path, "metadata", "behavior_activity_statistics.json"
-            )
-        ) as f:
+        with open(os.path.join(igibson.ig_dataset_path, "metadata", "behavior_activity_statistics.json")) as f:
             activity_metadata = json.load(f)
 
         for task in tasks:
-            human_demo_mean_step = activity_metadata[task][
-                "mean"
-            ]  # Mean time invested by humans in the task
-            print(
-                "Maximum number of steps is twice the mean of human time: {}".format(
-                    human_demo_mean_step * 2
-                )
-            )
-            env_config["max_step"] = (
-                human_demo_mean_step * 2
-            )  # adjust env_config['max_step'] based on the human
+            human_demo_mean_step = activity_metadata[task]["mean"]  # Mean time invested by humans in the task
+            print("Maximum number of steps is twice the mean of human time: {}".format(human_demo_mean_step * 2))
+            env_config["max_step"] = human_demo_mean_step * 2  # adjust env_config['max_step'] based on the human
             # demonstration, we give agent 2x steps of average human demonstration across all possible scenes
 
             for scene_id, instance_ids in scene_instance_ids.items():
@@ -183,9 +162,7 @@ class BehaviorBenchmark(object):
         task_scores = []
 
         for episode, metric in per_episode_metrics.items():
-            task_to_mean_success_score[metric["task"]].append(
-                metric["q_score"]["final"]
-            )
+            task_to_mean_success_score[metric["task"]].append(metric["q_score"]["final"])
 
         for task, scores in task_to_mean_success_score.items():
             task_scores.append(np.mean(scores))
@@ -195,13 +172,9 @@ class BehaviorBenchmark(object):
         for episode, metric in per_episode_metrics.items():
             success_score.append(metric["q_score"]["final"])
             simulator_time.append(metric["time"]["simulator_time"])
-            kinematic_disarrangement.append(
-                metric["kinematic_disarrangement"]["relative"]
-            )
+            kinematic_disarrangement.append(metric["kinematic_disarrangement"]["relative"])
             logical_disarrangement.append(metric["logical_disarrangement"]["relative"])
-            distance_navigated.append(
-                np.sum(metric["agent_distance"]["timestep"]["body"])
-            )
+            distance_navigated.append(np.sum(metric["agent_distance"]["timestep"]["body"]))
             displacement_of_hands.append(
                 np.sum(metric["grasp_distance"]["timestep"]["left_hand"])
                 + np.sum(metric["grasp_distance"]["timestep"]["right_hand"])
@@ -210,9 +183,7 @@ class BehaviorBenchmark(object):
         aggregated_metrics["Success Score"] = np.mean(success_score)
         aggregated_metrics["Success Score Top 5"] = np.mean(np.array(task_scores)[:5])
         aggregated_metrics["Simulated Time"] = np.mean(simulator_time)
-        aggregated_metrics["Kinematic Disarrangement"] = np.mean(
-            kinematic_disarrangement
-        )
+        aggregated_metrics["Kinematic Disarrangement"] = np.mean(kinematic_disarrangement)
         aggregated_metrics["Logical Disarrangement"] = np.mean(logical_disarrangement)
         aggregated_metrics["Distance Navigated"] = np.mean(distance_navigated)
         aggregated_metrics["Displacement of Hands"] = np.mean(displacement_of_hands)
@@ -233,25 +204,19 @@ class BehaviorBenchmark(object):
         """
         # Takes variables set as environment variables or passed as params in initialization
         if env_config_file == "":
-            print(
-                "Environment's config file is not an argument. Obtaining it from the environmental variables."
-            )
+            print("Environment's config file is not an argument. Obtaining it from the environmental variables.")
             env_config_file = os.environ["CONFIG_FILE"]
 
         print("Using environment's config file: " + env_config_file)
 
         if output_dir == "":
-            print(
-                "Output directory is not an argument. Obtaining it from the environmental variables."
-            )
+            print("Output directory is not an argument. Obtaining it from the environmental variables.")
             output_dir = os.environ["OUTPUT_DIR"]
 
         print("Using output dir: " + output_dir)
 
         if split == "":
-            print(
-                "Split is not an argument. Obtaining it from the environmental variables."
-            )
+            print("Split is not an argument. Obtaining it from the environmental variables.")
             split = os.environ["SPLIT"]
             print("Using split: " + split)
 
@@ -259,9 +224,7 @@ class BehaviorBenchmark(object):
         tasks = sorted(
             [
                 item
-                for item in os.listdir(
-                    os.path.join(os.path.dirname(bddl.__file__), "activity_definitions")
-                )
+                for item in os.listdir(os.path.join(os.path.dirname(bddl.__file__), "activity_definitions"))
                 if item != "domain_igibson.bddl"
             ]
         )
@@ -296,9 +259,7 @@ class BehaviorBenchmark(object):
 
         for task in tasks:
             assert task in activity_to_scenes.keys()
-            scenes = sorted(
-                set(activity_to_scenes[task])
-            )  # Scenes where the activity can be performed
+            scenes = sorted(set(activity_to_scenes[task]))  # Scenes where the activity can be performed
             num_scenes = len(scenes)
             assert num_scenes <= 3
             # Official benchmark: Evaluate 9 episodes per task
@@ -329,9 +290,7 @@ class BehaviorBenchmark(object):
                 # "unseen scene" (different furniture))
                 scene_instance_ids = {scenes[0]: [0, 1, 2, 10, 11, 12, 20, 21, 22]}
 
-            self.evaluate_agent(
-                agent, env_config_file, output_dir, tasks, scene_instance_ids
-            )
+            self.evaluate_agent(agent, env_config_file, output_dir, tasks, scene_instance_ids)
 
 
 def get_agent(agent_class, ckpt_path=""):
@@ -346,17 +305,13 @@ def get_agent(agent_class, ckpt_path=""):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--agent-class", type=str, default="Random", choices=["Random", "PPO"]
-    )
+    parser.add_argument("--agent-class", type=str, default="Random", choices=["Random", "PPO"])
     parser.add_argument("--ckpt-path", default="", type=str)
     parser.add_argument("--split", default="minival", type=str)
 
     args = parser.parse_args()
 
-    print(
-        "Evaluating agent of type {} on split {}".format(args.agent_class, args.split)
-    )
+    print("Evaluating agent of type {} on split {}".format(args.agent_class, args.split))
 
     agent = get_agent(agent_class=args.agent_class, ckpt_path=args.ckpt_path)
     challenge = BehaviorBenchmark()

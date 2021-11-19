@@ -34,17 +34,9 @@ class BHDataset(object):
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.actions = torch.tensor(self.actions, dtype=torch.float32).to(self.device)
-        self.proprioceptions = torch.tensor(
-            self.proprioceptions, dtype=torch.float32
-        ).to(self.device)
-        self.rgbs = (
-            torch.tensor(self.rgbs, dtype=torch.float32)
-            .permute(0, 3, 1, 2)
-            .to(self.device)
-        )
-        self.task_obss = torch.tensor(self.task_obss, dtype=torch.float32).to(
-            self.device
-        )
+        self.proprioceptions = torch.tensor(self.proprioceptions, dtype=torch.float32).to(self.device)
+        self.rgbs = torch.tensor(self.rgbs, dtype=torch.float32).permute(0, 3, 1, 2).to(self.device)
+        self.task_obss = torch.tensor(self.task_obss, dtype=torch.float32).to(self.device)
         print("Done.")
 
 
@@ -74,9 +66,7 @@ def read_proc_parallel(files):
         print("Processing file %s..." % f)
         hf = h5py.File(f)
         actions = np.append(actions, np.asarray(hf["action"]), axis=0)
-        proprioceptions = np.append(
-            proprioceptions, np.asarray(hf["proprioception"]), axis=0
-        )
+        proprioceptions = np.append(proprioceptions, np.asarray(hf["proprioception"]), axis=0)
         rgbs = np.append(rgbs, np.asarray(hf["rgb"]), axis=0)
         task_obss = np.append(task_obss, np.asarray(hf["task_obs"]), axis=0)
         hf.close()

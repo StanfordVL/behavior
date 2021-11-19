@@ -16,9 +16,7 @@ try:
     from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
 
 except ModuleNotFoundError:
-    print(
-        "stable-baselines3 is not installed. You would need to do: pip install stable-baselines3"
-    )
+    print("stable-baselines3 is not installed. You would need to do: pip install stable-baselines3")
     exit(1)
 
 
@@ -42,9 +40,7 @@ class CustomCombinedExtractor(BaseFeaturesExtractor):
         feature_size = 128
         for key, subspace in observation_space.spaces.items():
             if key in ["proprioception", "task_obs"]:
-                extractors[key] = nn.Sequential(
-                    nn.Linear(subspace.shape[0], feature_size), nn.ReLU()
-                )
+                extractors[key] = nn.Sequential(nn.Linear(subspace.shape[0], feature_size), nn.ReLU())
             elif key in ["rgb", "highlight", "depth", "seg", "ins_seg"]:
                 n_input_channels = subspace.shape[2]  # channel last
                 cnn = nn.Sequential(
@@ -56,9 +52,7 @@ class CustomCombinedExtractor(BaseFeaturesExtractor):
                     nn.ReLU(),
                     nn.Flatten(),
                 )
-                test_tensor = th.zeros(
-                    [subspace.shape[2], subspace.shape[0], subspace.shape[1]]
-                )
+                test_tensor = th.zeros([subspace.shape[2], subspace.shape[0], subspace.shape[1]])
                 with th.no_grad():
                     n_flatten = cnn(test_tensor[None]).shape[1]
                 fc = nn.Sequential(nn.Linear(n_flatten, feature_size), nn.ReLU())

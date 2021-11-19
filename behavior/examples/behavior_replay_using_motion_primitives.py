@@ -13,11 +13,7 @@ def get_empty_hand(current_hands):
     if len(current_hands) == 0:
         return "right_hand"
     elif len(current_hands) == 1:
-        return (
-            "left_hand"
-            if list(current_hands.values())[0] == "right_hand"
-            else "right_hand"
-        )
+        return "left_hand" if list(current_hands.values())[0] == "right_hand" else "right_hand"
 
     raise ValueError("Both hands are full but you are trying to execute a grasp.")
 
@@ -37,10 +33,7 @@ def get_actions_from_segmentation(demo_data):
             print("Found segment with no useful state changes: %r" % segment)
             continue
         elif len(state_records) > 1:
-            print(
-                "Found segment with multiple state changes, using the first: %r"
-                % segment
-            )
+            print("Found segment with multiple state changes, using the first: %r" % segment)
 
         state_change = state_records[0]
         state_changes.append(state_change)
@@ -72,18 +65,12 @@ def get_actions_from_segmentation(demo_data):
                 if future_state_change["objects"][0] != target_object:
                     continue
 
-                if (
-                    future_state_change["name"] == "InHandOfRobot"
-                    and future_state_change["value"] is True
-                ):
+                if future_state_change["name"] == "InHandOfRobot" and future_state_change["value"] is True:
                     # This object is re-grasped later. No need to look any further than that.
                     break
 
                 # We only care about Inside and OnTop use cases later.
-                if (
-                    future_state_change["name"] not in ("Inside", "OnTop")
-                    or future_state_change["value"] is False
-                ):
+                if future_state_change["name"] not in ("Inside", "OnTop") or future_state_change["value"] is False:
                     continue
 
                 # This is a supported use case so we approve the grasp.
@@ -96,11 +83,7 @@ def get_actions_from_segmentation(demo_data):
 
             hand = get_empty_hand(hand_by_object)
             hand_by_object[target_object] = hand
-            primitive = (
-                ActionPrimitives.LEFT_GRASP
-                if hand == "left_hand"
-                else ActionPrimitives.RIGHT_GRASP
-            )
+            primitive = ActionPrimitives.LEFT_GRASP if hand == "left_hand" else ActionPrimitives.RIGHT_GRASP
         elif state_name == "Inside" and state_value is True:
             placed_object = state_change["objects"][0]
             target_object = state_change["objects"][1]
@@ -113,9 +96,7 @@ def get_actions_from_segmentation(demo_data):
             hand = hand_by_object[placed_object]
             del hand_by_object[placed_object]
             primitive = (
-                ActionPrimitives.LEFT_PLACE_INSIDE
-                if hand == "left_hand"
-                else ActionPrimitives.RIGHT_PLACE_INSIDE
+                ActionPrimitives.LEFT_PLACE_INSIDE if hand == "left_hand" else ActionPrimitives.RIGHT_PLACE_INSIDE
             )
         elif state_name == "OnTop" and state_value is True:
             placed_object = state_change["objects"][0]
@@ -128,11 +109,7 @@ def get_actions_from_segmentation(demo_data):
                 continue
             hand = hand_by_object[placed_object]
             del hand_by_object[placed_object]
-            primitive = (
-                ActionPrimitives.LEFT_PLACE_ONTOP
-                if hand == "left_hand"
-                else ActionPrimitives.RIGHT_PLACE_ONTOP
-            )
+            primitive = ActionPrimitives.LEFT_PLACE_ONTOP if hand == "left_hand" else ActionPrimitives.RIGHT_PLACE_ONTOP
         else:
             raise ValueError("Found a state change we can't process: %r" % state_change)
 
@@ -158,9 +135,7 @@ def run_demonstration(demo_path, segmentation_path, output_path):
     actions = get_actions_from_segmentation(selected_demo_data)
 
     # Prepare the environment
-    config_file = os.path.join(
-        igibson.example_config_path, "behavior_segmentation_replay.yaml"
-    )
+    config_file = os.path.join(igibson.example_config_path, "behavior_segmentation_replay.yaml")
     with open(config_file, "r") as f:
         config = yaml.safe_load(f)
 
@@ -199,9 +174,7 @@ def run_demonstration(demo_path, segmentation_path, output_path):
         primitive, obj_name = action_pair
 
         # Convert the action
-        obj_id = next(
-            i for i, obj in enumerate(env.addressable_objects) if obj.name == obj_name
-        )
+        obj_id = next(i for i, obj in enumerate(env.addressable_objects) if obj.name == obj_name)
         action = int(primitive) * env.num_objects + obj_id
 
         # Execute.
@@ -230,12 +203,8 @@ def run_demonstration(demo_path, segmentation_path, output_path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("demo_path", type=str, help="Path of the demo hdf5 to replay.")
-    parser.add_argument(
-        "segmentation_path", type=str, help="Path of the segmentation of the demo."
-    )
-    parser.add_argument(
-        "output_path", type=str, help="Path to output result JSON file to."
-    )
+    parser.add_argument("segmentation_path", type=str, help="Path of the segmentation of the demo.")
+    parser.add_argument("output_path", type=str, help="Path to output result JSON file to.")
     args = parser.parse_args()
 
     run_demonstration(args.demo_path, args.segmentation_path, args.output_path)

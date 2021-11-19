@@ -7,10 +7,7 @@ import bddl
 import igibson
 from igibson.envs.behavior_env import BehaviorEnv
 from igibson.metrics.agent import BehaviorRobotMetric, FetchRobotMetric
-from igibson.metrics.disarrangement import (
-    KinematicDisarrangement,
-    LogicalDisarrangement,
-)
+from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.task import TaskMetric
 
 
