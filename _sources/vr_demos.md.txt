@@ -12,7 +12,7 @@ Note: Since every small change in the simulator may cause deviating changes in e
 
 Following the instructions above, we have verified that the 500 demos can be replayed and reproduced perfectly.
 
-## BEHAVIOR HDF5 Processed Dataset
+## Virtual reality demonstration dataset (VR_demos)
 
 We provide a processed dataset generated from the raw files and that includes images and proprioceptive sensing.
 Alternative processed datasets can be generated based on the raw files, e.g. with different image resolutions.
@@ -29,7 +29,7 @@ The following are the available keys to index into the hdf5 file. The dimensiona
 - highlight ( N x 128 x 128 x 1) -- activity relevant object binary mask, active for all objects included in the activity goal (except the agent and the floor)
 - task_obs (N x 456) -- task observations, including ground truth state of the robot, and ground truth poses and grasping state of a maximum of a fixed number of activity relevant objects
 
-## BEHAVIOR HDF5 Raw Dataset
+## Raw virtual reality demonstration dataset (VR_demos_raw)
 
 ### Accessing the BEHAVIOR hdf5 demo files
 This code snipped provides access to the data using the python's hdf5 module that is dependency of iGibson:
