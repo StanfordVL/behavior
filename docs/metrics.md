@@ -7,6 +7,8 @@ We used a combination of metrics to measure the performance of the agent, a prim
 The primary metric for BEHAVIOR is the (maximum) fraction of satisfied logical predicates of the activity's goal definition (Q). 
 In the case that a goal is multi-part (e.g., "put one apple on a table or put two pears on a table"), Q is automatically calculated by choosing the combination of goal conditions that maximize Q.
 
+![q_example.jpg](images/q_example.jpg)
+
 ### Secondary Metrics: Efficiency
 
 The secondary metrics capture how efficiently an agent performs the activity relative to the best human demonstration.
@@ -17,6 +19,8 @@ The secondary metrics capture how efficiently an agent performs the activity rel
 - Distance navigated
     - **L<sub>body</sub>**: Accumulated distance traveled by the agent’s base body. This metric evaluates the efficiency of the agent in navigating the environment.
     - Displacement of hands, **L<sub>left</sub>** and **L<sub>right</sub>**: Accumulated displacement of each of the agent’s hands while in contact with another object for manipulation (i.e., grasping, pushing, etc). This metric evaluates the efficiency of the agent in its interaction with the environment.
+
+![secondarymetrics.jpg](images/secondarymetrics.jpg)
 
 If you want to compute the metrics on your own, it is recommended that you follow the example in `igibson/examples/behavior/behavior_env_metrics.py`. 
 This example shows how to leverage the start/step/end callbacks and aggregator to collect metrics on a behavior run.
