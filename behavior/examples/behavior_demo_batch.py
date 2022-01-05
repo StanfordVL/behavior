@@ -46,8 +46,6 @@ def behavior_demo_batch(
     logger = logging.getLogger()
     logger.disabled = True
 
-    bddl.set_backend("iGibson")
-
     demo_list = pd.read_csv(log_manifest)
 
     for idx, demo in enumerate(demo_list["demos"]):
@@ -70,12 +68,9 @@ def behavior_demo_batch(
             curr_frame_save_path = os.path.join(out_dir, demo_name + ".mp4")
 
         try:
-            (
-                start_callbacks,
-                step_callbacks,
-                end_callbacks,
-                data_callbacks,
-            ) = get_callbacks_callback(demo_name=demo_name, out_dir=out_dir)
+            start_callbacks, step_callbacks, end_callbacks, data_callbacks = get_callbacks_callback(
+                demo_name=demo_name, out_dir=out_dir
+            )
             demo_information = replay_demo(
                 in_log_path=demo_path,
                 out_log_path=replay_path,
@@ -97,11 +92,7 @@ def behavior_demo_batch(
         except Exception as e:
             if ignore_errors:
                 print("Demo failed with the error: ", str(e))
-                demo_information = {
-                    "demo_id": Path(demo).name,
-                    "failed": True,
-                    "failure_reason": str(e),
-                }
+                demo_information = {"demo_id": Path(demo).name, "failed": True, "failure_reason": str(e)}
             else:
                 raise
 

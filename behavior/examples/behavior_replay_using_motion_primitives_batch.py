@@ -10,11 +10,7 @@ import tqdm
 def parse_args():
     parser = argparse.ArgumentParser(description="Script to batch-replay segmented demos using motion primitives.")
     parser.add_argument("demo_directory", type=str, help="Path to directory containing demos")
-    parser.add_argument(
-        "segmentation_directory",
-        type=str,
-        help="Path to directory containing demo segmentations",
-    )
+    parser.add_argument("segmentation_directory", type=str, help="Path to directory containing demo segmentations")
     parser.add_argument("results_directory", type=str, help="Path to directory to store results in")
     return parser.parse_args()
 
@@ -37,11 +33,7 @@ def main():
             continue
 
         # Batch me
-        script_path = os.path.join(
-            igibson.example_path,
-            "behavior",
-            "behavior_replay_using_motion_primitives.py",
-        )
+        script_path = os.path.join(igibson.example_path, "behavior", "behavior_replay_using_motion_primitives.py")
         command = ["python", script_path, demo_path, segmentation_path, output_path]
 
         with open(log_path, "w") as log_file:

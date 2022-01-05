@@ -9,13 +9,11 @@ import igibson
 import printree
 import pyinstrument
 from igibson import object_states
-from igibson.activity.activity_base import iGBEHAVIORActivityInstance
 from igibson.activity.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
+from igibson.examples.behavior import behavior_demo_replay
 from igibson.object_states import ROOM_STATES, factory
 from igibson.object_states.object_state_base import AbsoluteObjectState, BooleanState, RelativeObjectState
 from igibson.robots.behavior_robot import BRBody
-
-from behavior.examples import behavior_demo_replay
 
 StateRecord = namedtuple("StateRecord", ["state_type", "objects", "value"])
 StateEntry = namedtuple("StateEntry", ["frame_count", "state_records"])
@@ -65,23 +63,9 @@ STATE_DIRECTIONS = {
 STATE_DIRECTIONS.update({state: SegmentationStateDirection.FALSE_TO_TRUE for state in ROOM_STATES})
 
 ALLOWED_SUB_SEGMENTS_BY_STATE = {
-    object_states.Burnt: {
-        object_states.OnTop,
-        object_states.ToggledOn,
-        object_states.Open,
-        object_states.Inside,
-    },
-    object_states.Cooked: {
-        object_states.OnTop,
-        object_states.ToggledOn,
-        object_states.Open,
-        object_states.Inside,
-    },
-    object_states.Dusty: {
-        object_states.InSameRoomAsRobot,
-        object_states.InReachOfRobot,
-        object_states.InHandOfRobot,
-    },
+    object_states.Burnt: {object_states.OnTop, object_states.ToggledOn, object_states.Open, object_states.Inside},
+    object_states.Cooked: {object_states.OnTop, object_states.ToggledOn, object_states.Open, object_states.Inside},
+    object_states.Dusty: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot, object_states.InHandOfRobot},
     object_states.Frozen: {
         object_states.InReachOfRobot,
         object_states.OnTop,
@@ -99,27 +83,11 @@ ALLOWED_SUB_SEGMENTS_BY_STATE = {
         object_states.InReachOfRobot,
         object_states.InHandOfRobot,
     },
-    object_states.NextTo: {
-        object_states.InSameRoomAsRobot,
-        object_states.InReachOfRobot,
-        object_states.InHandOfRobot,
-    },
+    object_states.NextTo: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot, object_states.InHandOfRobot},
     # OnFloor: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot, object_states.InHandOfRobot},
-    object_states.OnTop: {
-        object_states.InSameRoomAsRobot,
-        object_states.InReachOfRobot,
-        object_states.InHandOfRobot,
-    },
-    object_states.Open: {
-        object_states.InSameRoomAsRobot,
-        object_states.InReachOfRobot,
-        object_states.InHandOfRobot,
-    },
-    object_states.Sliced: {
-        object_states.InSameRoomAsRobot,
-        object_states.InReachOfRobot,
-        object_states.InHandOfRobot,
-    },
+    object_states.OnTop: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot, object_states.InHandOfRobot},
+    object_states.Open: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot, object_states.InHandOfRobot},
+    object_states.Sliced: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot, object_states.InHandOfRobot},
     object_states.Soaked: {
         object_states.ToggledOn,
         object_states.InSameRoomAsRobot,
@@ -132,16 +100,9 @@ ALLOWED_SUB_SEGMENTS_BY_STATE = {
         object_states.InReachOfRobot,
         object_states.InHandOfRobot,
     },
-    object_states.ToggledOn: {
-        object_states.InSameRoomAsRobot,
-        object_states.InReachOfRobot,
-    },
+    object_states.ToggledOn: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot},
     # Touching: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot, object_states.InHandOfRobot},
-    object_states.Under: {
-        object_states.InSameRoomAsRobot,
-        object_states.InReachOfRobot,
-        object_states.InHandOfRobot,
-    },
+    object_states.Under: {object_states.InSameRoomAsRobot, object_states.InReachOfRobot, object_states.InHandOfRobot},
 }
 
 
@@ -178,11 +139,11 @@ def process_states(objects, state_types):
     return predicate_states
 
 
-def _get_goal_condition_states(igbhvr_act_inst: iGBEHAVIORActivityInstance):
+def _get_goal_condition_states(env):
     state_types = set()
 
     q = deque()
-    q.extend(igbhvr_act_inst.goal_conditions)
+    q.extend(env.task.goal_conditions)
 
     while q:
         pred = q.popleft()
@@ -223,7 +184,7 @@ class DemoSegmentationProcessor(object):
 
         self.profiler = profiler
 
-    def start_callback(self, igbhvr_act_inst, _):
+    def start_callback(self, env, _):
         self.all_state_types = [
             state
             for state in factory.get_all_states()
@@ -238,20 +199,20 @@ class DemoSegmentationProcessor(object):
         elif self.state_types_option == SegmentationStateSelection.ALL_STATES:
             self.state_types = self.all_state_types
         elif self.state_types_option == SegmentationStateSelection.GOAL_CONDITION_RELEVANT_STATES:
-            self.state_types = _get_goal_condition_states(igbhvr_act_inst)
+            self.state_types = _get_goal_condition_states(env)
         else:
             raise ValueError("Unknown segmentation state selection.")
 
-    def step_callback(self, igbhvr_act_inst, _):
+    def step_callback(self, env, _):
         if self.profiler:
             self.profiler.start()
 
         if self.object_selection == SegmentationObjectSelection.TASK_RELEVANT_OBJECTS:
-            objects = [obj for obj in igbhvr_act_inst.object_scope.values() if not isinstance(obj, BRBody)]
+            objects = [obj for obj in env.task.object_scope.values() if not isinstance(obj, BRBody)]
         elif self.object_selection == SegmentationObjectSelection.ROBOTS:
-            objects = [obj for obj in igbhvr_act_inst.object_scope.values() if isinstance(obj, BRBody)]
+            objects = [obj for obj in env.task.object_scope.values() if isinstance(obj, BRBody)]
         elif self.object_selection == SegmentationObjectSelection.ALL_OBJECTS:
-            objects = igbhvr_act_inst.simulator.scene.get_objects()
+            objects = env.scene.get_objects()
         else:
             raise ValueError("Incorrect SegmentationObjectSelection %r" % self.object_selection)
 
@@ -259,7 +220,7 @@ class DemoSegmentationProcessor(object):
         state_types_to_use = self.state_types if not self.hierarchical else self.all_state_types
         processed_state = process_states(objects, state_types_to_use)
         if self.last_state is None or (processed_state - self.last_state):
-            self.state_history.append(StateEntry(igbhvr_act_inst.simulator.frame_count, processed_state))
+            self.state_history.append(StateEntry(env.simulator.frame_count, processed_state))
 
         self.last_state = processed_state
 
@@ -316,13 +277,7 @@ class DemoSegmentationProcessor(object):
 
     def get_segments(self):
         segments = self._hierarchical_segments(self.state_history, self.state_types)
-        return Segment(
-            segments[0].start,
-            segments[-1].end - segments[0].start,
-            segments[-1].end,
-            [],
-            segments,
-        )
+        return Segment(segments[0].start, segments[-1].end - segments[0].start, segments[-1].end, [], segments)
 
     def filter_diffs(self, state_records, state_types):
         """Filter the segments so that only objects in the given state directions are monitored."""
@@ -407,14 +362,10 @@ class DemoSegmentationProcessor(object):
 def parse_args():
     parser = argparse.ArgumentParser(description="Run segmentation on an ATUS demo.")
     parser.add_argument(
-        "--log_path",
-        type=str,
-        help="Path (and filename) of log to replay. If empty, test demo will be used.",
+        "--log_path", type=str, help="Path (and filename) of log to replay. If empty, test demo will be used."
     )
     parser.add_argument(
-        "--out_dir",
-        type=str,
-        help="Directory to store results in. If empty, test directory will be used.",
+        "--out_dir", type=str, help="Directory to store results in. If empty, test directory will be used."
     )
     parser.add_argument(
         "--profile",
@@ -435,10 +386,7 @@ def get_default_segmentation_processors(profiler=None):
         object_states.InReachOfRobot,
     ]
     flat_object_segmentation = DemoSegmentationProcessor(
-        flat_states,
-        SegmentationObjectSelection.TASK_RELEVANT_OBJECTS,
-        label_by_instance=True,
-        profiler=profiler,
+        flat_states, SegmentationObjectSelection.TASK_RELEVANT_OBJECTS, label_by_instance=True, profiler=profiler
     )
 
     # This applies a hierarchical segmentation based on goal condition states. It's WIP and currently unused.
@@ -452,10 +400,7 @@ def get_default_segmentation_processors(profiler=None):
 
     # This applies a flat segmentation that allows us to see what room the agent is in during which frames.
     room_presence_segmentation = DemoSegmentationProcessor(
-        ROOM_STATES,
-        SegmentationObjectSelection.ROBOTS,
-        diff_initial=True,
-        profiler=profiler,
+        ROOM_STATES, SegmentationObjectSelection.ROBOTS, diff_initial=True, profiler=profiler
     )
 
     return {
@@ -466,15 +411,10 @@ def get_default_segmentation_processors(profiler=None):
 
 
 def main():
-    bddl.set_backend("iGibson")
     args = parse_args()
 
     # Select the demo to apply segmentation on.
-    demo_file = os.path.join(
-        igibson.ig_dataset_path,
-        "tests",
-        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
-    )
+    demo_file = os.path.join(igibson.ig_dataset_path, "tests", "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5")
     if args.log_path:
         demo_file = args.log_path
 
