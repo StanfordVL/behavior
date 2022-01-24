@@ -34,7 +34,7 @@ def get_metrics_callbacks(config):
     )
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -89,3 +89,7 @@ if __name__ == "__main__":
         json.dump(per_episode_metrics, file)
 
     env.close()
+
+
+if __name__ == "__main__":
+    main()
