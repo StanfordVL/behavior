@@ -2,8 +2,8 @@ import os
 from typing import Callable
 
 import igibson
-from igibson.envs.behavior_env import BehaviorEnv
 from igibson.envs.behavior_mp_env import BehaviorMPEnv
+from igibson.envs.igibson_env import iGibsonEnv
 
 try:
     import gym

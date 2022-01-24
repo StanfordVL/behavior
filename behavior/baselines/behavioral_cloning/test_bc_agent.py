@@ -7,7 +7,7 @@ import os
 import igibson
 import numpy as np
 import torch
-from igibson.envs.behavior_env import BehaviorEnv
+from igibson.envs.igibson_env import iGibsonEnv
 from simple_bc_agent import BCNet_rgbp, BCNet_taskObs
 
 
@@ -23,12 +23,11 @@ bc_agent = torch.load(args.model)
 bc_agent.eval()
 
 config_file = "behavior_onboard_sensing.yaml"
-env = BehaviorEnv(
+env = iGibsonEnv(
     config_file=os.path.join(igibson.example_config_path, config_file),
     mode="headless",
     action_timestep=1 / 30.0,
     physics_timestep=1 / 300.0,
-    action_filter="all",
 )
 
 obs = env.reset()

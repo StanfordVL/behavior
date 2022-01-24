@@ -8,7 +8,7 @@ from collections import defaultdict
 import bddl
 import igibson
 import numpy as np
-from igibson.envs.behavior_env import BehaviorEnv
+from igibson.envs.igibson_env import iGibsonEnv
 from igibson.metrics.agent import BehaviorRobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.task import TaskMetric
@@ -110,12 +110,12 @@ class BehaviorBenchmark(object):
                                 task, scene_id, instance_id, episode_id
                             )
                         )
-                        env = BehaviorEnv(
+                        env_config["instance_id"] = instance_id
+                        env = iGibsonEnv(
                             config_file=env_config,
                             mode="headless",
                             action_timestep=1.0 / 30.0,
                             physics_timestep=1.0 / 120.0,
-                            instance_id=instance_id,
                         )
                         (
                             start_callbacks,
