@@ -12,3 +12,5 @@ requests~=2.25.1
 pytest-cov>=3.0.0
 coverage[toml]>=6.1.1
 myst-parser>=0.15.2
+printree>=0.2.0
+pyinstrument>=4.1.1
