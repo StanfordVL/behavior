@@ -5,6 +5,7 @@ import os
 from collections import deque, namedtuple
 from enum import Enum
 
+import bddl
 import igibson
 import printree
 import pyinstrument
@@ -13,6 +14,8 @@ from igibson.object_states import ROOM_STATES, factory
 from igibson.object_states.object_state_base import AbsoluteObjectState, BooleanState, RelativeObjectState
 from igibson.robots.behavior_robot import BRBody
 from igibson.tasks.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
+
+from behavior.examples import demo_replay_example
 
 StateRecord = namedtuple("StateRecord", ["state_type", "objects", "value"])
 StateEntry = namedtuple("StateEntry", ["frame_count", "state_records"])
@@ -444,7 +447,7 @@ def main(selection="user", headless=False, short_exec=False):
     segmentation_processors = get_default_segmentation_processors(profiler)
 
     # Run the segmentations.
-    behavior_demo_replay.safe_replay_demo(
+    demo_replay_example.safe_replay_demo(
         args_dict["log_path"],
         start_callbacks=[sp.start_callback for sp in segmentation_processors.values()],
         step_callbacks=[sp.step_callback for sp in segmentation_processors.values()],
