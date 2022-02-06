@@ -22,7 +22,7 @@ def main(exhaustive=False):
         if (
             not package.ispkg
             and "example_selector" not in package.name[18:]
-            and "batch" not in package.name[18:]  # we do not run the batch examples as test
+            # and "batch" not in package.name[18:]  # we do not run the batch examples as test
         ):  # Consider removing the last condition if we have runnable VR tests
             examples_list += [package.name[18:]]
 

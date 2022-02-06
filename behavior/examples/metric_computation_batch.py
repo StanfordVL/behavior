@@ -1,19 +1,24 @@
 import argparse
+import inspect
 import logging
+import os
 
 from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.gaze import GazeMetric
 from igibson.metrics.task import TaskMetric
 
+import behavior
 from behavior.examples.demo_replay_batch import replay_demo_batch
 
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["demo_root"] = "fixme"
-    args_dict["log_manifest"] = "fixme"
-    args_dict["out_dir"] = "fixme"
+    args_dict["demo_root"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["log_manifest"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)), "data", "test_manifest.txt"
+    )
+    args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     if not defaults:
         parser = argparse.ArgumentParser(description="Collect metrics from BEHAVIOR demos in manifest.")
         parser.add_argument("demo_root", type=str, help="Directory containing demos listed in the manifest.")
