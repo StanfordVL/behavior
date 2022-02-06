@@ -1,11 +1,15 @@
 import argparse
+import inspect
 import json
 import logging
+import os
 import time
 
 import yaml
 from igibson.envs.behavior_mp_env import ActionPrimitives, BehaviorMPEnv
 from igibson.utils.ig_logging import IGLogReader
+
+import behavior
 
 
 def get_empty_hand(current_hands):
@@ -195,9 +199,20 @@ def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file)
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["demo_path"] = "fixme"
-    args_dict["segmentation_path"] = "fixme"
-    args_dict["config"] = "fixme"
+    args_dict["demo_path"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)),
+        "data",
+        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
+    )
+    args_dict["segmentation_path"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)),
+        "data",
+        "test_segmentation.txt",
+    )
+    # Todo: maybe better behvior_vr.yaml?
+    args_dict["config"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_full_observability.yaml"
+    )
     args_dict["output_path"] = "fixme"
 
     if not defaults:

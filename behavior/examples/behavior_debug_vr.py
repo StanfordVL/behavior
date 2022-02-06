@@ -4,6 +4,7 @@ Debugging script to bypass taksnet
 
 import copy
 import datetime
+import inspect
 import logging
 import os
 
@@ -15,6 +16,8 @@ from igibson.robots.behavior_robot import BehaviorRobot
 from igibson.scenes.igibson_indoor_scene import InteractiveIndoorScene
 from igibson.simulator import Simulator
 from igibson.utils.ig_logging import IGLogWriter
+
+import behavior
 
 POST_TASK_STEPS = 200
 PHYSICS_WARMING_STEPS = 200
@@ -75,7 +78,9 @@ def collect_demo(scene_id, vr_log_path=None, disable_save=False, no_vr=False, pr
     if not disable_save:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         if vr_log_path is None:
-            vr_log_path = "{}_{}_{}.hdf5".format("behavior_dummy_demo", scene_id, timestamp)
+            vr_log_file = "{}_{}_{}.hdf5".format("behavior_dummy_demo", scene_id, timestamp)
+            vr_log_path = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data", vr_log_file)
+
         log_writer = IGLogWriter(
             s,
             log_filepath=vr_log_path,

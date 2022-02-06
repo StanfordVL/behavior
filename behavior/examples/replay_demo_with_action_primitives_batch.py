@@ -1,18 +1,21 @@
 import argparse
 import glob
+import inspect
 import os
 import subprocess
 
 import igibson
 import tqdm
 
+import behavior
+
 
 def parse_args(defaults=False):
 
     args_dict = dict()
-    args_dict["demo_directory"] = "fixme"
-    args_dict["segmentation_directory"] = "fixme"
-    args_dict["results_directory"] = "fixme"
+    args_dict["demo_directory"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["segmentation_directory"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["results_directory"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
 
     if not defaults:
         parser = argparse.ArgumentParser(description="Script to batch-replay segmented demos using action primitives.")

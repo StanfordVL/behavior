@@ -21,8 +21,8 @@ def main(exhaustive=False):
     for package in pkgutil.walk_packages(examples.__path__, examples.__name__ + "."):
         if (
             not package.ispkg
-            and package.name[17:] != "example_selector"
-            and "batch" not in package.name[17:]  # we do not run the batch examples as test
+            and "example_selector" not in package.name[18:]
+            and "batch" not in package.name[18:]  # we do not run the batch examples as test
         ):  # Consider removing the last condition if we have runnable VR tests
             examples_list += [package.name[18:]]
 

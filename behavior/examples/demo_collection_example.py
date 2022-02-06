@@ -5,6 +5,8 @@ Main BEHAVIOR demo collection entrypoint
 import argparse
 import copy
 import datetime
+import inspect
+import logging
 import os
 
 import bddl
@@ -18,83 +20,134 @@ from igibson.simulator_vr import SimulatorVR
 from igibson.utils.ig_logging import IGLogWriter
 from igibson.utils.utils import parse_config
 
+import behavior
+
 POST_TASK_STEPS = 200
 PHYSICS_WARMING_STEPS = 200
 
 
-def parse_args():
-    scene_choices = [
-        "Beechwood_0_int",
-        "Beechwood_1_int",
-        "Benevolence_0_int",
-        "Benevolence_1_int",
-        "Benevolence_2_int",
-        "Ihlen_0_int",
-        "Ihlen_1_int",
-        "Merom_0_int",
-        "Merom_1_int",
-        "Pomaria_0_int",
-        "Pomaria_1_int",
-        "Pomaria_2_int",
-        "Rs_int",
-        "Wainscott_0_int",
-        "Wainscott_1_int",
-    ]
+def parse_args(defaults=False):
+    args_dict = dict()
+    args_dict["task"] = "cleaning_windows"
+    args_dict["task_id"] = 0
+    args_dict["instance_id"] = 0
+    args_dict["vr_log_path"] = None  # Internally creates one if we pass None
+    args_dict["scene"] = "Rs_int"
+    args_dict["disable_save"] = False
+    args_dict["disable_scene_cache"] = False
+    args_dict["profile"] = False
+    args_dict["no_vr"] = True
+    args_dict["max_steps"] = -1
+    args_dict["config"] = os.path.join(os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_vr.yaml")
+    if not defaults:
+        scene_choices = [
+            "Beechwood_0_int",
+            "Beechwood_1_int",
+            "Benevolence_0_int",
+            "Benevolence_1_int",
+            "Benevolence_2_int",
+            "Ihlen_0_int",
+            "Ihlen_1_int",
+            "Merom_0_int",
+            "Merom_1_int",
+            "Pomaria_0_int",
+            "Pomaria_1_int",
+            "Pomaria_2_int",
+            "Rs_int",
+            "Wainscott_0_int",
+            "Wainscott_1_int",
+        ]
 
-    task_id_choices = [0, 1]
-    parser = argparse.ArgumentParser(description="Run and collect an ATUS demo")
-    parser.add_argument(
-        "--task", type=str, required=True, nargs="?", help="Name of ATUS activity matching parent folder in bddl."
-    )
-    parser.add_argument(
-        "--task_id",
-        type=int,
-        required=True,
-        choices=task_id_choices,
-        nargs="?",
-        help="BDDL integer ID, matching suffix of bddl.",
-    )
-    parser.add_argument(
-        "--instance_id",
-        type=int,
-        required=True,
-        help="Instance of behavior activity (particular URDF corresponding to a BDDL file)",
-    )
-    parser.add_argument("--vr_log_path", type=str, help="Path (and filename) of vr log")
-    parser.add_argument(
-        "--scene", type=str, choices=scene_choices, nargs="?", help="Scene name/ID matching iGibson interactive scenes."
-    )
-    parser.add_argument("--disable_save", action="store_true", help="Whether to disable saving logfiles.")
-    parser.add_argument(
-        "--disable_scene_cache", action="store_true", help="Whether to disable using pre-initialized scene caches."
-    )
-    parser.add_argument("--profile", action="store_true", help="Whether to print profiling data.")
-    parser.add_argument(
-        "--no_vr", action="store_true", help="Whether to turn off VR recording and save random actions."
-    )
-    parser.add_argument("--max_steps", type=int, default=-1, help="Maximum number of steps to record before stopping.")
-    parser.add_argument(
-        "--config",
-        help="which config file to use [default: use yaml files in examples/configs]",
-        default=os.path.join(igibson.example_config_path, "behavior_vr.yaml"),
-    )
-    return parser.parse_args()
+        task_id_choices = [0, 1]
+        parser = argparse.ArgumentParser(description="Run and collect a BEHAVIOR demo")
+        parser.add_argument(
+            "--task",
+            type=str,
+            required=True,
+            nargs="?",
+            help="Name of ATUS/BEHAVIOR activity matching parent folder in bddl.",
+        )
+        parser.add_argument(
+            "--task_id",
+            type=int,
+            required=True,
+            choices=task_id_choices,
+            nargs="?",
+            help="BDDL integer ID for the activity definition, matching suffix of bddl.",
+        )
+        parser.add_argument(
+            "--instance_id",
+            type=int,
+            required=True,
+            help="Instance of behavior activity (particular URDF corresponding to a BDDL file)",
+        )
+        parser.add_argument("--vr_log_path", type=str, help="Path (and filename) of vr log")
+        parser.add_argument(
+            "--scene",
+            type=str,
+            choices=scene_choices,
+            nargs="?",
+            help="Scene name/ID matching iGibson interactive scenes.",
+        )
+        parser.add_argument("--disable_save", action="store_true", help="Whether to disable saving logfiles.")
+        parser.add_argument(
+            "--disable_scene_cache", action="store_true", help="Whether to disable using pre-initialized scene caches."
+        )
+        parser.add_argument("--profile", action="store_true", help="Whether to print profiling data.")
+        parser.add_argument(
+            "--no_vr", action="store_true", help="Whether to turn off VR recording and save random actions."
+        )
+        parser.add_argument(
+            "--max_steps",
+            type=int,
+            default=args_dict["max_steps"],
+            help="Maximum number of steps to record before stopping.",
+        )
+        parser.add_argument(
+            "--config",
+            help="which config file to use [default: use yaml files in examples/configs]",
+            default=args_dict["config"],
+        )
+        args = parser.parse_args()
+        args_dict["task"] = args.task
+        args_dict["task_id"] = args.task_id
+        args_dict["instance_id"] = args.instance_id
+        args_dict["vr_log_path"] = args.vr_log_path
+        args_dict["scene"] = args.scene
+        args_dict["disable_save"] = args.disable_save
+        args_dict["disable_scene_cache"] = args.disable_scene_cache
+        args_dict["profile"] = args.profile
+        args_dict["no_vr"] = args.no_vr
+        args_dict["max_steps"] = args.max_steps
+        args_dict["config"] = args.config
+
+    return args_dict
 
 
 def main(selection="user", headless=False, short_exec=False):
-    args = parse_args()
+    """
+    Example application to collect new demos
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
+
+    if short_exec:
+        args_dict["max_steps"] = 1000
+
     collect_demo(
-        args.task,
-        args.task_id,
-        args.scene,
-        args.instance_id,
-        args.vr_log_path,
-        args.disable_save,
-        args.max_steps,
-        args.no_vr,
-        args.disable_scene_cache,
-        args.profile,
-        args.config,
+        args_dict["task"],
+        args_dict["task_id"],
+        args_dict["scene"],
+        args_dict["instance_id"],
+        args_dict["vr_log_path"],
+        args_dict["disable_save"],
+        args_dict["max_steps"],
+        args_dict["no_vr"],
+        args_dict["disable_scene_cache"],
+        args_dict["profile"],
+        args_dict["config"],
     )
 
 
@@ -111,6 +164,7 @@ def collect_demo(
     profile=False,
     config_file=os.path.join(igibson.example_config_path, "behavior_vr.yaml"),
 ):
+    logging.info("Collecting demo")
     # HDR files for PBR rendering
     hdr_texture = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_02.hdr")
     hdr_texture2 = os.path.join(igibson.ig_dataset_path, "scenes", "background", "probe_03.hdr")
@@ -160,7 +214,8 @@ def collect_demo(
     if not disable_save:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         if vr_log_path is None:
-            vr_log_path = "{}_{}_{}_{}_{}.hdf5".format(task, task_id, scene, instance_id, timestamp)
+            vr_log_file = "{}_{}_{}_{}_{}.hdf5".format(task, task_id, scene, instance_id, timestamp)
+            vr_log_path = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data", vr_log_file)
         log_writer = IGLogWriter(
             env.simulator,
             log_filepath=vr_log_path,
@@ -179,7 +234,7 @@ def collect_demo(
     steps_after_done = 0
 
     while True:
-        if max_steps >= 0 and steps >= max_steps:
+        if 0 <= max_steps <= steps:
             break
 
         if steps_after_done >= POST_TASK_STEPS:
@@ -188,6 +243,7 @@ def collect_demo(
         if no_vr:
             # Use the first 2 steps to activate BehaviorRobot
             if steps < 2:
+                # TODO: Check this. Dimensionality correct? Zero action still necessary after Cem's changes?
                 action = np.zeros((28,))
                 action[19] = 1
                 action[27] = 1
@@ -225,6 +281,8 @@ def collect_demo(
 
     if log_writer and not disable_save:
         log_writer.end_log_session()
+
+    logging.info("End of demo")
 
     env.close()
 

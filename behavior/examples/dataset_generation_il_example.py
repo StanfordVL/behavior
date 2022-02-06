@@ -126,7 +126,6 @@ def parse_args(defaults=False):
         os.path.dirname(inspect.getfile(behavior.examples)), "data", "test_manifest.txt"
     )
     args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
-    args_dict["vr_log_path"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     args_dict["config"] = os.path.join(os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_vr.yaml")
     if not defaults:
         parser = argparse.ArgumentParser(
@@ -135,7 +134,6 @@ def parse_args(defaults=False):
         parser.add_argument("--demo_root", type=str, help="Directory containing demos listed in the manifest.")
         parser.add_argument("--log_manifest", type=str, help="Plain text file consisting of list of demos to replay.")
         parser.add_argument("--out_dir", type=str, help="Directory to store results in.")
-        parser.add_argument("--vr_log_path", type=str, help="Path (and filename) of vr log to replay")
         parser.add_argument(
             "--config",
             help="which config file to use [default: use yaml files in examples/configs]",
@@ -146,7 +144,6 @@ def parse_args(defaults=False):
         args_dict["demo_root"] = args.demo_root
         args_dict["log_manifest"] = args.log_manifest
         args_dict["out_dir"] = args.out_dir
-        args_dict["vr_log_path"] = args.vr_log_path
         args_dict["config"] = args.config
 
     return args_dict

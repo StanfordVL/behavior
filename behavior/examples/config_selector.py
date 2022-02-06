@@ -10,6 +10,8 @@ from igibson.render.profiler import Profiler
 from igibson.utils.assets_utils import folder_is_hidden
 from igibson.utils.utils import let_user_pick
 
+import behavior
+
 
 def main(selection="user", headless=False, short_exec=False):
     """
@@ -22,7 +24,7 @@ def main(selection="user", headless=False, short_exec=False):
     available_configs = get_first_options()
     config_id = available_configs[let_user_pick(available_configs, selection=selection) - 1]
     logging.info("Using config file " + config_id)
-    config_filename = os.path.join(igibson.example_config_path, config_id)
+    config_filename = os.path.join(os.path.dirname(inspect.getfile(behavior)), "configs", config_id)
     config_data = yaml.load(open(config_filename, "r"), Loader=yaml.FullLoader)
     # Reduce texture scale for Mac.
     if platform == "darwin":
@@ -47,8 +49,7 @@ def main(selection="user", headless=False, short_exec=False):
 
 
 def get_first_options():
-    config_path = os.path.abspath(inspect.getfile(get_first_options))
-    config_path = os.path.join(config_path[: -len("examples/config_selector.py")], "configs")
+    config_path = os.path.join(os.path.dirname(inspect.getfile(behavior)), "configs")
     available_configs = sorted(
         [
             f

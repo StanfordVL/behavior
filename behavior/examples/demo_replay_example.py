@@ -48,7 +48,7 @@ def parse_args(defaults=False):
         "data",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
-    args_dict["out_log_path"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["out_log_path"] = None
     args_dict["disable_save"] = True
     args_dict["frame_save_path"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     args_dict["mode"] = "headless"
@@ -238,7 +238,7 @@ def replay_demo(
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         if out_log_path is None:
             out_log_name = "{}_{}_{}_{}_{}_replay.hdf5".format(task, task_id, scene, instance_id, timestamp)
-            out_log_path = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data", out_log_path)
+            out_log_path = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data", out_log_name)
 
         log_writer = IGLogWriter(
             env.simulator,
