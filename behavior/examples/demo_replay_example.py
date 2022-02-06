@@ -292,9 +292,9 @@ def replay_demo(
             callback(env, log_reader)
     finally:
         logging.info("End of the replay.")
-        env.close()
         if not disable_save:
             log_writer.end_log_session()
+        env.close()
 
     is_deterministic = None
     if not disable_save:

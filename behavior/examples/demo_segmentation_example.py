@@ -1,4 +1,5 @@
 import argparse
+import inspect
 import json
 import logging
 import os
@@ -15,6 +16,7 @@ from igibson.object_states.object_state_base import AbsoluteObjectState, Boolean
 from igibson.robots.behavior_robot import BRBody
 from igibson.tasks.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
 
+import behavior
 from behavior.examples import demo_replay_example
 
 StateRecord = namedtuple("StateRecord", ["state_type", "objects", "value"])
@@ -364,9 +366,11 @@ class DemoSegmentationProcessor(object):
 def parse_args(defaults=False):
     args_dict = dict()
     args_dict["log_path"] = os.path.join(
-        igibson.ig_dataset_path, "tests", "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5"
+        os.path.dirname(inspect.getfile(behavior.examples)),
+        "data",
+        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
-    args_dict["log_manifest"] = "fixme"
+    args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     args_dict["profile"] = False
     if not defaults:
         parser = argparse.ArgumentParser(description="Run segmentation on an ATUS demo.")
@@ -447,12 +451,14 @@ def main(selection="user", headless=False, short_exec=False):
     segmentation_processors = get_default_segmentation_processors(profiler)
 
     # Run the segmentations.
+    logging.info("Run segmentation")
     demo_replay_example.safe_replay_demo(
         args_dict["log_path"],
         start_callbacks=[sp.start_callback for sp in segmentation_processors.values()],
         step_callbacks=[sp.step_callback for sp in segmentation_processors.values()],
     )
 
+    logging.info("Save segmentation")
     demo_basename = os.path.splitext(os.path.basename(args_dict["log_path"]))[0]
     for segmentation_name, segmentation_processor in segmentation_processors.items():
         json_file = "%s_%s.json" % (demo_basename, segmentation_name)
@@ -469,6 +475,7 @@ def main(selection="user", headless=False, short_exec=False):
 
     # Save profiling information.
     if args_dict["profile"]:
+        logging.info("Save profiling")
         html = profiler.output_html()
         html_path = os.path.join(args_dict["out_dir"], "segmentation_profile.html")
         with open(html_path, "w") as f:
@@ -476,4 +483,4 @@ def main(selection="user", headless=False, short_exec=False):
 
 
 if __name__ == "__main__":
-    main()
+    main(selection="random", headless=True, short_exec=True)

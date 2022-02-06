@@ -1,19 +1,44 @@
 import argparse
+import inspect
+import logging
+import os
 
-from behavior.examples.behavior_demo_batch import behavior_demo_batch
-from behavior.examples.behavior_demo_segmentation import get_default_segmentation_processors
+import behavior
+from behavior.examples.demo_replay_batch import replay_demo_batch
+from behavior.examples.demo_segmentation_example import get_default_segmentation_processors
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Collect metrics from BEHAVIOR demos in manifest.")
-    parser.add_argument("demo_root", type=str, help="Directory containing demos listed in the manifest.")
-    parser.add_argument("log_manifest", type=str, help="Plain text file consisting of list of demos to replay.")
-    parser.add_argument("out_dir", type=str, help="Directory to store results in.")
-    return parser.parse_args()
+def parse_args(defaults=False):
+    args_dict = dict()
+    args_dict["demo_root"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["log_manifest"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)),
+        "data",
+        "test_manifest.txt",
+    )
+    args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    if not defaults:
+        parser = argparse.ArgumentParser(description="Segment a batch of BEHAVIOR demos in manifest.")
+        parser.add_argument("demo_root", type=str, help="Directory containing demos listed in the manifest.")
+        parser.add_argument("log_manifest", type=str, help="Plain text file consisting of list of demos to replay.")
+        parser.add_argument("out_dir", type=str, help="Directory to store results in.")
+        args = parser.parse_args()
+        args_dict["demo_root"] = args.demo_root
+        args_dict["log_manifest"] = args.log_manifest
+        args_dict["out_dir"] = args.out_dir
+
+    return args_dict
 
 
 def main(selection="user", headless=False, short_exec=False):
-    args = parse_args()
+    """
+    Segment a batch of demos
+    Use a manifest file to indicate the demos to segment
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
 
     def get_segmentation_callbacks(**kwargs):
         # Create default segmentation processors.
@@ -32,7 +57,9 @@ def main(selection="user", headless=False, short_exec=False):
             [data_callback],
         )
 
-    behavior_demo_batch(args.demo_root, args.log_manifest, args.out_dir, get_segmentation_callbacks)
+    replay_demo_batch(
+        args_dict["demo_root"], args_dict["log_manifest"], args_dict["out_dir"], get_segmentation_callbacks
+    )
 
 
 if __name__ == "__main__":
