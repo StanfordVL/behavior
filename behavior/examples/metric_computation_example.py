@@ -1,11 +1,15 @@
 import argparse
+import inspect
 import json
 import logging
+import os
 
 from igibson.envs.igibson_env import iGibsonEnv
 from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.task import TaskMetric
+
+import behavior
 
 
 def get_metrics_callbacks(config):
@@ -31,8 +35,13 @@ def get_metrics_callbacks(config):
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["config"] = "behavior_full_observability.yaml"
+    args_dict["config"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_full_observability.yaml"
+    )
     args_dict["mode"] = "headless"
+    args_dict["log_path"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)), "data", "my_metrics_test.json"
+    )
     if not defaults:
         parser = argparse.ArgumentParser()
         parser.add_argument(
@@ -48,10 +57,15 @@ def parse_args(defaults=False):
             default=args_dict["mode"],
             help="which mode for simulation (default: headless)",
         )
+        parser.add_argument(
+            "--log_path",
+            help="where to save the logging results of the metric computation",
+        )
         args = parser.parse_args()
 
         args_dict["config"] = args.config
         args_dict["mode"] = args.mode
+        args_dict["log_path"] = args.log_path
     return args_dict
 
 
@@ -67,6 +81,7 @@ def main(selection="user", headless=False, short_exec=False):
     if headless:
         args_dict["mode"] = "headless"
 
+    logging.info("Create environment")
     env = iGibsonEnv(
         config_file=args_dict["config"],
         mode=args_dict["mode"],
@@ -78,11 +93,14 @@ def main(selection="user", headless=False, short_exec=False):
     for callback in start_callbacks:
         callback(env, None)
 
+    logging.info("Starting metric example")
     num_resets = 10 if not short_exec else 2
     num_steps = 1000 if not short_exec else 10
     for episode in range(num_resets):
+        logging.info("Resetting environment")
         env.reset()
         for i in range(num_steps):
+            logging.info("Stepping with random actions")
             action = env.action_space.sample()
             state, reward, done, _ = env.step(action)
             for callback in step_callbacks:
@@ -100,13 +118,12 @@ def main(selection="user", headless=False, short_exec=False):
 
         per_episode_metrics[episode] = metrics_summary
 
-    log_path = "my_igibson_run.json"
-
-    with open(log_path, "w") as file:
+    logging.info("Writing metric computation results")
+    with open(args_dict["log_path"], "w") as file:
         json.dump(per_episode_metrics, file)
 
     env.close()
 
 
 if __name__ == "__main__":
-    main()
+    main(selection="random", headless=True, short_exec=True)
