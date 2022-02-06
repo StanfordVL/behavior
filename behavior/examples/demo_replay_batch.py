@@ -1,7 +1,8 @@
 """
 BEHAVIOR demo batch analysis script
 """
-
+import argparse
+import inspect
 import json
 import logging
 import os
@@ -9,6 +10,7 @@ from pathlib import Path
 
 import pandas as pd
 
+import behavior
 from behavior.examples.demo_replay_example import replay_demo
 
 
@@ -22,6 +24,7 @@ def replay_demo_batch(
     save_frames=False,
     debug_display=False,
     image_size=(1280, 720),
+    deactivate_logger=True,
 ):
     """
     Execute replay analysis functions (provided through callbacks) on a batch of BEHAVIOR demos.
@@ -41,11 +44,18 @@ def replay_demo_batch(
     @param save_frames: Whether the demo's frames should be saved alongside statistics.
     @param debug_display: Whether a debug display (the pybullet GUI) should be enabled.
     @param image_size: The image size that should be used by the renderer.
+    @param deactivate_logger: If we deactivate the logger
     """
-    logger = logging.getLogger()
-    logger.disabled = True
+
+    if deactivate_logger:
+        logger = logging.getLogger()
+        logger.disabled = True
+
+    print("aki")
 
     demo_list = pd.read_csv(log_manifest)
+
+    logging.info("Demos in manifest: {}".format(demo_list["demos"]))
 
     for idx, demo in enumerate(demo_list["demos"]):
         if "replay" in demo:
@@ -57,19 +67,22 @@ def replay_demo_batch(
         log_path = os.path.join(out_dir, demo_name + ".json")
 
         if skip_existing and os.path.exists(log_path):
-            print("Skipping existing demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
+            logging.info("Skipping existing demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
             continue
 
-        print("Replaying demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
+        logging.info("Replaying demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
 
         curr_frame_save_path = None
         if save_frames:
             curr_frame_save_path = os.path.join(out_dir, demo_name + ".mp4")
 
         try:
-            start_callbacks, step_callbacks, end_callbacks, data_callbacks = get_callbacks_callback(
-                demo_name=demo_name, out_dir=out_dir
-            )
+            if get_callbacks_callback is not None:
+                start_callbacks, step_callbacks, end_callbacks, data_callbacks = get_callbacks_callback(
+                    demo_name=demo_name, out_dir=out_dir
+                )
+            else:
+                start_callbacks, step_callbacks, end_callbacks, data_callbacks = [], [], [], []
             demo_information = replay_demo(
                 in_log_path=demo_path,
                 out_log_path=replay_path,
@@ -90,7 +103,7 @@ def replay_demo_batch(
 
         except Exception as e:
             if ignore_errors:
-                print("Demo failed with the error: ", str(e))
+                logging.info("Demo failed with the error: {}".format(str(e)))
                 demo_information = {"demo_id": Path(demo).name, "failed": True, "failure_reason": str(e)}
             else:
                 raise
@@ -99,13 +112,51 @@ def replay_demo_batch(
             json.dump(demo_information, file)
 
 
+def parse_args(defaults=False):
+    args_dict = dict()
+    args_dict["demo_root"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["log_manifest"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)), "data", "test_manifest.txt"
+    )
+    args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["split"] = 0
+    if not defaults:
+        parser = argparse.ArgumentParser(description="Replays a batch demos specified in a manifest file")
+        parser.add_argument(
+            "--demo_root", type=str, required=True, help="Directory containing the demo files listed in the manifests."
+        )
+        parser.add_argument(
+            "--log_manifest",
+            type=str,
+            required=True,
+            help="The manifest file containing list of BEHAVIOR demos to batch over.",
+        )
+        parser.add_argument("--demo_root", type=str, required=True, help="Directory to store results in.")
+        args = parser.parse_args()
+        args_dict["demo_root"] = args.demo_root
+        args_dict["log_manifest"] = args.log_manifest
+        args_dict["out_dir"] = args.out_dir
+    return args_dict
+
+
 def main(selection="user", headless=False, short_exec=False):
-    demo_root = "fixme"
-    log_manifest = "fixme"
-    out_dir = "fixme"
-    get_callbacks_callback = "fixme"
-    behavior_demo_batch(demo_root, log_manifest, out_dir, get_callbacks_callback)
+    """
+    Replays a batch of demos specified in a manifest file
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
+
+    get_callbacks_callback = None  # Add a function that generates callbacks here to call during the batch processing
+    replay_demo_batch(
+        args_dict["demo_root"],
+        args_dict["log_manifest"],
+        args_dict["out_dir"],
+        get_callbacks_callback,
+        deactivate_logger=False,
+    )
 
 
 if __name__ == "__main__":
-    main()
+    main(selection="random", headless=True, short_exec=True)
