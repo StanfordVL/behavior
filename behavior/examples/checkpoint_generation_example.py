@@ -1,10 +1,12 @@
 """Save checkpoints from a BEHAVIOR demo."""
+import inspect
 import logging
 import os
 
 import igibson
 from igibson.utils.checkpoint_utils import save_checkpoint
 
+import behavior
 from behavior.examples.demo_replay_example import safe_replay_demo
 
 
@@ -21,10 +23,15 @@ def create_checkpoints(demo_file, checkpoint_directory, checkpoint_every_n_steps
 def main(selection="user", headless=False, short_exec=False):
     """
     Opens a demo and creates checkpoints every N steps
+    Checkpoints can be used to initialize the simulation at those states, for example, for RL
     """
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
-    demo_file = os.path.join(igibson.ig_dataset_path, "tests", "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5")
+    demo_file = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)),
+        "data",
+        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
+    )
     checkpoint_directory = "checkpoints"
     if not os.path.exists(checkpoint_directory):
         os.mkdir(checkpoint_directory)
