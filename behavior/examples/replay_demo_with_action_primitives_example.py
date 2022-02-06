@@ -1,10 +1,8 @@
 import argparse
 import json
 import logging
-import os
 import time
 
-import igibson
 import yaml
 from igibson.envs.behavior_mp_env import ActionPrimitives, BehaviorMPEnv
 from igibson.utils.ig_logging import IGLogReader
@@ -196,11 +194,12 @@ def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file)
 
 
 def parse_args(defaults=False):
-    default_demo_path = "fixme"
-    default_segmentation_path = "fixme"
-    default_output_path = "fixme"
-    default_config = "fixme"
     args_dict = dict()
+    args_dict["demo_path"] = "fixme"
+    args_dict["segmentation_path"] = "fixme"
+    args_dict["config"] = "fixme"
+    args_dict["output_path"] = "fixme"
+
     if not defaults:
         parser = argparse.ArgumentParser()
         parser.add_argument("demo_path", type=str, help="Path of the demo hdf5 to replay.")
@@ -208,11 +207,11 @@ def parse_args(defaults=False):
         parser.add_argument("output_path", type=str, help="Path to output result JSON file to.")
         parser.add_argument("--config", help="which config file to use [default: use yaml files in examples/configs]")
         args = parser.parse_args()
+        args_dict["demo_path"] = args.demo_path
+        args_dict["segmentation_path"] = args.segmentation_path
+        args_dict["config"] = args.config
+        args_dict["output_path"] = args.output_path
 
-    args_dict["demo_path"] = default_demo_path if defaults else args.demo_path
-    args_dict["segmentation_path"] = default_segmentation_path if defaults else args.segmentation_path
-    args_dict["config"] = default_config if defaults else args.config
-    args_dict["output_path"] = default_output_path if defaults else args.output_path
     return args_dict
 
 

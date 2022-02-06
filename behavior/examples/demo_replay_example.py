@@ -28,15 +28,12 @@ def verify_determinism(in_log_path, out_log_path):
         for obj in original_file["physics_data"]:
             for attribute in original_file["physics_data"][obj]:
                 is_close = np.isclose(
-                    original_file["physics_data"][obj][attribute], new_file["physics_data"][obj][attribute]
-                )
-                is_deterministic = is_deterministic and is_close.all()
-                if not is_close.all():
-                    print(
-                        "Mismatch for obj {} with mismatched attribute {} starting at timestep {}".format(
-                            obj, attribute, np.where(is_close == False)[0][0]
-                        )
-                    )
+                    original_file["physics_data"][obj][attribute],
+                    new_file["physics_data"][obj][attribute],
+                ).all()
+                is_deterministic = is_deterministic and is_close
+                if not is_close:
+                    print("Mismatch for obj {} with mismatched attribute {}".format(obj, attribute))
     return bool(is_deterministic)
 
 
@@ -50,6 +47,13 @@ def parse_args(defaults=False):
     default_config = os.path.join(igibson.example_config_path, "behavior_vr.yaml")
 
     args_dict = dict()
+    args_dict["in_log_path"] = "fixme"
+    args_dict["out_log_path"] = "fixme"
+    args_dict["disable_save"] = True
+    args_dict["frame_save_path"] = "fixme"
+    args_dict["mode"] = "headless"
+    args_dict["profile"] = False
+    args_dict["config"] = os.path.join(igibson.example_config_path, "behavior_vr.yaml")
 
     if not defaults:
         parser = argparse.ArgumentParser(description="Replay a BEHAVIOR demo")
@@ -81,15 +85,15 @@ def parse_args(defaults=False):
             help="which config file to use [default: use yaml files in examples/configs]",
             default=default_config,
         )
-    args = parser.parse_args()
+        args = parser.parse_args()
 
-    args_dict["in_log_path"] = default_in_log_path if defaults else args.vr_log_path
-    args_dict["out_log_path"] = default_out_log_path if defaults else args.vr_replay_log_path
-    args_dict["disable_save"] = default_disable_save if defaults else args.disable_save
-    args_dict["frame_save_path"] = default_frame_save_path if defaults else args.frame_save_path
-    args_dict["mode"] = default_mode if defaults else args.mode
-    args_dict["profile"] = default_profile if defaults else args.profile
-    args_dict["config"] = default_config if defaults else args.config
+        args_dict["in_log_path"] = args.vr_log_path
+        args_dict["out_log_path"] = args.vr_replay_log_path
+        args_dict["disable_save"] = args.disable_save
+        args_dict["frame_save_path"] = args.frame_save_path
+        args_dict["mode"] = args.mode
+        args_dict["profile"] = args.profile
+        args_dict["config"] = args.config
 
     return args_dict
 
@@ -123,6 +127,8 @@ def replay_demo(
     @param mode: which rendering mode ("headless", "headless_tensor", "gui_non_interactive", "vr"). In gui_non_interactive
         mode, the demo will be replayed with simple robot view.
     @param config_file: environment config file
+    @param disable_save: Whether saving the replay as a BEHAVIOR demo log should be disabled.
+    @param profile: Whether the replay should be profiled, with profiler output to stdout.
     @param start_callback: A callback function that will be called immediately before starting to replay steps. Should
         take two arguments: iGibsonEnv and IGLogReader
     @param step_callback: A callback function that will be called immediately following each replayed step. Should
@@ -222,7 +228,10 @@ def replay_demo(
     env.reset()
     vr_agent = env.robots[0]
 
+    if not in_log_path:
+        raise RuntimeError("Must provide a VR log path to run action replay!")
     log_reader = IGLogReader(in_log_path, log_status=False)
+
     log_writer = None
     if not disable_save:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -260,7 +269,21 @@ def replay_demo(
             if not disable_save:
                 log_writer.process_frame()
 
-        print("Demo was successfully completed: ", task_done)
+        # Per-step determinism check. Activate if necessary.
+        # things_to_compare = [thing for thing in log_writer.name_path_data if thing[0] == "physics_data"]
+        # for thing in things_to_compare:
+        #     thing_path = "/".join(thing)
+        #     fc = log_reader.frame_counter % log_writer.frames_before_write
+        #     if fc == log_writer.frames_before_write - 1:
+        #         continue
+        #     replayed = log_writer.get_data_for_name_path(thing)[fc]
+        #     original = log_reader.read_value(thing_path)
+        #     if not np.all(replayed == original):
+        #         print("%s not equal in %d" % (thing_path, log_reader.frame_counter))
+        #     if not np.isclose(replayed, original).all():
+        #         print("%s not close in %d" % (thing_path, log_reader.frame_counter))
+
+        print("Demo was succesfully completed: ", task_done)
 
         demo_statistics = {}
         for callback in end_callbacks:
@@ -304,6 +327,8 @@ def main(selection="user", headless=False, short_exec=False):
     # do not want to parse args (it would fail because the calling function is pytest "testfile.py")
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
+
+    bddl.set_backend("iGibson")
 
     agent_metrics = RobotMetric()
     replay_demo(

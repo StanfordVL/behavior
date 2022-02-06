@@ -8,20 +8,22 @@ import tqdm
 
 
 def parse_args(defaults=False):
-    default_demo_directory = "fixme"
-    default_segmentation_directory = "fixme"
-    default_results_directory = "fixme"
+
     args_dict = dict()
+    args_dict["demo_directory"] = "fixme"
+    args_dict["segmentation_directory"] = "fixme"
+    args_dict["results_directory"] = "fixme"
+
     if not defaults:
-        parser = argparse.ArgumentParser(description="Script to batch-replay segmented demos using motion primitives.")
+        parser = argparse.ArgumentParser(description="Script to batch-replay segmented demos using action primitives.")
         parser.add_argument("demo_directory", type=str, help="Path to directory containing demos")
         parser.add_argument("segmentation_directory", type=str, help="Path to directory containing demo segmentations")
         parser.add_argument("results_directory", type=str, help="Path to directory to store results in")
         args = parser.parse_args()
+        args_dict["demo_directory"] = args.demo_directory
+        args_dict["segmentation_directory"] = args.segmentation_directory
+        args_dict["results_directory"] = args.results_directory
 
-    args_dict["demo_directory"] = default_demo_directory if defaults else args.demo_directory
-    args_dict["segmentation_directory"] = default_segmentation_directory if defaults else args.segmentation_directory
-    args_dict["results_directory"] = default_results_directory if defaults else args.results_directory
     return args_dict
 
 

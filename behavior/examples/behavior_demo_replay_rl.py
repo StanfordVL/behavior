@@ -4,6 +4,7 @@ BEHAVIOR RL episodes replay entrypoint
 
 import argparse
 import datetime
+import logging
 import os
 import pprint
 
@@ -12,6 +13,7 @@ import h5py
 import igibson
 import numpy as np
 from igibson.envs.igibson_env import iGibsonEnv
+from igibson.metrics.agent import RobotMetric
 from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
 from igibson.render.mesh_renderer.mesh_renderer_vr import VrSettings
 from igibson.simulator import Simulator
@@ -86,7 +88,9 @@ def replay_demo(
 
     @param in_log_path: the path of the BEHAVIOR demo log to replay.
     @param out_log_path: the path of the new BEHAVIOR demo log to save from the replay.
+    @param disable_save: Whether saving the replay as a BEHAVIOR demo log should be disabled.
     @param frame_save_path: the path to save frame images to. None to disable frame image saving.
+    @param verbose: Whether to print out git diff in detail
     @param mode: which rendering mode ("headless", "headless_tensor", "gui_non_interactive", "vr"). In gui_non_interactive
         mode, the demo will be replayed with simple robot view.
     @param config_file: environment config file
@@ -98,6 +102,7 @@ def replay_demo(
         take two arguments: iGibsonEnv and IGLogReader
     @param end_callback: A callback function that will be called when replay has finished. Should
         take two arguments: iGibsonEnv and IGLogReader
+    @param profile: Whether the replay should be profiled, with profiler output to stdout.
     @param image_size: The image size that should be used by the renderer.
     @param use_pb_gui: display the interactive pybullet gui (for debugging)
     @return if disable_save is True, returns None. Otherwise, returns a boolean indicating if replay was deterministic.
@@ -139,6 +144,7 @@ def replay_demo(
     filter_objects = IGLogReader.read_metadata_attr(in_log_path, "/metadata/filter_objects")
     instance_id = IGLogReader.read_metadata_attr(in_log_path, "/metadata/instance_id")
     urdf_file = IGLogReader.read_metadata_attr(in_log_path, "/metadata/urdf_file")
+
     if urdf_file is None:
         urdf_file = "{}_neurips_task_{}_{}_0_fixed_furniture".format(scene, task, task_id)
     if instance_id is None:
@@ -150,6 +156,13 @@ def replay_demo(
     pp = pprint.PrettyPrinter(indent=4)
 
     for key in logged_git_info.keys():
+        if key not in git_info:
+            print(
+                "Warning: {} not present in current git info. It might be installed through PyPI, "
+                "so its version cannot be validated.".format(key)
+            )
+            continue
+
         logged_git_info[key].pop("directory", None)
         git_info[key].pop("directory", None)
         if logged_git_info[key] != git_info[key] and verbose:
@@ -188,8 +201,8 @@ def replay_demo(
     log_writer = None
     if not disable_save:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        if out_log_path == None:
-            out_log_path = "{}_{}_{}_{}_replay.hdf5".format(task, task_id, scene, timestamp)
+        if out_log_path is None:
+            out_log_path = "{}_{}_{}_{}_{}_replay.hdf5".format(task, task_id, scene, instance_id, timestamp)
 
         log_writer = IGLogWriter(
             env.simulator,
@@ -202,23 +215,25 @@ def replay_demo(
         )
         log_writer.set_up_data_storage()
 
-    for callback in start_callbacks:
-        callback(env, log_reader)
-
-    task_done = False
-    while log_reader.get_data_left_to_read():
-        env.step(log_reader.get_agent_action("vr_robot"))
-        task_done |= env.task.check_success()[0]
-
-        if not disable_save:
-            log_writer.process_frame()
-
-        # Set camera each frame
-        if mode == "vr":
-            log_reader.set_replay_camera(env.simulator)
-
-        for callback in step_callbacks:
+    try:
+        for callback in start_callbacks:
             callback(env, log_reader)
+
+        task_done = False
+
+        while log_reader.get_data_left_to_read():
+            env.step(log_reader.get_agent_action("vr_robot"))
+            task_done |= env.task.check_success()[0]
+
+            # Set camera each frame
+            if mode == "vr":
+                log_reader.set_replay_camera(env.simulator)
+
+            for callback in step_callbacks:
+                callback(env, log_reader)
+
+            if not disable_save:
+                log_writer.process_frame()
 
         # Per-step determinism check. Activate if necessary.
         # things_to_compare = [thing for thing in log_writer.name_path_data if thing[0] == "physics_data"]
@@ -234,17 +249,18 @@ def replay_demo(
         #     if not np.isclose(replayed, original).all():
         #         print("%s not close in %d" % (thing_path, log_reader.frame_counter))
 
-    print("Demo was succesfully completed: ", task_done)
+        print("Demo was succesfully completed: ", task_done)
 
-    demo_statistics = {}
-    for callback in end_callbacks:
-        callback(env, log_reader)
-
-    env.close()
+        demo_statistics = {}
+        for callback in end_callbacks:
+            callback(env, log_reader)
+    finally:
+        env.close()
+        if not disable_save:
+            log_writer.end_log_session()
 
     is_deterministic = None
     if not disable_save:
-        log_writer.end_log_session()
         is_deterministic = verify_determinism(in_log_path, out_log_path)
         print("Demo was deterministic: ", is_deterministic)
 

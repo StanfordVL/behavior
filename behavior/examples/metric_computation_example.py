@@ -1,11 +1,7 @@
 import argparse
 import json
 import logging
-import os
-import parser
 
-import bddl
-import igibson
 from igibson.envs.igibson_env import iGibsonEnv
 from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
@@ -34,28 +30,28 @@ def get_metrics_callbacks(config):
 
 
 def parse_args(defaults=False):
-    default_config = "behavior_full_observability.yaml"
-    default_mode = "headless"
     args_dict = dict()
+    args_dict["config"] = "behavior_full_observability.yaml"
+    args_dict["mode"] = "headless"
     if not defaults:
         parser = argparse.ArgumentParser()
         parser.add_argument(
             "--config",
             "-c",
-            default=os.path.join(igibson.example_config_path, default_config),
+            default=args_dict["config"],
             help="which config file to use [default: use yaml files in examples/configs]",
         )
         parser.add_argument(
             "--mode",
             "-m",
             choices=["headless", "headless_tensor", "gui_interactive", "gui_non_interactive"],
-            default=default_mode,
+            default=args_dict["mode"],
             help="which mode for simulation (default: headless)",
         )
         args = parser.parse_args()
 
-    args_dict["config"] = default_config if defaults else args.config
-    args_dict["mode"] = default_mode if defaults else args.mode
+        args_dict["config"] = args.config
+        args_dict["mode"] = args.mode
     return args_dict
 
 

@@ -7,13 +7,12 @@ import logging
 import os
 from pathlib import Path
 
-import bddl
 import pandas as pd
 
-from behavior.examples.behavior_demo_replay import replay_demo
+from behavior.examples.demo_replay_example import replay_demo
 
 
-def behavior_demo_batch(
+def replay_demo_batch(
     demo_root,
     log_manifest,
     out_dir,

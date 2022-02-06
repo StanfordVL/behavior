@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 import os
 from collections import deque, namedtuple
 from enum import Enum
@@ -412,6 +413,11 @@ def get_default_segmentation_processors(profiler=None):
 
 
 def main(selection="user", headless=False, short_exec=False):
+    """
+    Segment a given demo into a sequence of predefined action primitives
+    It assumes a predefined map of logic changes to action primitives that cause them
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
     args = parse_args()
 
     # Select the demo to apply segmentation on.
