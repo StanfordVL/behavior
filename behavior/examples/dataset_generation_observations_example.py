@@ -11,7 +11,7 @@ from igibson.objects.articulated_object import URDFObject
 from igibson.utils import utils
 from igibson.utils.constants import MAX_INSTANCE_COUNT, SemanticClass
 
-from behavior.examples.behavior_demo_batch import behavior_demo_batch
+from behavior.examples.demo_replay_batch import replay_demo_batch
 
 FRAME_BATCH_SIZE = 100
 START_FRAME = 500
@@ -292,7 +292,7 @@ def main(selection="user", headless=False, short_exec=False):
         )
 
     # TODO: Set resolution to match model.
-    behavior_demo_batch(
+    replay_demo_batch(
         args.demo_root,
         args.log_manifest,
         args.out_dir,

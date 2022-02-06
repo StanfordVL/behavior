@@ -15,7 +15,7 @@ from igibson.object_states.object_state_base import AbsoluteObjectState, Boolean
 from igibson.robots.behavior_robot import BRBody
 from igibson.tasks.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
 
-from behavior.examples import behavior_demo_replay
+from behavior.examples import demo_replay_example
 
 StateRecord = namedtuple("StateRecord", ["state_type", "objects", "value"])
 StateEntry = namedtuple("StateEntry", ["frame_count", "state_records"])

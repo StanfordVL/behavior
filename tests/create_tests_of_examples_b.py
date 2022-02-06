@@ -24,7 +24,6 @@ def main(exhaustive=False):
             and package.name[17:] != "example_selector"
             and "batch" not in package.name[17:]  # we do not run the batch examples as test
         ):  # Consider removing the last condition if we have runnable VR tests
-            print(package.name)
             examples_list += [package.name[18:]]
 
             # Import the module and get the number of first options, if there is a function for it

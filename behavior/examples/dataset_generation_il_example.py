@@ -6,23 +6,15 @@ import argparse
 import json
 import logging
 import os
-import pprint
-import types
 from pathlib import Path
 
-import bddl
 import h5py
 import igibson
 import numpy as np
 import pandas as pd
 from igibson.metrics.dataset import DatasetMetric
-from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
-from igibson.render.mesh_renderer.mesh_renderer_vr import VrSettings
-from igibson.sensors.vision_sensor import VisionSensor
-from igibson.simulator import Simulator
-from igibson.utils.git_utils import project_git_info
 from igibson.utils.ig_logging import IGLogReader
-from igibson.utils.utils import parse_config, parse_str_config
+from igibson.utils.utils import parse_config
 
 from behavior.examples.demo_replay_example import replay_demo
 

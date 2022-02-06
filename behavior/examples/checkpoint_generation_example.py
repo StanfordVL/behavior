@@ -5,7 +5,7 @@ import os
 import igibson
 from igibson.utils.checkpoint_utils import save_checkpoint
 
-from behavior.examples.behavior_demo_replay import safe_replay_demo
+from behavior.examples.demo_replay_example import safe_replay_demo
 
 
 def create_checkpoints(demo_file, checkpoint_directory, checkpoint_every_n_steps):
