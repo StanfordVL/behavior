@@ -4,6 +4,7 @@ Main BEHAVIOR demo replay entrypoint
 
 import argparse
 import datetime
+import inspect
 import logging
 import os
 import pprint
@@ -20,6 +21,8 @@ from igibson.simulator import Simulator
 from igibson.utils.git_utils import project_git_info
 from igibson.utils.ig_logging import IGLogReader, IGLogWriter
 from igibson.utils.utils import parse_config, parse_str_config
+
+import behavior
 
 
 def verify_determinism(in_log_path, out_log_path):
@@ -40,10 +43,14 @@ def verify_determinism(in_log_path, out_log_path):
 def parse_args(defaults=False):
 
     args_dict = dict()
-    args_dict["in_log_path"] = "fixme"
-    args_dict["out_log_path"] = "fixme"
+    args_dict["in_log_path"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)),
+        "data",
+        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
+    )
+    args_dict["out_log_path"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     args_dict["disable_save"] = True
-    args_dict["frame_save_path"] = "fixme"
+    args_dict["frame_save_path"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     args_dict["mode"] = "headless"
     args_dict["profile"] = False
     args_dict["config"] = os.path.join(igibson.example_config_path, "behavior_vr.yaml")
@@ -209,6 +216,7 @@ def replay_demo(
     config["image_height"] = image_size[1]
     config["online_sampling"] = False
 
+    logging.info("Creating environment and resetting it")
     env = iGibsonEnv(
         config_file=config,
         mode=mode,
@@ -248,6 +256,7 @@ def replay_demo(
 
         task_done = False
 
+        logging.info("Replaying demo")
         while log_reader.get_data_left_to_read():
             env.step(log_reader.get_agent_action("vr_robot"))
             task_done |= env.task.check_success()[0]
@@ -276,12 +285,13 @@ def replay_demo(
         #     if not np.isclose(replayed, original).all():
         #         print("%s not close in %d" % (thing_path, log_reader.frame_counter))
 
-        logging.info("Demo was succesfully completed: {}".format(task_done))
+        logging.info("Demo ended in success: {}".format(task_done))
 
         demo_statistics = {}
         for callback in end_callbacks:
             callback(env, log_reader)
     finally:
+        logging.info("End of the replay.")
         env.close()
         if not disable_save:
             log_writer.end_log_session()
@@ -337,4 +347,4 @@ def main(selection="user", headless=False, short_exec=False):
 
 
 if __name__ == "__main__":
-    main()
+    main(selection="random", headless=True, short_exec=True)
