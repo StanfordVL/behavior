@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 import os
 import parser
 
@@ -59,6 +60,10 @@ def parse_args(defaults=False):
 
 
 def main(selection="user", headless=False, short_exec=False):
+    """
+    Compute metrics on a given demo
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)

@@ -1,3 +1,4 @@
+import logging
 import os
 
 import bddl
@@ -38,6 +39,12 @@ def robot_states_callback(env, _):
 
 
 def main(selection="user", headless=False, short_exec=False):
+    """
+    Replays a demo and prints some predefined logic states for the robot at each step
+    This demonstrates how to check some logic states of interest at each step of a give demo (e.g. BEHAVIOR demos)
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+
     DEMO_FILE = os.path.join(igibson.ig_dataset_path, "tests", "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5")
 
     behavior_demo_replay.replay_demo(

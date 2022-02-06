@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 import os
 import time
 
@@ -122,7 +123,7 @@ def get_actions_from_segmentation(demo_data):
     return actions
 
 
-def run_demonstration(demo_path, segmentation_path, output_path, config_file):
+def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file):
     task = IGLogReader.read_metadata_attr(demo_path, "/metadata/atus_activity")
     task_id = IGLogReader.read_metadata_attr(demo_path, "/metadata/activity_definition")
     scene_id = IGLogReader.read_metadata_attr(demo_path, "/metadata/scene_id")
@@ -194,15 +195,40 @@ def run_demonstration(demo_path, segmentation_path, output_path, config_file):
     env.close()
 
 
-def main(selection="user", headless=False, short_exec=False):
-    parser = argparse.ArgumentParser()
-    parser.add_argument("demo_path", type=str, help="Path of the demo hdf5 to replay.")
-    parser.add_argument("segmentation_path", type=str, help="Path of the segmentation of the demo.")
-    parser.add_argument("output_path", type=str, help="Path to output result JSON file to.")
-    parser.add_argument("--config", help="which config file to use [default: use yaml files in examples/configs]")
-    args = parser.parse_args()
+def parse_args(defaults=False):
+    default_demo_path = "fixme"
+    default_segmentation_path = "fixme"
+    default_output_path = "fixme"
+    default_config = "fixme"
+    args_dict = dict()
+    if not defaults:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("demo_path", type=str, help="Path of the demo hdf5 to replay.")
+        parser.add_argument("segmentation_path", type=str, help="Path of the segmentation of the demo.")
+        parser.add_argument("output_path", type=str, help="Path to output result JSON file to.")
+        parser.add_argument("--config", help="which config file to use [default: use yaml files in examples/configs]")
+        args = parser.parse_args()
 
-    run_demonstration(args.demo_path, args.segmentation_path, args.output_path, args.config)
+    args_dict["demo_path"] = default_demo_path if defaults else args.demo_path
+    args_dict["segmentation_path"] = default_segmentation_path if defaults else args.segmentation_path
+    args_dict["config"] = default_config if defaults else args.config
+    args_dict["output_path"] = default_output_path if defaults else args.output_path
+    return args_dict
+
+
+def main(selection="user", headless=False, short_exec=False):
+    """
+    Replays a demo using action primitives
+    The demo must be segmented before into a valid sequence of action primitives
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
+
+    replay_demo_with_aps(
+        args_dict["demo_path"], args_dict["segmentation_path"], args_dict["output_path"], args_dict["config"]
+    )
 
 
 if __name__ == "__main__":
