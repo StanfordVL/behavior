@@ -5,7 +5,6 @@ import os
 from collections import deque, namedtuple
 from enum import Enum
 
-import bddl
 import igibson
 import printree
 import pyinstrument
@@ -14,8 +13,6 @@ from igibson.object_states import ROOM_STATES, factory
 from igibson.object_states.object_state_base import AbsoluteObjectState, BooleanState, RelativeObjectState
 from igibson.robots.behavior_robot import BRBody
 from igibson.tasks.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
-
-from behavior.examples import demo_replay_example
 
 StateRecord = namedtuple("StateRecord", ["state_type", "objects", "value"])
 StateEntry = namedtuple("StateEntry", ["frame_count", "state_records"])
