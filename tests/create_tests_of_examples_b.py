@@ -20,7 +20,9 @@ def main(exhaustive=False):
     num_first_options = {}
     for package in pkgutil.walk_packages(examples.__path__, examples.__name__ + "."):
         if (
-            not package.ispkg and package.name[17:] != "example_selector"
+            not package.ispkg
+            and package.name[17:] != "example_selector"
+            and "batch" not in package.name[17:]  # we do not run the batch examples as test
         ):  # Consider removing the last condition if we have runnable VR tests
             print(package.name)
             examples_list += [package.name[18:]]

@@ -24,7 +24,7 @@ from igibson.utils.git_utils import project_git_info
 from igibson.utils.ig_logging import IGLogReader
 from igibson.utils.utils import parse_config, parse_str_config
 
-from behavior.examples.behavior_demo_replay import replay_demo
+from behavior.examples.demo_replay_example import replay_demo
 
 
 def save_episode(in_log_path, dataset_metric):
