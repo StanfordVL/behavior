@@ -126,4 +126,4 @@ def main(selection="user", headless=False, short_exec=False):
 
 
 if __name__ == "__main__":
-    main(selection="random", headless=True, short_exec=True)
+    main()
