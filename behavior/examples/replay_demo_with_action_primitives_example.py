@@ -18,7 +18,7 @@ def get_empty_hand(current_hands):
 
 
 def get_actions_from_segmentation(demo_data):
-    print("Conversion of demo segmentation to motion primitives:")
+    logging.info("Conversion of demo segmentation to action primitives:")
 
     hand_by_object = {}
     actions = []

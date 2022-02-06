@@ -57,7 +57,7 @@ def parse_args(defaults=False):
 
 def main(selection="user", headless=False, short_exec=False):
     """
-    Compute metrics on a given demo
+    Compute metrics "live" on a running environment with random actions
     """
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 

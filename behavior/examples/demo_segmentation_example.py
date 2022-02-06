@@ -361,20 +361,32 @@ class DemoSegmentationProcessor(object):
         return out
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Run segmentation on an ATUS demo.")
-    parser.add_argument(
-        "--log_path", type=str, help="Path (and filename) of log to replay. If empty, test demo will be used."
+def parse_args(defaults=False):
+    args_dict = dict()
+    args_dict["log_path"] = os.path.join(
+        igibson.ig_dataset_path, "tests", "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5"
     )
-    parser.add_argument(
-        "--out_dir", type=str, help="Directory to store results in. If empty, test directory will be used."
-    )
-    parser.add_argument(
-        "--profile",
-        action="store_true",
-        help="Whether to profile the segmentation, outputting a profile HTML in the out path.",
-    )
-    return parser.parse_args()
+    args_dict["log_manifest"] = "fixme"
+    args_dict["profile"] = False
+    if not defaults:
+        parser = argparse.ArgumentParser(description="Run segmentation on an ATUS demo.")
+        parser.add_argument(
+            "--log_path", type=str, help="Path (and filename) of log to replay. If empty, test demo will be used."
+        )
+        parser.add_argument(
+            "--out_dir", type=str, help="Directory to store results in. If empty, test directory will be used."
+        )
+        parser.add_argument(
+            "--profile",
+            action="store_true",
+            help="Whether to profile the segmentation, outputting a profile HTML in the out path.",
+        )
+        args = parser.parse_args()
+        args_dict["log_path"] = args.log_path
+        args_dict["out_dir"] = args.out_dir
+        args_dict["profile"] = args.profile
+
+    return args_dict
 
 
 def get_default_segmentation_processors(profiler=None):
@@ -418,25 +430,17 @@ def main(selection="user", headless=False, short_exec=False):
     It assumes a predefined map of logic changes to action primitives that cause them
     """
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
-    args = parse_args()
 
-    # Select the demo to apply segmentation on.
-    demo_file = os.path.join(igibson.ig_dataset_path, "tests", "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5")
-    if args.log_path:
-        demo_file = args.log_path
-
-    # Select the output directory.
-    out_dir = os.path.join(igibson.ig_dataset_path, "tests", "segmentation_results")
-    if args.out_dir:
-        out_dir = args.out_dir
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
 
     # Create output directory if needed.
-    if not os.path.exists(out_dir):
-        os.mkdir(out_dir)
+    if not os.path.exists(args_dict["out_dir"]):
+        os.mkdir(args_dict["out_dir"])
 
     # Set up the profiler
     profiler = None
-    if args.profile:
+    if args_dict["profile"]:
         profiler = pyinstrument.Profiler()
 
     # Create default segmentation processors.
@@ -444,15 +448,15 @@ def main(selection="user", headless=False, short_exec=False):
 
     # Run the segmentations.
     behavior_demo_replay.safe_replay_demo(
-        demo_file,
+        args_dict["log_path"],
         start_callbacks=[sp.start_callback for sp in segmentation_processors.values()],
         step_callbacks=[sp.step_callback for sp in segmentation_processors.values()],
     )
 
-    demo_basename = os.path.splitext(os.path.basename(demo_file))[0]
+    demo_basename = os.path.splitext(os.path.basename(args_dict["log_path"]))[0]
     for segmentation_name, segmentation_processor in segmentation_processors.items():
         json_file = "%s_%s.json" % (demo_basename, segmentation_name)
-        json_fullpath = os.path.join(out_dir, json_file)
+        json_fullpath = os.path.join(args_dict["out_dir"], json_file)
         with open(json_fullpath, "w") as f:
             json.dump(segmentation_processor.serialize_segments(), f)
 
@@ -464,9 +468,9 @@ def main(selection="user", headless=False, short_exec=False):
     print(combined_output)
 
     # Save profiling information.
-    if args.profile:
+    if args_dict["profile"]:
         html = profiler.output_html()
-        html_path = os.path.join(out_dir, "segmentation_profile.html")
+        html_path = os.path.join(args_dict["out_dir"], "segmentation_profile.html")
         with open(html_path, "w") as f:
             f.write(html)
 

@@ -38,13 +38,6 @@ def verify_determinism(in_log_path, out_log_path):
 
 
 def parse_args(defaults=False):
-    default_in_log_path = "fixme"
-    default_out_log_path = "fixme"
-    default_disable_save = True
-    default_frame_save_path = "fixme"
-    default_mode = "headless"
-    default_profile = False
-    default_config = os.path.join(igibson.example_config_path, "behavior_vr.yaml")
 
     args_dict = dict()
     args_dict["in_log_path"] = "fixme"
@@ -83,7 +76,7 @@ def parse_args(defaults=False):
         parser.add_argument(
             "--config",
             help="which config file to use [default: use yaml files in examples/configs]",
-            default=default_config,
+            default=args_dict["config"],
         )
         args = parser.parse_args()
 
@@ -283,7 +276,7 @@ def replay_demo(
         #     if not np.isclose(replayed, original).all():
         #         print("%s not close in %d" % (thing_path, log_reader.frame_counter))
 
-        print("Demo was succesfully completed: ", task_done)
+        logging.info("Demo was succesfully completed: {}".format(task_done))
 
         demo_statistics = {}
         for callback in end_callbacks:
@@ -296,7 +289,7 @@ def replay_demo(
     is_deterministic = None
     if not disable_save:
         is_deterministic = verify_determinism(in_log_path, out_log_path)
-        print("Demo was deterministic: ", is_deterministic)
+        logging.info("Demo was deterministic: {}".format(is_deterministic))
 
     demo_statistics = {
         "deterministic": is_deterministic,

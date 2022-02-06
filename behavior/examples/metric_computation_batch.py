@@ -28,7 +28,7 @@ def parse_args(defaults=False):
 
 def main(selection="user", headless=False, short_exec=False):
     """
-    Compute metrics on a batch of demos
+    Compute metrics on a batch of previously recorded demos
     Uses a manifest file
     """
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
