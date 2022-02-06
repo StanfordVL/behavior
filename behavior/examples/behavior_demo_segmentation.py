@@ -9,11 +9,12 @@ import igibson
 import printree
 import pyinstrument
 from igibson import object_states
-from igibson.activity.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
-from igibson.examples.behavior import behavior_demo_replay
 from igibson.object_states import ROOM_STATES, factory
 from igibson.object_states.object_state_base import AbsoluteObjectState, BooleanState, RelativeObjectState
 from igibson.robots.behavior_robot import BRBody
+from igibson.tasks.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
+
+from behavior.examples import behavior_demo_replay
 
 StateRecord = namedtuple("StateRecord", ["state_type", "objects", "value"])
 StateEntry = namedtuple("StateEntry", ["frame_count", "state_records"])
@@ -410,7 +411,7 @@ def get_default_segmentation_processors(profiler=None):
     }
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
     args = parse_args()
 
     # Select the demo to apply segmentation on.

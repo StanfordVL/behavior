@@ -135,7 +135,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
     args = parse_args()
     generate_imitation_dataset(args.demo_root, args.log_manifest, args.out_dir, args.config)
 

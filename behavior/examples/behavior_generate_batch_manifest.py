@@ -17,7 +17,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
     args = parse_args()
     demos = glob.glob(os.path.join(args.demo_directory, "*.hdf5"))
     filtered_demos = [demo for demo in demos if "replay" not in demo]

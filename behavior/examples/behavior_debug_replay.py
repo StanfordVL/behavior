@@ -4,10 +4,11 @@ Debugging script to bypass taksnet
 
 import argparse
 import datetime
+import logging
 import os
 
 import igibson
-from igibson.metrics.agent import MetricBase
+from igibson.metrics.agent import MetricBase, RobotMetric
 from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
 from igibson.render.mesh_renderer.mesh_renderer_vr import VrSettings
 from igibson.robots.behavior_robot import BehaviorRobot
@@ -19,32 +20,53 @@ POST_TASK_STEPS = 200
 PHYSICS_WARMING_STEPS = 200
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Run and collect an ATUS demo")
-    parser.add_argument("--vr_log_path", type=str, help="Path (and filename) of vr log to replay")
-    parser.add_argument(
-        "--vr_replay_log_path",
-        type=str,
-        help="Path (and filename) of file to save replay to (for debugging)",
-    )
-    parser.add_argument(
-        "--frame_save_path",
-        type=str,
-        help="Path to save frames (frame number added automatically, as well as .jpg extension)",
-    )
-    parser.add_argument(
-        "--disable_save",
-        action="store_true",
-        help="Whether to disable saving log of replayed trajectory, used for validation.",
-    )
-    parser.add_argument("--profile", action="store_true", help="Whether to print profiling data.")
-    parser.add_argument(
-        "--mode",
-        type=str,
-        choices=["headless", "headless_tensor", "vr", "gui_non_interactive"],
-        help="Mode for replaying",
-    )
-    return parser.parse_args()
+def parse_args(defaults=False):
+
+    default_in_log_path = "fixme"
+    default_out_log_path = "fixme"
+    default_disable_save = True
+    default_frame_save_path = "fixme"
+    default_mode = "headless"
+    default_profile = False
+
+    args_dict = dict()
+
+    if not defaults:
+
+        parser = argparse.ArgumentParser(description="Replay a BEHAVIOR demo")
+        parser.add_argument("--vr_log_path", type=str, help="Path (and filename) of vr log to replay")
+        parser.add_argument(
+            "--vr_replay_log_path",
+            type=str,
+            help="Path (and filename) of file to save replay to (for debugging)",
+        )
+        parser.add_argument(
+            "--frame_save_path",
+            type=str,
+            help="Path to save frames (frame number added automatically, as well as .jpg extension)",
+        )
+        parser.add_argument(
+            "--disable_save",
+            action="store_true",
+            help="Whether to disable saving log of replayed trajectory, used for validation.",
+        )
+        parser.add_argument("--profile", action="store_true", help="Whether to print profiling data.")
+        parser.add_argument(
+            "--mode",
+            type=str,
+            choices=["headless", "headless_tensor", "vr", "gui_non_interactive"],
+            help="Mode for replaying",
+        )
+        args = parser.parse_args()
+
+    args_dict["in_log_path"] = default_in_log_path if defaults else args.vr_log_path
+    args_dict["out_log_path"] = default_out_log_path if defaults else args.vr_replay_log_path
+    args_dict["disable_save"] = default_disable_save if defaults else args.disable_save
+    args_dict["frame_save_path"] = default_frame_save_path if defaults else args.frame_save_path
+    args_dict["mode"] = default_mode if defaults else args.mode
+    args_dict["profile"] = default_profile if defaults else args.profile
+
+    return args_dict
 
 
 def replay_demo(
@@ -187,21 +209,32 @@ def replay_demo(
     return demo_statistics
 
 
-def main():
-    args = parse_args()
-    agent_metrics = MetricBase()
-    replay_demo(
-        args.vr_log_path,
-        out_log_path=args.vr_replay_log_path,
-        step_callbacks=[agent_metrics.step_callback],
-        disable_save=args.disable_save,
-        frame_save_path=args.frame_save_path,
-        mode=args.mode,
-        profile=args.profile,
-    )
-    import pdb
+def main(selection="user", headless=False, short_exec=False):
+    """
+    Replay a BEHAVIOR demo
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
-    pdb.set_trace()
+    # Assuming that if selection!="user", headless=True, short_exec=True, we are calling it from tests and we
+    # do not want to parse args (it would fail because the calling function is pytest "testfile.py")
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
+
+    agent_metrics = RobotMetric()
+    replay_demo(
+        args_dict["in_log_path"],
+        args_dict["out_log_path"],
+        args_dict["disable_save"],
+        args_dict["frame_save_path"],
+        args_dict["mode"],
+        args_dict["profile"],
+        step_callbacks=[agent_metrics.step_callback],
+    )
+
+    if not headless:
+        import pdb
+
+        pdb.set_trace()
 
 
 if __name__ == "__main__":

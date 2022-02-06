@@ -98,3 +98,15 @@ def behavior_demo_batch(
 
         with open(log_path, "w") as file:
             json.dump(demo_information, file)
+
+
+def main(selection="user", headless=False, short_exec=False):
+    demo_root = "fixme"
+    log_manifest = "fixme"
+    out_dir = "fixme"
+    get_callbacks_callback = "fixme"
+    behavior_demo_batch(demo_root, log_manifest, out_dir, get_callbacks_callback)
+
+
+if __name__ == "__main__":
+    main()

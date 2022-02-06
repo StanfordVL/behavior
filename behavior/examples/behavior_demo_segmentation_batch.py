@@ -12,7 +12,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
     args = parse_args()
 
     def get_segmentation_callbacks(**kwargs):

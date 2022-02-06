@@ -4,6 +4,7 @@ Main BEHAVIOR demo replay entrypoint
 
 import argparse
 import datetime
+import logging
 import os
 import pprint
 
@@ -12,6 +13,7 @@ import h5py
 import igibson
 import numpy as np
 from igibson.envs.igibson_env import iGibsonEnv
+from igibson.metrics.agent import RobotMetric
 from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
 from igibson.render.mesh_renderer.mesh_renderer_vr import VrSettings
 from igibson.simulator import Simulator
@@ -38,35 +40,58 @@ def verify_determinism(in_log_path, out_log_path):
     return bool(is_deterministic)
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Run and collect an ATUS demo")
-    parser.add_argument("--vr_log_path", type=str, help="Path (and filename) of vr log to replay")
-    parser.add_argument(
-        "--vr_replay_log_path", type=str, help="Path (and filename) of file to save replay to (for debugging)"
-    )
-    parser.add_argument(
-        "--frame_save_path",
-        type=str,
-        help="Path to save frames (frame number added automatically, as well as .jpg extension)",
-    )
-    parser.add_argument(
-        "--disable_save",
-        action="store_true",
-        help="Whether to disable saving log of replayed trajectory, used for validation.",
-    )
-    parser.add_argument("--profile", action="store_true", help="Whether to print profiling data.")
-    parser.add_argument(
-        "--mode",
-        type=str,
-        choices=["headless", "headless_tensor", "vr", "gui_non_interactive"],
-        help="Mode to run simulator in",
-    )
-    parser.add_argument(
-        "--config",
-        help="which config file to use [default: use yaml files in examples/configs]",
-        default=os.path.join(igibson.example_config_path, "behavior_vr.yaml"),
-    )
-    return parser.parse_args()
+def parse_args(defaults=False):
+    default_in_log_path = "fixme"
+    default_out_log_path = "fixme"
+    default_disable_save = True
+    default_frame_save_path = "fixme"
+    default_mode = "headless"
+    default_profile = False
+    default_config = os.path.join(igibson.example_config_path, "behavior_vr.yaml")
+
+    args_dict = dict()
+
+    if not defaults:
+        parser = argparse.ArgumentParser(description="Replay a BEHAVIOR demo")
+        parser.add_argument("--vr_log_path", type=str, help="Path (and filename) of vr log to replay")
+        parser.add_argument(
+            "--vr_replay_log_path",
+            type=str,
+            help="Path (and filename) of file to save replay to (for debugging)",
+        )
+        parser.add_argument(
+            "--frame_save_path",
+            type=str,
+            help="Path to save frames (frame number added automatically, as well as .jpg extension)",
+        )
+        parser.add_argument(
+            "--disable_save",
+            action="store_true",
+            help="Whether to disable saving log of replayed trajectory, used for validation.",
+        )
+        parser.add_argument("--profile", action="store_true", help="Whether to print profiling data.")
+        parser.add_argument(
+            "--mode",
+            type=str,
+            choices=["headless", "headless_tensor", "vr", "gui_non_interactive"],
+            help="Mode for replaying",
+        )
+        parser.add_argument(
+            "--config",
+            help="which config file to use [default: use yaml files in examples/configs]",
+            default=default_config,
+        )
+    args = parser.parse_args()
+
+    args_dict["in_log_path"] = default_in_log_path if defaults else args.vr_log_path
+    args_dict["out_log_path"] = default_out_log_path if defaults else args.vr_replay_log_path
+    args_dict["disable_save"] = default_disable_save if defaults else args.disable_save
+    args_dict["frame_save_path"] = default_frame_save_path if defaults else args.frame_save_path
+    args_dict["mode"] = default_mode if defaults else args.mode
+    args_dict["profile"] = default_profile if defaults else args.profile
+    args_dict["config"] = default_config if defaults else args.config
+
+    return args_dict
 
 
 def replay_demo(
@@ -227,7 +252,7 @@ def replay_demo(
 
             # Set camera each frame
             if mode == "vr":
-                log_reader.set_replay_camera(s)
+                log_reader.set_replay_camera(env.simulator)
 
             for callback in step_callbacks:
                 callback(env, log_reader)
@@ -269,16 +294,27 @@ def safe_replay_demo(*args, **kwargs):
     ), "Replay was not deterministic (or was executed with disable_save=True)."
 
 
-def main():
-    args = parse_args()
+def main(selection="user", headless=False, short_exec=False):
+    """
+    Replay a BEHAVIOR demo
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+
+    # Assuming that if selection!="user", headless=True, short_exec=True, we are calling it from tests and we
+    # do not want to parse args (it would fail because the calling function is pytest "testfile.py")
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
+
+    agent_metrics = RobotMetric()
     replay_demo(
-        args.vr_log_path,
-        out_log_path=args.vr_replay_log_path,
-        disable_save=args.disable_save,
-        frame_save_path=args.frame_save_path,
-        mode=args.mode,
-        profile=args.profile,
-        config_file=args.config,
+        args_dict["in_log_path"],
+        out_log_path=args_dict["out_log_path"],
+        disable_save=args_dict["disable_save"],
+        frame_save_path=args_dict["frame_save_path"],
+        mode=args_dict["mode"],
+        profile=args_dict["profile"],
+        config_file=args_dict["config"],
+        step_callbacks=[agent_metrics.step_callback],
     )
 
 

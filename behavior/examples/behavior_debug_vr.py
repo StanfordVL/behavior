@@ -4,6 +4,7 @@ Debugging script to bypass taksnet
 
 import copy
 import datetime
+import logging
 import os
 
 import igibson
@@ -19,7 +20,11 @@ POST_TASK_STEPS = 200
 PHYSICS_WARMING_STEPS = 200
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
+    """
+    Opens a demo and creates checkpoints every N steps
+    """
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
     collect_demo(scene_id="Rs_int")
 
 

@@ -6,7 +6,7 @@ import parser
 import bddl
 import igibson
 from igibson.envs.igibson_env import iGibsonEnv
-from igibson.metrics.agent import BehaviorRobotMetric, FetchRobotMetric
+from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.task import TaskMetric
 
@@ -19,10 +19,8 @@ def get_metrics_callbacks(config):
     ]
 
     robot_type = config["robot"]
-    if robot_type == "Fetch":
-        metrics.append(FetchRobotMetric())
-    elif robot_type == "BehaviorRobot":
-        metrics.append(BehaviorRobotMetric())
+    if robot_type == "Fetch" or robot_type == "BehaviorRobot":
+        metrics.append(RobotMetric())
     else:
         Exception("Metrics only implemented for Fetch and BehaviorRobot")
 
@@ -34,27 +32,43 @@ def get_metrics_callbacks(config):
     )
 
 
-def main():
-    parser = argparse.ArgumentParser()
+def parse_args(defaults=False):
+    default_config = "behavior_full_observability.yaml"
+    default_mode = "headless"
+    args_dict = dict()
+    if not defaults:
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            "--config",
+            "-c",
+            default=os.path.join(igibson.example_config_path, default_config),
+            help="which config file to use [default: use yaml files in examples/configs]",
+        )
+        parser.add_argument(
+            "--mode",
+            "-m",
+            choices=["headless", "headless_tensor", "gui_interactive", "gui_non_interactive"],
+            default=default_mode,
+            help="which mode for simulation (default: headless)",
+        )
+        args = parser.parse_args()
 
-    parser.add_argument(
-        "--config",
-        "-c",
-        default=os.path.join(igibson.example_config_path, "behavior_full_observability.yaml"),
-        help="which config file to use [default: use yaml files in examples/configs]",
-    )
-    parser.add_argument(
-        "--mode",
-        "-m",
-        choices=["headless", "headless_tensor", "gui_interactive", "gui_non_interactive"],
-        default="gui_non_interactive",
-        help="which mode for simulation (default: headless)",
-    )
-    args = parser.parse_args()
+    args_dict["config"] = default_config if defaults else args.config
+    args_dict["mode"] = default_mode if defaults else args.mode
+    return args_dict
+
+
+def main(selection="user", headless=False, short_exec=False):
+
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
+
+    if headless:
+        args_dict["mode"] = "headless"
 
     env = iGibsonEnv(
-        config_file=args.config,
-        mode="headless",
+        config_file=args_dict["config"],
+        mode=args_dict["mode"],
     )
 
     start_callbacks, step_callbacks, end_callbacks, data_callbacks = get_metrics_callbacks(env.config)
@@ -63,9 +77,11 @@ def main():
     for callback in start_callbacks:
         callback(env, None)
 
-    for episode in range(10):
+    num_resets = 10 if not short_exec else 2
+    num_steps = 1000 if not short_exec else 10
+    for episode in range(num_resets):
         env.reset()
-        for i in range(1000):
+        for i in range(num_steps):
             action = env.action_space.sample()
             state, reward, done, _ = env.step(action)
             for callback in step_callbacks:

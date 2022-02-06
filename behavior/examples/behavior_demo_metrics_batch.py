@@ -1,6 +1,6 @@
 import argparse
 
-from igibson.metrics.agent import BehaviorRobotMetric
+from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.gaze import GazeMetric
 from igibson.metrics.task import TaskMetric
@@ -16,14 +16,14 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
     args = parse_args()
 
     def get_metrics_callbacks(**kwargs):
         metrics = [
             KinematicDisarrangement(),
             LogicalDisarrangement(),
-            BehaviorRobotMetric(),
+            RobotMetric(),
             GazeMetric(),
             TaskMetric(),
         ]

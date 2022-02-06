@@ -11,13 +11,13 @@ import bddl
 import h5py
 import igibson
 import numpy as np
-from igibson.activity.activity_base import iGBEHAVIORActivityInstance
+from igibson.envs.igibson_env import iGibsonEnv
 from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
 from igibson.render.mesh_renderer.mesh_renderer_vr import VrSettings
 from igibson.simulator import Simulator
 from igibson.utils.git_utils import project_git_info
 from igibson.utils.ig_logging import IGLogReader, IGLogWriter
-from igibson.utils.utils import parse_str_config
+from igibson.utils.utils import parse_config, parse_str_config
 
 
 def verify_determinism(in_log_path, out_log_path):
@@ -70,10 +70,13 @@ def replay_demo(
     frame_save_path=None,
     verbose=True,
     mode="headless",
+    config_file=os.path.join(igibson.example_config_path, "behavior_vr.yaml"),
     start_callbacks=[],
     step_callbacks=[],
     end_callbacks=[],
     profile=False,
+    image_size=(1280, 720),
+    use_pb_gui=False,
 ):
     """
     Replay a BEHAVIOR demo.
@@ -86,14 +89,17 @@ def replay_demo(
     @param frame_save_path: the path to save frame images to. None to disable frame image saving.
     @param mode: which rendering mode ("headless", "headless_tensor", "gui_non_interactive", "vr"). In gui_non_interactive
         mode, the demo will be replayed with simple robot view.
+    @param config_file: environment config file
     @param disable_save: Whether saving the replay as a BEHAVIOR demo log should be disabled.
     @param profile: Whether the replay should be profiled, with profiler output to stdout.
     @param start_callback: A callback function that will be called immediately before starting to replay steps. Should
-        take a single argument, an iGBEHAVIORActivityInstance.
+        take two arguments: iGibsonEnv and IGLogReader
     @param step_callback: A callback function that will be called immediately following each replayed step. Should
-        take a single argument, an iGBEHAVIORActivityInstance.
-    @param end_callback: A callback function that will be called when replay has finished. Should take a single
-        argument, an iGBEHAVIORActivityInstance.
+        take two arguments: iGibsonEnv and IGLogReader
+    @param end_callback: A callback function that will be called when replay has finished. Should
+        take two arguments: iGibsonEnv and IGLogReader
+    @param image_size: The image size that should be used by the renderer.
+    @param use_pb_gui: display the interactive pybullet gui (for debugging)
     @return if disable_save is True, returns None. Otherwise, returns a boolean indicating if replay was deterministic.
     """
     # HDR files for PBR rendering
@@ -131,6 +137,12 @@ def replay_demo(
     physics_timestep = IGLogReader.read_metadata_attr(in_log_path, "/metadata/physics_timestep")
     render_timestep = IGLogReader.read_metadata_attr(in_log_path, "/metadata/render_timestep")
     filter_objects = IGLogReader.read_metadata_attr(in_log_path, "/metadata/filter_objects")
+    instance_id = IGLogReader.read_metadata_attr(in_log_path, "/metadata/instance_id")
+    urdf_file = IGLogReader.read_metadata_attr(in_log_path, "/metadata/urdf_file")
+    if urdf_file is None:
+        urdf_file = "{}_neurips_task_{}_{}_0_fixed_furniture".format(scene, task, task_id)
+    if instance_id is None:
+        instance_id = 0
 
     logged_git_info = IGLogReader.read_metadata_attr(in_log_path, "/metadata/git_info")
     logged_git_info = parse_str_config(logged_git_info)
@@ -147,32 +159,27 @@ def replay_demo(
             print("Current git info:\n")
             pp.pprint(git_info[key])
 
-    # VR system settings
-    s = Simulator(
+    config = parse_config(config_file)
+    config["task"] = task
+    config["task_id"] = task_id
+    config["scene_id"] = scene
+    config["instance_id"] = instance_id
+    config["urdf_file"] = urdf_file
+    config["image_width"] = image_size[0]
+    config["image_height"] = image_size[1]
+    config["online_sampling"] = False
+
+    env = iGibsonEnv(
+        config_file=config,
         mode=mode,
+        action_timestep=render_timestep,
         physics_timestep=physics_timestep,
-        render_timestep=render_timestep,
         rendering_settings=vr_rendering_settings,
         vr_settings=vr_settings,
-        image_width=1280,
-        image_height=720,
+        use_pb_gui=use_pb_gui,
     )
-
-    igtn_task = iGBEHAVIORActivityInstance(task, task_id)
-    igtn_task.initialize_simulator(
-        simulator=s,
-        scene_id=scene,
-        scene_kwargs={
-            "urdf_file": "{}_neurips_task_{}_{}_0_fixed_furniture".format(scene, task, task_id),
-        },
-        load_clutter=True,
-        online_sampling=False,
-    )
-    vr_agent = igtn_task.simulator.robots[0]
-    vr_agent.activate()
-    igtn_task.reset_scene(snapshot_id=igtn_task.initial_state)
-    # set the constraints to the current poses
-    vr_agent.apply_action(np.zeros(28))
+    env.reset()
+    vr_agent = env.robots[0]
 
     if not in_log_path:
         raise RuntimeError("Must provide a VR log path to run action replay!")
@@ -185,9 +192,9 @@ def replay_demo(
             out_log_path = "{}_{}_{}_{}_replay.hdf5".format(task, task_id, scene, timestamp)
 
         log_writer = IGLogWriter(
-            s,
+            env.simulator,
             log_filepath=out_log_path,
-            task=igtn_task,
+            task=env.task,
             store_vr=False,
             vr_robot=vr_agent,
             profiling_mode=profile,
@@ -196,27 +203,22 @@ def replay_demo(
         log_writer.set_up_data_storage()
 
     for callback in start_callbacks:
-        callback(igtn_task, log_reader)
+        callback(env, log_reader)
 
     task_done = False
     while log_reader.get_data_left_to_read():
-
-        action = log_reader.get_agent_action("vr_robot")
-        # Get relevant VR action data and update VR agent
-        vr_agent.apply_action(action)
+        env.step(log_reader.get_agent_action("vr_robot"))
+        task_done |= env.task.check_success()[0]
 
         if not disable_save:
             log_writer.process_frame()
 
-        igtn_task.simulator.step(print_stats=profile)
-        task_done, _ = igtn_task.check_success()
-
         # Set camera each frame
         if mode == "vr":
-            log_reader.set_replay_camera(s)
+            log_reader.set_replay_camera(env.simulator)
 
         for callback in step_callbacks:
-            callback(igtn_task, log_reader)
+            callback(env, log_reader)
 
         # Per-step determinism check. Activate if necessary.
         # things_to_compare = [thing for thing in log_writer.name_path_data if thing[0] == "physics_data"]
@@ -236,9 +238,9 @@ def replay_demo(
 
     demo_statistics = {}
     for callback in end_callbacks:
-        callback(igtn_task, log_reader)
+        callback(env, log_reader)
 
-    s.disconnect()
+    env.close()
 
     is_deterministic = None
     if not disable_save:
@@ -265,7 +267,7 @@ def safe_replay_demo(*args, **kwargs):
     ), "Replay was not deterministic (or was executed with disable_save=True)."
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
     args = parse_args()
     bddl.set_backend("iGibson")
     replay_demo(

@@ -194,7 +194,7 @@ def run_demonstration(demo_path, segmentation_path, output_path, config_file):
     env.close()
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
     parser = argparse.ArgumentParser()
     parser.add_argument("demo_path", type=str, help="Path of the demo hdf5 to replay.")
     parser.add_argument("segmentation_path", type=str, help="Path of the segmentation of the demo.")

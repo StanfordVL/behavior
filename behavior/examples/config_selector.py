@@ -48,7 +48,7 @@ def main(selection="user", headless=False, short_exec=False):
 
 def get_first_options():
     config_path = os.path.abspath(inspect.getfile(get_first_options))
-    config_path = os.path.join(config_path[: -len("exammples/config_selector.py")], "configs")
+    config_path = os.path.join(config_path[: -len("examples/config_selector.py")], "configs")
     available_configs = sorted(
         [
             f

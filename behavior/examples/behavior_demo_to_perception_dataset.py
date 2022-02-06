@@ -274,7 +274,7 @@ class BBoxExtractor(object):
         self.write_to_file(env)
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
     args = parse_args()
 
     print(args)
