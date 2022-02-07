@@ -28,6 +28,9 @@ import behavior
 
 def verify_determinism(in_log_path, out_log_path):
     is_deterministic = True
+    from IPython import embed
+
+    embed()
     with h5py.File(in_log_path) as original_file, h5py.File(out_log_path) as new_file:
         for obj in original_file["physics_data"]:
             for attribute in original_file["physics_data"][obj]:
@@ -348,8 +351,9 @@ def main(selection="user", headless=False, short_exec=False):
     )
 
 
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
-    if sys.argv[1] == "--test":
+    if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
     else:
         main()

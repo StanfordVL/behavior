@@ -162,8 +162,9 @@ def main(selection="user", headless=False, short_exec=False):
     generate_il_dataset(args_dict["demo_root"], args_dict["log_manifest"], args_dict["out_dir"], args_dict["config"])
 
 
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
-    if sys.argv[1] == "--test":
+    if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
     else:
         main()

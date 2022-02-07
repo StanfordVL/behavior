@@ -116,8 +116,9 @@ def collect_demo(scene_id, vr_log_path=None, disable_save=False, no_vr=False, pr
     s.disconnect()
 
 
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
-    if sys.argv[1] == "--test":
+    if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
     else:
         main()

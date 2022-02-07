@@ -483,8 +483,9 @@ def main(selection="user", headless=False, short_exec=False):
             f.write(html)
 
 
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
-    if sys.argv[1] == "--test":
+    if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
     else:
         main()
