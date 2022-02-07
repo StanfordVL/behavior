@@ -59,7 +59,11 @@ def main(selection="user", headless=False, short_exec=False):
         )
 
     replay_demo_batch(
-        args_dict["demo_root"], args_dict["log_manifest"], args_dict["out_dir"], get_segmentation_callbacks
+        args_dict["demo_root"],
+        args_dict["log_manifest"],
+        args_dict["out_dir"],
+        get_segmentation_callbacks,
+        skip_existing=True,
     )
 
 

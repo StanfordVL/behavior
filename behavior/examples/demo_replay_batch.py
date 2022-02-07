@@ -156,6 +156,7 @@ def main(selection="user", headless=False, short_exec=False):
         args_dict["out_dir"],
         get_callbacks_callback,
         deactivate_logger=False,
+        skip_existing=not defaults,  # Do not skip when testing
     )
 
 
