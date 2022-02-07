@@ -58,7 +58,13 @@ def main(selection="user", headless=False, short_exec=False):
             [metric.gather_results for metric in metrics],
         )
 
-    replay_demo_batch(args_dict["demo_root"], args_dict["log_manifest"], args_dict["out_dir"], get_metrics_callbacks)
+    replay_demo_batch(
+        args_dict["demo_root"],
+        args_dict["log_manifest"],
+        args_dict["out_dir"],
+        get_metrics_callbacks,
+        skip_existing=True,  # Do not skip when testing
+    )
 
 
 if __name__ == "__main__":

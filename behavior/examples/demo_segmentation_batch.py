@@ -63,7 +63,7 @@ def main(selection="user", headless=False, short_exec=False):
         args_dict["log_manifest"],
         args_dict["out_dir"],
         get_segmentation_callbacks,
-        skip_existing=True,
+        skip_existing=True,  # Do not skip when testing
     )
 
 
