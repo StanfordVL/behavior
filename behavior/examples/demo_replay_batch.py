@@ -6,6 +6,7 @@ import inspect
 import json
 import logging
 import os
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -159,4 +160,7 @@ def main(selection="user", headless=False, short_exec=False):
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1] == "--test":
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()

@@ -1,6 +1,7 @@
 import inspect
 import logging
 import os
+import sys
 from sys import platform
 
 import igibson
@@ -61,4 +62,7 @@ def get_first_options():
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1] == "--test":
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()

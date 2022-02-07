@@ -2,6 +2,7 @@ import argparse
 import inspect
 import logging
 import os
+import sys
 
 from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
@@ -61,4 +62,7 @@ def main(selection="user", headless=False, short_exec=False):
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1] == "--test":
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()

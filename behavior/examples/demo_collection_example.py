@@ -8,6 +8,7 @@ import datetime
 import inspect
 import logging
 import os
+import sys
 
 import bddl
 import igibson
@@ -288,4 +289,7 @@ def collect_demo(
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1] == "--test":
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()

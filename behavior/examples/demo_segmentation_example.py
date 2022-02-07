@@ -3,6 +3,7 @@ import inspect
 import json
 import logging
 import os
+import sys
 from collections import deque, namedtuple
 from enum import Enum
 
@@ -483,4 +484,7 @@ def main(selection="user", headless=False, short_exec=False):
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1] == "--test":
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()

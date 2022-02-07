@@ -7,6 +7,7 @@ import datetime
 import inspect
 import logging
 import os
+import sys
 
 import igibson
 import numpy as np
@@ -116,4 +117,7 @@ def collect_demo(scene_id, vr_log_path=None, disable_save=False, no_vr=False, pr
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1] == "--test":
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()

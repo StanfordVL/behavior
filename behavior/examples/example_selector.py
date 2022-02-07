@@ -1,6 +1,7 @@
 import importlib
 import pkgutil
 import signal
+import sys
 from multiprocessing import Process
 
 from igibson.utils.utils import let_user_pick
