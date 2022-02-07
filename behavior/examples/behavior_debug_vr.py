@@ -15,7 +15,7 @@ from igibson.render.mesh_renderer.mesh_renderer_cpu import MeshRendererSettings
 from igibson.render.mesh_renderer.mesh_renderer_vr import VrSettings
 from igibson.robots.behavior_robot import BehaviorRobot
 from igibson.scenes.igibson_indoor_scene import InteractiveIndoorScene
-from igibson.simulator import Simulator
+from igibson.simulator_vr import SimulatorVR
 from igibson.utils.ig_logging import IGLogWriter
 
 import behavior
@@ -55,7 +55,7 @@ def collect_demo(scene_id, vr_log_path=None, disable_save=False, no_vr=False, pr
         light_dimming_factor=1.0,
     )
 
-    s = Simulator(
+    s = SimulatorVR(
         mode="vr",
         rendering_settings=vr_rendering_settings,
         vr_settings=VrSettings(use_vr=True),
