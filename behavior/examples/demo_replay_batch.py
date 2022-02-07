@@ -10,9 +10,9 @@ import sys
 from pathlib import Path
 
 import pandas as pd
+from igibson.examples.learning.demo_replaying_example import replay_demo
 
-import behavior
-from behavior.examples.demo_replay_example import replay_demo
+import behavior.examples
 
 
 def replay_demo_batch(

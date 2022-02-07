@@ -12,13 +12,13 @@ import igibson
 import printree
 import pyinstrument
 from igibson import object_states
+from igibson.examples.learning import demo_replaying_example
 from igibson.object_states import ROOM_STATES, factory
 from igibson.object_states.object_state_base import AbsoluteObjectState, BooleanState, RelativeObjectState
 from igibson.robots.behavior_robot import BRBody
 from igibson.tasks.bddl_backend import ObjectStateBinaryPredicate, ObjectStateUnaryPredicate
 
-import behavior
-from behavior.examples import demo_replay_example
+import behavior.examples
 
 StateRecord = namedtuple("StateRecord", ["state_type", "objects", "value"])
 StateEntry = namedtuple("StateEntry", ["frame_count", "state_records"])
@@ -453,7 +453,7 @@ def main(selection="user", headless=False, short_exec=False):
 
     # Run the segmentations.
     logging.info("Run segmentation")
-    demo_replay_example.safe_replay_demo(
+    demo_replaying_example.safe_replay_demo(
         args_dict["log_path"],
         start_callbacks=[sp.start_callback for sp in segmentation_processors.values()],
         step_callbacks=[sp.step_callback for sp in segmentation_processors.values()],
@@ -483,7 +483,7 @@ def main(selection="user", headless=False, short_exec=False):
             f.write(html)
 
 
-RUN_AS_TEST = False  # Change to True to run this example in test mode
+RUN_AS_TEST = True  # Change to True to run this example in test mode
 if __name__ == "__main__":
     if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)

@@ -5,8 +5,7 @@ import sys
 import bddl
 import igibson
 from igibson import object_states
-
-from behavior.examples import demo_replay_example
+from igibson.examples.learning import demo_replaying_example
 
 
 def robot_states_callback(env, _):
@@ -48,7 +47,7 @@ def main(selection="user", headless=False, short_exec=False):
 
     DEMO_FILE = os.path.join(igibson.ig_dataset_path, "tests", "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5")
 
-    demo_replay_example.replay_demo(
+    demo_replaying_example.replay_demo(
         DEMO_FILE, disable_save=True, step_callbacks=[robot_states_callback], mode="headless"
     )
 

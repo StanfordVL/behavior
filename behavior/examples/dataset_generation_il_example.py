@@ -14,12 +14,12 @@ import h5py
 import igibson
 import numpy as np
 import pandas as pd
+from igibson.examples.learning.demo_replaying_example import replay_demo
 from igibson.metrics.dataset import DatasetMetric
 from igibson.utils.ig_logging import IGLogReader
 from igibson.utils.utils import parse_config
 
-import behavior
-from behavior.examples.demo_replay_example import replay_demo
+import behavior.examples
 
 
 def save_episode(in_log_path, dataset_metric):

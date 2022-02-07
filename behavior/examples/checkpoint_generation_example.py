@@ -5,10 +5,10 @@ import os
 import sys
 
 import igibson
+from igibson.examples.learning.demo_replaying_example import safe_replay_demo
 from igibson.utils.checkpoint_utils import save_checkpoint
 
-import behavior
-from behavior.examples.demo_replay_example import safe_replay_demo
+import behavior.examples
 
 
 def create_checkpoints(demo_file, checkpoint_directory, checkpoint_every_n_steps):
