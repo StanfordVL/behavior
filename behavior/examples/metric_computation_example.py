@@ -41,7 +41,7 @@ def parse_args(defaults=False):
     )
     args_dict["mode"] = "headless"
     args_dict["log_path"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)), "data", "my_metrics_test.json"
+        os.path.dirname(inspect.getfile(behavior.examples)), "data", "metrics_log.json"
     )
     if not defaults:
         parser = argparse.ArgumentParser()

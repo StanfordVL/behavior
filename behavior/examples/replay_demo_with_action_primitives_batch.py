@@ -1,6 +1,7 @@
 import argparse
 import glob
 import inspect
+import logging
 import os
 import subprocess
 import sys
@@ -9,6 +10,7 @@ import igibson
 import tqdm
 
 import behavior
+import behavior.examples
 
 
 def parse_args(defaults=False):
@@ -40,6 +42,14 @@ def main(selection="user", headless=False, short_exec=False):
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
 
+    skip_if_existing = not defaults  # Not skipping if testing
+
+    logging.info(
+        "Segmentations to run: {}".format(
+            len(list(glob.glob(os.path.join(args_dict["segmentation_directory"], "*.json"))))
+        )
+    )
+
     # Load the demo to get info
     for demo_fullpath in tqdm.tqdm(list(glob.glob(os.path.join(args_dict["segmentation_directory"], "*.json")))):
         demo = os.path.splitext(os.path.basename(demo_fullpath))[0]
@@ -47,11 +57,12 @@ def main(selection="user", headless=False, short_exec=False):
             continue
 
         demo_path = os.path.join(args_dict["demo_directory"], demo + ".hdf5")
-        segmentation_path = os.path.join(args_dict["segmentation_directory"], demo + ".json")
-        output_path = os.path.join(args_dict["results_directory"], demo + ".json")
-        log_path = os.path.join(args_dict["results_directory"], demo + ".log")
+        segmentation_path = os.path.join(args_dict["segmentation_directory"], demo + "_segm.json")
+        output_path = os.path.join(args_dict["results_directory"], demo + "_ap_replay.json")
+        log_path = os.path.join(args_dict["results_directory"], demo + "_ap_replay.log")
 
-        if os.path.exists(output_path):
+        if os.path.exists(output_path) and skip_if_existing:
+            logging.info("Skipping demo because it exists already: {}".format(output_path))
             continue
 
         # Batch me
@@ -59,6 +70,7 @@ def main(selection="user", headless=False, short_exec=False):
         command = ["python", script_path, demo_path, segmentation_path, output_path]
 
         with open(log_path, "w") as log_file:
+            logging.info("Launching subprocess for demo. Command: {}. Log file: {}".format(command, log_path))
             tqdm.tqdm.write("Processing %s" % demo)
             subprocess.run(command, stdout=log_file, stderr=subprocess.STDOUT)
 

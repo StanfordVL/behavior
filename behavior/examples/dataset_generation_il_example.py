@@ -47,7 +47,7 @@ def generate_il_dataset(
     demo_root,
     log_manifest,
     out_dir,
-    config_file=os.path.join(igibson.example_config_path, "behavior_full_observability.yaml"),
+    config_file,
     skip_existing=True,
     save_frames=False,
     deactivate_logger=True,
@@ -82,7 +82,7 @@ def generate_il_dataset(
 
         demo_name = os.path.splitext(demo)[0]
         demo_path = os.path.join(demo_root, demo)
-        log_path = os.path.join(out_dir, demo_name + ".json")
+        log_path = os.path.join(out_dir, demo_name + "_log.json")
 
         if skip_existing and os.path.exists(log_path):
             logging.info("Skipping existing demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))

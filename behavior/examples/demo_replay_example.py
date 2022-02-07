@@ -192,7 +192,7 @@ def replay_demo(
 
     for key in logged_git_info.keys():
         if key not in git_info:
-            print(
+            logging.info(
                 "Warning: {} not present in current git info. It might be installed through PyPI, "
                 "so its version cannot be validated.".format(key)
             )

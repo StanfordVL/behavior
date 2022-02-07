@@ -462,7 +462,7 @@ def main(selection="user", headless=False, short_exec=False):
     logging.info("Save segmentation")
     demo_basename = os.path.splitext(os.path.basename(args_dict["log_path"]))[0]
     for segmentation_name, segmentation_processor in segmentation_processors.items():
-        json_file = "%s_%s.json" % (demo_basename, segmentation_name)
+        json_file = "%s_%s_segm.json" % (demo_basename, segmentation_name)
         json_fullpath = os.path.join(args_dict["out_dir"], json_file)
         with open(json_fullpath, "w") as f:
             json.dump(segmentation_processor.serialize_segments(), f)
@@ -478,7 +478,7 @@ def main(selection="user", headless=False, short_exec=False):
     if args_dict["profile"]:
         logging.info("Save profiling")
         html = profiler.output_html()
-        html_path = os.path.join(args_dict["out_dir"], "segmentation_profile.html")
+        html_path = os.path.join(args_dict["out_dir"], "segm_profile.html")
         with open(html_path, "w") as f:
             f.write(html)
 

@@ -52,8 +52,6 @@ def replay_demo_batch(
         logger = logging.getLogger()
         logger.disabled = True
 
-    print("aki")
-
     demo_list = pd.read_csv(log_manifest)
 
     logging.info("Demos in manifest: {}".format(demo_list["demos"]))
@@ -65,7 +63,7 @@ def replay_demo_batch(
         demo_name = os.path.splitext(demo)[0]
         demo_path = os.path.join(demo_root, demo)
         replay_path = os.path.join(out_dir, demo_name + "_replay.hdf5")
-        log_path = os.path.join(out_dir, demo_name + ".json")
+        log_path = os.path.join(out_dir, demo_name + "_replay_log.json")
 
         if skip_existing and os.path.exists(log_path):
             logging.info("Skipping existing demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))

@@ -33,7 +33,11 @@ def main(selection="user", headless=False, short_exec=False):
         "data",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
-    checkpoint_directory = "checkpoints"
+    checkpoint_directory = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)),
+        "data",
+        "checkpoints",
+    )
     if not os.path.exists(checkpoint_directory):
         os.mkdir(checkpoint_directory)
 

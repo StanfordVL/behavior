@@ -34,10 +34,10 @@ def get_actions_from_segmentation(demo_data):
     for segment in segmentation:
         state_records = segment["state_records"]
         if len(state_records) == 0:
-            print("Found segment with no useful state changes: %r" % segment)
+            logging.info("Found segment with no useful state changes: {}".format(segment))
             continue
         elif len(state_records) > 1:
-            print("Found segment with multiple state changes, using the first: %r" % segment)
+            logging.info("Found segment with multiple state changes, using the first: {}".format(segment))
 
         state_change = state_records[0]
         state_changes.append(state_change)
@@ -92,9 +92,10 @@ def get_actions_from_segmentation(demo_data):
             placed_object = state_change["objects"][0]
             target_object = state_change["objects"][1]
             if placed_object not in hand_by_object:
-                print(
-                    "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?"
-                    % (placed_object, i)
+                logging.info(
+                    "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?".format(
+                        placed_object, i
+                    )
                 )
                 continue
             hand = hand_by_object[placed_object]
@@ -106,9 +107,10 @@ def get_actions_from_segmentation(demo_data):
             placed_object = state_change["objects"][0]
             target_object = state_change["objects"][1]
             if placed_object not in hand_by_object:
-                print(
-                    "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?"
-                    % (placed_object, i)
+                logging.info(
+                    "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?".format(
+                        placed_object, i
+                    )
                 )
                 continue
             hand = hand_by_object[placed_object]
@@ -120,9 +122,9 @@ def get_actions_from_segmentation(demo_data):
         # Append the action.
         action = (primitive, target_object)
         actions.append(action)
-        print("%s(%s)" % action)
+        logging.info("Action: {}".format(action))
 
-    print("Conversion complete.\n")
+    logging.info("Conversion completed")
     return actions
 
 
@@ -168,7 +170,7 @@ def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file)
     p.resetDebugVisualizerCamera(cameraTargetPosition=[1, -1, 0], cameraDistance=4, cameraYaw=240, cameraPitch=-45)
     for action_pair in actions:
         # try:
-        print("Executing %s(%s)" % action_pair)
+        logging.info("Executing {}".format(action_pair))
         primitive, obj_name = action_pair
 
         # Convert the action
@@ -177,7 +179,7 @@ def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file)
 
         # Execute.
         state, reward, done, info = env.step(action)
-        print(reward, info)
+        logging.info("Reward: {}, Info: {}".format(reward, info))
         infos.append(info)
         action_successes.append(True)
         if done:
@@ -190,7 +192,7 @@ def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file)
     with open(output_path, "w") as f:
         json.dump(data, f)
 
-    print(
+    logging.info(
         "Episode finished after {} timesteps, took {} seconds. Done: {}".format(
             env.current_step, time.time() - start, done
         )
@@ -208,13 +210,17 @@ def parse_args(defaults=False):
     args_dict["segmentation_path"] = os.path.join(
         os.path.dirname(inspect.getfile(behavior.examples)),
         "data",
-        "test_segmentation.txt",
+        "test_segm.json",
     )
-    # Todo: maybe better behvior_vr.yaml?
+    args_dict["output_path"] = os.path.join(
+        os.path.dirname(inspect.getfile(behavior.examples)),
+        "data",
+        "ap_replay.json",
+    )
+    # Todo: maybe better behavior_vr.yaml?
     args_dict["config"] = os.path.join(
         os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_full_observability.yaml"
     )
-    args_dict["output_path"] = "fixme"
 
     if not defaults:
         parser = argparse.ArgumentParser()
