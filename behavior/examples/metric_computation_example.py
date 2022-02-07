@@ -10,7 +10,7 @@ from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.task import TaskMetric
 
-import behavior
+import behavior.examples
 
 
 def get_metrics_callbacks(config):
@@ -96,7 +96,9 @@ def main(selection="user", headless=False, short_exec=False):
 
     logging.info("Starting metric example")
     num_resets = 10 if not short_exec else 2
-    num_steps = 1000 if not short_exec else 10
+    num_steps = (
+        1000 if not short_exec else 200
+    )  # At least 150 steps to settle the simulator and cache the initial state
     for episode in range(num_resets):
         logging.info("Resetting environment")
         env.reset()
@@ -126,7 +128,7 @@ def main(selection="user", headless=False, short_exec=False):
     env.close()
 
 
-RUN_AS_TEST = False  # Change to True to run this example in test mode
+RUN_AS_TEST = True  # Change to True to run this example in test mode
 if __name__ == "__main__":
     if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
