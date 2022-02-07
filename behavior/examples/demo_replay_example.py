@@ -28,19 +28,24 @@ import behavior
 
 def verify_determinism(in_log_path, out_log_path):
     is_deterministic = True
-    from IPython import embed
-
-    embed()
     with h5py.File(in_log_path) as original_file, h5py.File(out_log_path) as new_file:
-        for obj in original_file["physics_data"]:
-            for attribute in original_file["physics_data"][obj]:
-                is_close = np.isclose(
-                    original_file["physics_data"][obj][attribute],
-                    new_file["physics_data"][obj][attribute],
-                ).all()
-                is_deterministic = is_deterministic and is_close
-                if not is_close:
-                    print("Mismatch for obj {} with mismatched attribute {}".format(obj, attribute))
+        if sorted(list(original_file["physics_data"])) != sorted(list(new_file["physics_data"])):
+            logging.info(
+                "Object in the original demo and the replay have different number of objects logged: {} vs. {}".format(
+                    sorted(list(original_file["physics_data"])), sorted(list(new_file["physics_data"]))
+                )
+            )
+            is_deterministic = False
+        else:
+            for obj in original_file["physics_data"]:
+                for attribute in original_file["physics_data"][obj]:
+                    is_close = np.isclose(
+                        original_file["physics_data"][obj][attribute],
+                        new_file["physics_data"][obj][attribute],
+                    ).all()
+                    is_deterministic = is_deterministic and is_close
+                    if not is_close:
+                        logging.info("Mismatch for obj {} with mismatched attribute {}".format(obj, attribute))
     return bool(is_deterministic)
 
 
@@ -173,6 +178,7 @@ def replay_demo(
     vr_settings = VrSettings(config_str=IGLogReader.read_metadata_attr(in_log_path, "/metadata/vr_settings"))
     vr_settings.set_frame_save_path(frame_save_path)
 
+    # Get the information from the input log file
     task = IGLogReader.read_metadata_attr(in_log_path, "/metadata/atus_activity")
     task_id = IGLogReader.read_metadata_attr(in_log_path, "/metadata/activity_definition")
     scene = IGLogReader.read_metadata_attr(in_log_path, "/metadata/scene_id")
@@ -190,9 +196,12 @@ def replay_demo(
 
     logged_git_info = IGLogReader.read_metadata_attr(in_log_path, "/metadata/git_info")
     logged_git_info = parse_str_config(logged_git_info)
+
+    # Get current git info
     git_info = project_git_info()
     pp = pprint.PrettyPrinter(indent=4)
 
+    # Check if the current git info and the one in the log are the same
     for key in logged_git_info.keys():
         if key not in git_info:
             logging.info(
@@ -210,6 +219,7 @@ def replay_demo(
             print("Current git info:\n")
             pp.pprint(git_info[key])
 
+    # Get some information from the config and some other copy it from the input log
     config = parse_config(config_file)
     config["task"] = task
     config["task_id"] = task_id
