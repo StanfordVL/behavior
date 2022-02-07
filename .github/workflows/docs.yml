@@ -16,6 +16,9 @@ jobs:
       with:
         python-version: "3.8"
         architecture: x64
+        
+    - name: Upgrade pip (avoid issues with current broken pip release)
+      run: pip install --upgrade pip
 
     - name: Install dev requirements
       run: pip install -r requirements-dev.txt
