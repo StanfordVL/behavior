@@ -3,11 +3,9 @@ import inspect
 import json
 import logging
 import os
-import sys
 from collections import deque, namedtuple
 from enum import Enum
 
-import bddl
 import igibson
 import printree
 import pyinstrument
@@ -367,8 +365,8 @@ class DemoSegmentationProcessor(object):
 def parse_args(defaults=False):
     args_dict = dict()
     args_dict["log_path"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)),
-        "data",
+        igibson.ig_dataset_path,
+        "tests",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
     args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
@@ -441,7 +439,7 @@ def main(selection="user", headless=False, short_exec=False):
 
     # Create output directory if needed.
     if not os.path.exists(args_dict["out_dir"]):
-        os.mkdir(args_dict["out_dir"])
+        os.mkdirs(args_dict["out_dir"])
 
     # Set up the profiler
     profiler = None

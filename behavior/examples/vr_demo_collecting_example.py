@@ -7,7 +7,6 @@ import datetime
 import inspect
 import logging
 import os
-import sys
 
 import igibson
 import numpy as np

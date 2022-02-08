@@ -3,6 +3,7 @@ import inspect
 import logging
 import os
 
+import igibson
 from igibson.examples.learning.demo_replaying_batch import replay_demo_batch
 
 import behavior
@@ -12,12 +13,8 @@ from behavior.examples.demo_segmentation_example import get_default_segmentation
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["demo_root"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
-    args_dict["log_manifest"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)),
-        "data",
-        "test_manifest.txt",
-    )
+    args_dict["demo_root"] = os.path.join(igibson.ig_dataset_path, "tests")
+    args_dict["log_manifest"] = os.path.join(igibson.ig_dataset_path, "tests", "test_manifest.txt")
     args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     if not defaults:
         parser = argparse.ArgumentParser(description="Segment a batch of BEHAVIOR demos in manifest.")

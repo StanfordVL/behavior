@@ -6,6 +6,7 @@ import os
 import sys
 import time
 
+import igibson
 import yaml
 from igibson.envs.behavior_mp_env import ActionPrimitives, BehaviorMPEnv
 from igibson.utils.ig_logging import IGLogReader
@@ -204,8 +205,8 @@ def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file)
 def parse_args(defaults=False):
     args_dict = dict()
     args_dict["demo_path"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)),
-        "data",
+        igibson.ig_dataset_path,
+        "tests",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
     args_dict["segmentation_path"] = os.path.join(

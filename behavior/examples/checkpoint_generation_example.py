@@ -2,7 +2,6 @@
 import inspect
 import logging
 import os
-import sys
 
 import igibson
 from igibson.examples.learning.demo_replaying_example import safe_replay_demo
@@ -29,8 +28,8 @@ def main(selection="user", headless=False, short_exec=False):
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
     demo_file = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)),
-        "data",
+        igibson.ig_dataset_path,
+        "tests",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
     checkpoint_directory = os.path.join(
@@ -38,8 +37,7 @@ def main(selection="user", headless=False, short_exec=False):
         "data",
         "checkpoints",
     )
-    if not os.path.exists(checkpoint_directory):
-        os.mkdir(checkpoint_directory)
+    os.makedirs(checkpoint_directory, exist_ok=False)
 
     steps_between_checkpoints = 30 if not short_exec else 300
     create_checkpoints(demo_file, checkpoint_directory, steps_between_checkpoints)

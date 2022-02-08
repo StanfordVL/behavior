@@ -16,7 +16,7 @@ import behavior.examples
 def parse_args(defaults=False):
 
     args_dict = dict()
-    args_dict["demo_directory"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["demo_directory"] = os.path.join(igibson.ig_dataset_path, "tests")
     args_dict["segmentation_directory"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     args_dict["results_directory"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
 

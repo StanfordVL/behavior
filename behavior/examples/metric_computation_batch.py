@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 
+import igibson
 from igibson.examples.learning.demo_replaying_batch import replay_demo_batch
 from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
@@ -16,10 +17,8 @@ import behavior.examples
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["demo_root"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
-    args_dict["log_manifest"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)), "data", "test_manifest.txt"
-    )
+    args_dict["demo_root"] = os.path.join(igibson.ig_dataset_path, "tests")
+    args_dict["log_manifest"] = os.path.join(igibson.ig_dataset_path, "tests", "test_manifest.txt")
     args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     if not defaults:
         parser = argparse.ArgumentParser(description="Collect metrics from BEHAVIOR demos in manifest.")
