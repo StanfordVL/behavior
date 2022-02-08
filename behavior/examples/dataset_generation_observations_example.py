@@ -10,12 +10,13 @@ import igibson
 import numpy as np
 import pybullet as p
 import trimesh
+from igibson.examples.learning.demo_replaying_batch import replay_demo_batch
 from igibson.objects.articulated_object import URDFObject
 from igibson.utils import utils
 from igibson.utils.constants import MAX_INSTANCE_COUNT, SemanticClass
 
 import behavior
-from behavior.examples.demo_replay_batch import replay_demo_batch
+import behavior.examples
 
 FRAME_BATCH_SIZE = 100
 START_FRAME = 500

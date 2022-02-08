@@ -18,7 +18,7 @@ from igibson.scenes.igibson_indoor_scene import InteractiveIndoorScene
 from igibson.simulator_vr import SimulatorVR
 from igibson.utils.ig_logging import IGLogWriter
 
-import behavior
+import behavior.examples
 
 POST_TASK_STEPS = 200
 PHYSICS_WARMING_STEPS = 200

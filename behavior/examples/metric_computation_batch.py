@@ -4,13 +4,14 @@ import logging
 import os
 import sys
 
+from igibson.examples.learning.demo_replaying_batch import replay_demo_batch
 from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.gaze import GazeMetric
 from igibson.metrics.task import TaskMetric
 
 import behavior
-from behavior.examples.demo_replay_batch import replay_demo_batch
+import behavior.examples
 
 
 def parse_args(defaults=False):
@@ -39,8 +40,8 @@ def main(selection="user", headless=False, short_exec=False):
     """
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
-    defaults = selection == "random" and headless and short_exec
-    args_dict = parse_args(defaults=defaults)
+    testing = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=testing)
 
     def get_metrics_callbacks(**kwargs):
         metrics = [
@@ -63,7 +64,8 @@ def main(selection="user", headless=False, short_exec=False):
         args_dict["log_manifest"],
         args_dict["out_dir"],
         get_metrics_callbacks,
-        skip_existing=True,  # Do not skip when testing
+        skip_existing=not testing,  # Do not skip when testing
+        ignore_errors=not testing,  # Do not ignore when testing
     )
 
 

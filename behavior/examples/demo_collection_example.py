@@ -22,6 +22,7 @@ from igibson.utils.ig_logging import IGLogWriter
 from igibson.utils.utils import parse_config
 
 import behavior
+import behavior.examples
 
 POST_TASK_STEPS = 200
 PHYSICS_WARMING_STEPS = 200

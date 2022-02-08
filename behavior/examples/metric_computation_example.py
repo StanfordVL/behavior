@@ -128,7 +128,7 @@ def main(selection="user", headless=False, short_exec=False):
     env.close()
 
 
-RUN_AS_TEST = True  # Change to True to run this example in test mode
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
     if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
