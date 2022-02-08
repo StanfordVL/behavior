@@ -1,3 +1,0 @@
-,demos
-0,cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5
-1,bottling_fruit_0_Wainscott_0_int_0_2021-09-15_18-30-15.hdf5
