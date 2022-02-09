@@ -2,6 +2,7 @@
 Base behavior dataset class.
 """
 import argparse
+import logging
 import time
 
 import h5py
@@ -18,7 +19,7 @@ class BHDataset(object):
     def __init__(self, spec_file):
         self.files = read_spec_file(spec_file)
         t1 = time.time()
-        print("Reading all training data into memory...")
+        logging.getLogger(__name__).info("Reading all training data into memory...")
         (
             self.actions,
             self.proprioceptions,
@@ -26,10 +27,10 @@ class BHDataset(object):
             self.task_obss,
         ) = read_proc_parallel(self.files)
         self.size = len(self.actions)
-        print("Time spent to read data: %.1fs" % (time.time() - t1))
+        logging.getLogger(__name__).debug("Time spent to read data: %.1fs" % (time.time() - t1))
 
     def to_device(self):
-        print("Sending data to gpu...")
+        logging.getLogger(__name__).info("Sending data to gpu...")
         import torch
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -37,7 +38,7 @@ class BHDataset(object):
         self.proprioceptions = torch.tensor(self.proprioceptions, dtype=torch.float32).to(self.device)
         self.rgbs = torch.tensor(self.rgbs, dtype=torch.float32).permute(0, 3, 1, 2).to(self.device)
         self.task_obss = torch.tensor(self.task_obss, dtype=torch.float32).to(self.device)
-        print("Done.")
+        logging.getLogger(__name__).debug("Done.")
 
 
 def read_spec_file(fname):
@@ -63,7 +64,7 @@ def read_proc_parallel(files):
         np.empty((0, TASK_OBS_DIM)),
     )
     for f in files:
-        print("Processing file %s..." % f)
+        logging.getLogger(__name__).info("Processing file %s..." % f)
         hf = h5py.File(f)
         actions = np.append(actions, np.asarray(hf["action"]), axis=0)
         proprioceptions = np.append(proprioceptions, np.asarray(hf["proprioception"]), axis=0)

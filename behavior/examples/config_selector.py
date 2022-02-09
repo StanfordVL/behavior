@@ -20,6 +20,7 @@ def main(selection="user", headless=False, short_exec=False):
     It steps the environment 100 times with random actions sampled from the action space,
     using the Gym interface, resetting it 10 times.
     """
+    logging.getLogger().setLevel(logging.INFO)
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
     available_configs = get_first_options()
