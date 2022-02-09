@@ -244,6 +244,7 @@ def main(selection="user", headless=False, short_exec=False):
     Replays a demo using action primitives
     The demo must be segmented before into a valid sequence of action primitives
     """
+    logging.getLogger().setLevel(logging.INFO)
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec

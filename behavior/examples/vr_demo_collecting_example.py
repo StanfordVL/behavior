@@ -27,6 +27,7 @@ def main(selection="user", headless=False, short_exec=False):
     """
     Opens a demo and creates checkpoints every N steps
     """
+    logging.getLogger().setLevel(logging.INFO)
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
     collect_demo(scene_id="Rs_int")
 

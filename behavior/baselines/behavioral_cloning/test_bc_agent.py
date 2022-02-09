@@ -2,6 +2,7 @@
 Test behavioral cloning agent's performance
 """
 import argparse
+import logging
 import os
 
 import igibson
@@ -43,4 +44,4 @@ with torch.no_grad():
         a_no_reset = np.concatenate((a[:19], a[20:27]))  # we do not allow reset action for agents here
         obs, reward, done, info = env.step(a_no_reset)
         total_reward += reward
-        print(total_reward, info)
+        logging.info("Reward {}, info {}".format(total_reward, info))
