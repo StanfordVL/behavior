@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import Callable
 
@@ -16,7 +17,9 @@ try:
     from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
 
 except ModuleNotFoundError:
-    print("stable-baselines3 is not installed. You would need to do: pip install stable-baselines3")
+    logging.getLogger(__name__).error(
+        "stable-baselines3 is not installed. You would need to do: pip install stable-baselines3"
+    )
     exit(1)
 
 
@@ -136,23 +139,23 @@ def main():
         tensorboard_log=tensorboard_log_dir,
         policy_kwargs=policy_kwargs,
     )
-    print(model.policy)
+    logging.getLogger(__name__).debug(model.policy)
 
     # Random Agent, before training
     mean_reward, std_reward = evaluate_policy(model, eval_env, n_eval_episodes=10)
-    print(f"Before Training: Mean reward: {mean_reward} +/- {std_reward:.2f}")
+    logging.getLogger(__name__).debug("Before Training: Mean reward: {mean_reward} +/- {std_reward:.2f}")
 
     model.learn(1000000)
 
     mean_reward, std_reward = evaluate_policy(model, eval_env, n_eval_episodes=20)
-    print(f"After Training: Mean reward: {mean_reward} +/- {std_reward:.2f}")
+    logging.getLogger(__name__).info("After Training: Mean reward: {mean_reward} +/- {std_reward:.2f}")
 
     model.save("ckpt")
     del model
 
     model = PPO.load("ckpt")
     mean_reward, std_reward = evaluate_policy(model, eval_env, n_eval_episodes=20)
-    print(f"After Loading: Mean reward: {mean_reward} +/- {std_reward:.2f}")
+    logging.getLogger(__name__).info("After Loading: Mean reward: {mean_reward} +/- {std_reward:.2f}")
 
 
 if __name__ == "__main__":
