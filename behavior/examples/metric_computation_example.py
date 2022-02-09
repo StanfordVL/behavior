@@ -74,6 +74,7 @@ def main(selection="user", headless=False, short_exec=False):
     """
     Compute metrics "live" on a running environment with random actions
     """
+    logging.getLogger().setLevel(logging.INFO)
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec

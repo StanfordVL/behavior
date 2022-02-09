@@ -110,14 +110,25 @@ ALLOWED_SUB_SEGMENTS_BY_STATE = {
 
 
 def process_states(objects, state_types):
+    """
+    Process/Analyze the state of the relevant objects for the segmentation
+    :param objects: Objects to analyze for the segmentation
+    :param state_types: State types to analyze for the segmentation
+    :return: Set of predicates in the form of StateRecords that contain the type of state, the object(s) involved and the value of the state
+    """
     predicate_states = set()
 
     for obj in objects:
         for state_type in state_types:
+
+            # If this type of state does not apply to this object (e.g., frozen for a table)
             if state_type not in obj.states:
                 continue
 
+            # For some reason, the state types have to be all Booleans
             assert issubclass(state_type, BooleanState)
+
+            # Get the state of this state type
             state = obj.states[state_type]
             if issubclass(state_type, AbsoluteObjectState):
                 # Add only one instance of absolute state
@@ -159,6 +170,10 @@ def _get_goal_condition_states(env):
 
 
 class DemoSegmentationProcessor(object):
+    """
+    Processing object for demos that segments them
+    """
+
     def __init__(
         self,
         state_types=None,
@@ -169,18 +184,28 @@ class DemoSegmentationProcessor(object):
         state_directions=STATE_DIRECTIONS,
         profiler=None,
     ):
+        # List of StateEntry's
         self.state_history = []
         self.last_state = None
 
+        # List of state types to use for segmentation
         self.state_types_option = state_types
-        self.state_types = None  # To be populated in initialize().
+
+        # To be populated in initialize(). It will contain the types of states to track for segmenting
+        self.state_types = None
+
+        # Direction we want states to change, e.g., from True to False or vice versa.
+        # For different state types can be different
         self.state_directions = state_directions
+
+        # Objects to analyze for the segmentation (e.g., task relevant or all)
         self.object_selection = object_selection
         self.label_by_instance = label_by_instance
 
         self.hierarchical = hierarchical
         self.all_state_types = None
 
+        # We save a first empty StateEntry that works as initial one for doing diff
         if diff_initial:
             self.state_history.append(StateEntry(0, set()))
             self.last_state = set()
@@ -188,6 +213,13 @@ class DemoSegmentationProcessor(object):
         self.profiler = profiler
 
     def start_callback(self, env, _):
+        """
+        Initial callback to call at the beginning of the segmentation process.
+        It populates state_types, the types of states to listen to in order to segment the demos.
+        :param env: Environment to evaluate
+        :param _: ?
+        :return: None
+        """
         self.all_state_types = [
             state
             for state in factory.get_all_states()
@@ -195,7 +227,7 @@ class DemoSegmentationProcessor(object):
                 issubclass(state, BooleanState)
                 and (issubclass(state, AbsoluteObjectState) or issubclass(state, RelativeObjectState))
             )
-        ]
+        ]  # All the state types we use for segmentation
 
         if isinstance(self.state_types_option, list) or isinstance(self.state_types_option, set):
             self.state_types = self.state_types_option
@@ -206,10 +238,22 @@ class DemoSegmentationProcessor(object):
         else:
             raise ValueError("Unknown segmentation state selection.")
 
+        if self.state_types is None:
+            from IPython import embed
+
+            embed()
+
     def step_callback(self, env, _):
+        """
+        Callback to call at each step of the segmentation process.
+        :param env:
+        :param _:
+        :return: None
+        """
         if self.profiler:
             self.profiler.start()
 
+        # Get the objects to analyze for the segmentation based on the object_selection
         if self.object_selection == SegmentationObjectSelection.TASK_RELEVANT_OBJECTS:
             objects = [obj for obj in env.task.object_scope.values() if not isinstance(obj, BRBody)]
         elif self.object_selection == SegmentationObjectSelection.ROBOTS:
@@ -219,9 +263,11 @@ class DemoSegmentationProcessor(object):
         else:
             raise ValueError("Incorrect SegmentationObjectSelection %r" % self.object_selection)
 
-        # Get the processed state.
+        # Get the processed state -> states of the state types indicated for the objects indicated
         state_types_to_use = self.state_types if not self.hierarchical else self.all_state_types
         processed_state = process_states(objects, state_types_to_use)
+        # If this is the first step (last_state is None) or there is a change in the logic states ("-" between
+        # sets returns the non-common entries), we add this processed state to the history
         if self.last_state is None or (processed_state - self.last_state):
             self.state_history.append(StateEntry(env.simulator.frame_count, processed_state))
 
@@ -234,7 +280,15 @@ class DemoSegmentationProcessor(object):
         return obj.name if self.label_by_instance else obj.category
 
     def _hierarchical_segments(self, state_entries, state_types):
+        """
+        Create a "hierarchical" list of segments: segments followed by subsegments
+        So far we only have flat segmentations, so there won't be much recursion, but this function is recursive
+        :param state_entries: History of states for the relevant objects
+        :param state_types: State types to analyze for the segmentation
+        :return:
+        """
         if not state_types:
+            logging.info("No state_types. Returning empty list")
             return []
 
         segments = []
@@ -248,6 +302,8 @@ class DemoSegmentationProcessor(object):
             after = state_entries[after_idx]
 
             # Check if there is a valid diff at this range.
+            # Diff is a change in state that is relevant for the segmentation, so it will crate a segment
+            # Check only the states that are not shared between after and state entries ("-" of sets)
             diffs = self.filter_diffs(after.state_records - before.state_records, state_types)
             if diffs is not None:
                 # If there is a diff, prepare to do sub-segmentation on the segment.
@@ -279,11 +335,24 @@ class DemoSegmentationProcessor(object):
         return segments
 
     def get_segments(self):
+        """
+        Gets the segmentation as a list of segments
+        :return: Single segment representing the entire demo, with subsegments for each of the found segments
+        """
         segments = self._hierarchical_segments(self.state_history, self.state_types)
-        return Segment(segments[0].start, segments[-1].end - segments[0].start, segments[-1].end, [], segments)
+        if len(segments) > 0:
+            return Segment(segments[0].start, segments[-1].end - segments[0].start, segments[-1].end, [], segments)
+        else:
+            # When there are no segments, e.g., when we do a roomlocation segmentation but the robot does not change of rooms
+            return Segment(self.state_history[0].frame_count, 0, self.state_history[0].frame_count, [], [])
 
     def filter_diffs(self, state_records, state_types):
-        """Filter the segments so that only objects in the given state directions are monitored."""
+        """
+        Filter the segments so that only objects in the given state directions are monitored.
+        :param state_records: Record of organized states on the relevant state types for the segmentation
+        :param state_types: Relevant state types to segment
+        :return: The records from the input that
+        """
         new_records = set()
 
         # Go through the records in the segment.
@@ -292,7 +361,13 @@ class DemoSegmentationProcessor(object):
             if state_record.state_type not in state_types:
                 continue
 
+            logging.debug(
+                "state_type: {}, objects: {}, value: {}".format(state_record[0], state_record[1], state_record[2])
+            )
+
             # Check if any object in the record is on our list.
+
+            # Mode is the type of state change direction we are interested in, e.g., inHandOfRobot from False to True
             mode = self.state_directions[state_record.state_type]
             accept = True
             if mode == SegmentationStateDirection.FALSE_TO_TRUE:
@@ -311,6 +386,12 @@ class DemoSegmentationProcessor(object):
         return new_records
 
     def _serialize_segment(self, segment):
+        """
+        Serializes each segment of a segmentation
+        The serialization includes the information of the segment such as start/end time, duration, state changes, and any subsegments
+        :param segment: Segment to seriaze
+        :return: Serialized segment in the form of a dictionary
+        """
         stringified_entries = [
             {
                 "name": state_record.state_type.__name__,
@@ -393,15 +474,21 @@ def parse_args(defaults=False):
 
 
 def get_default_segmentation_processors(profiler=None):
-    # This applies a "flat" segmentation (e.g. not hierarchical) using only the states supported by our magic motion
-    # primitives.
+    """
+    Create a set of callbacks to process demos when replaying and perform segmentation
+    It returns two types of processors for segmentation: flat and per room (allows to see what room the agent is in)
+    :param profiler: Profiler to measure performance when segmenting
+    :return: A dictionary with two sets of segmentation processors: flat and per room
+    """
+    # This applies a "flat" segmentation (e.g. not hierarchical) using only the states supported by our simple action
+    # primitives, i.e., can be caused by our action primitives
     flat_states = [
         object_states.Open,
         object_states.OnTop,
         object_states.Inside,
         object_states.InHandOfRobot,
         object_states.InReachOfRobot,
-    ]
+    ]  # States that can be achieved by the robot through action primitives
     flat_object_segmentation = DemoSegmentationProcessor(
         flat_states, SegmentationObjectSelection.TASK_RELEVANT_OBJECTS, label_by_instance=True, profiler=profiler
     )
@@ -432,6 +519,7 @@ def main(selection="user", headless=False, short_exec=False):
     Segment a given demo into a sequence of predefined action primitives
     It assumes a predefined map of logic changes to action primitives that cause them
     """
+    logging.getLogger().setLevel(logging.INFO)
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec

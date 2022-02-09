@@ -39,6 +39,9 @@ def main(selection="user", headless=False, short_exec=False):
     Creates threads for a batch of demos to be replayed in parallel
     Uses the code in replay_demo_with_action_primitives.py
     """
+    logging.getLogger().setLevel(logging.INFO)
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
 

@@ -34,6 +34,7 @@ def main(selection="user", headless=False, short_exec=False):
     Segment a batch of demos
     Use a manifest file to indicate the demos to segment
     """
+    logging.getLogger().setLevel(logging.INFO)
     logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
 
     testing = selection == "random" and headless and short_exec
@@ -46,7 +47,11 @@ def main(selection="user", headless=False, short_exec=False):
         # Create a data callback that unifies the results from the
         # segmentation processors.
         def data_callback():
-            return {"segmentations": {name: sp.serialize_segments() for name, sp in segmentation_processors.items()}}
+            data_cb_ret = dict()
+            for name, sp in segmentation_processors.items():
+                logging.info("Serializing segmentation {}".format(name))
+                data_cb_ret[name] = sp.serialize_segments()
+            return data_cb_ret
 
         # Return all of the callbacks for a particular demo.
         return (
@@ -56,6 +61,7 @@ def main(selection="user", headless=False, short_exec=False):
             [data_callback],
         )
 
+    logging.info("Run segmentation")
     replay_demo_batch(
         args_dict["demo_root"],
         args_dict["log_manifest"],
@@ -64,9 +70,10 @@ def main(selection="user", headless=False, short_exec=False):
         skip_existing=not testing,  # Do not skip when testing
         ignore_errors=not testing,  # Do not ignore when testing
     )
+    logging.info("Batch of demos segmented!")
 
 
-RUN_AS_TEST = False  # Change to True to run this example in test mode
+RUN_AS_TEST = True  # Change to True to run this example in test mode
 if __name__ == "__main__":
     if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
