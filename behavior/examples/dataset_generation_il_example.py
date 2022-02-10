@@ -22,16 +22,16 @@ from igibson.utils.utils import parse_config
 import behavior.examples
 
 
-def save_episode(in_log_path, dataset_metric):
-    episode_identifier = "_".join(os.path.splitext(in_log_path)[0].split("_")[-2:])
+def save_episode(demo_file, dataset_metric):
+    episode_identifier = "_".join(os.path.splitext(demo_file)[0].split("_")[-2:])
     episode_out_log_path = "processed_hdf5s/{}_{}_{}_{}_{}_episode.hdf5".format(
         activity, activity_id, scene, instance_id, episode_identifier
     )
     hf = h5py.File(episode_out_log_path, "w")
 
     # Copy the metadata
-    for attr in IGLogReader.get_all_metadata_attrs(in_log_path):
-        hf.attrs[attr] = IGLogReader.read_metadata_attr(in_log_path, attr)
+    for attr in IGLogReader.get_all_metadata_attrs(demo_file):
+        hf.attrs[attr] = IGLogReader.read_metadata_attr(demo_file, attr)
 
     for key, value in dataset_metric.gather_results().items():
         if key == "action":
@@ -44,8 +44,8 @@ def save_episode(in_log_path, dataset_metric):
 
 
 def generate_il_dataset(
-    demo_root,
-    log_manifest,
+    demo_dir,
+    demo_manifest,
     out_dir,
     config_file,
     skip_existing=True,
@@ -55,8 +55,8 @@ def generate_il_dataset(
     """
     Extract pairs of (observation,action) for imitation learning from a batch of BEHAVIOR demos.
 
-    @param demo_root: Directory containing the demo files listed in the manifests.
-    @param log_manifest: The manifest file containing list of BEHAVIOR demos to batch over.
+    @param demo_dir: Directory containing the demo files listed in the manifests.
+    @param demo_manifest: The manifest file containing list of BEHAVIOR demos to batch over.
     @param out_dir: Directory to store results in.
     @param config_file: environment config file
     @param skip_existing: Whether demos with existing output logs should be skipped.
@@ -68,7 +68,7 @@ def generate_il_dataset(
         logger = logging.getLogger()
         logger.disabled = True
 
-    demo_list = pd.read_csv(log_manifest)
+    demo_list = pd.read_csv(demo_manifest)
 
     config = parse_config(config_file)
     # should NOT activate behavior robot to be consistent with VR demo collection setup
@@ -81,11 +81,15 @@ def generate_il_dataset(
             continue
 
         demo_name = os.path.splitext(demo)[0]
-        demo_path = os.path.join(demo_root, demo)
-        log_path = os.path.join(out_dir, demo_name + "_log.json")
+        demo_file = os.path.join(demo_dir, demo)
+        out_log_file = os.path.join(out_dir, demo_name + "_log.json")
 
-        if skip_existing and os.path.exists(log_path):
-            logging.info("Skipping existing demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
+        if skip_existing and os.path.exists(out_log_file):
+            logging.info(
+                "Skipping demo because an output log file already exists (we assume it has been processed): {}, {} out of {}".format(
+                    demo, idx, len(demo_list["demos"])
+                )
+            )
             continue
 
         logging.info("Replaying demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
@@ -97,7 +101,7 @@ def generate_il_dataset(
         try:
             dataset = DatasetMetric()
             demo_information = replay_demo(
-                in_log_path=demo_path,
+                in_log_path=demo_file,
                 frame_save_path=curr_frame_save_path,
                 mode="headless",
                 config_file=config_file,
@@ -109,20 +113,20 @@ def generate_il_dataset(
             )
             demo_information["failed"] = False
             demo_information["filename"] = Path(demo).name
-            save_episode(demo_path, dataset)
+            save_episode(demo_file, dataset)
 
         except Exception as e:
             logging.error("Demo failed withe error: {}".format(e))
             demo_information = {"demo_id": Path(demo).name, "failed": True, "failure_reason": str(e)}
 
         logging.info("Saving data")
-        with open(log_path, "w") as file:
+        with open(out_log_file, "w") as file:
             json.dump(demo_information, file)
 
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["demo_root"] = os.path.join(igibson.ig_dataset_path, "tests")
+    args_dict["demo_dir"] = os.path.join(igibson.ig_dataset_path, "tests")
     args_dict["log_manifest"] = os.path.join(igibson.ig_dataset_path, "tests", "test_manifest.txt")
     args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
     args_dict["config"] = os.path.join(os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_vr.yaml")
@@ -130,7 +134,7 @@ def parse_args(defaults=False):
         parser = argparse.ArgumentParser(
             description="Extract pairs of (observation,action) for imitation learning from a batch of BEHAVIOR demos."
         )
-        parser.add_argument("--demo_root", type=str, help="Directory containing demos listed in the manifest.")
+        parser.add_argument("--demo_dir", type=str, help="Directory containing demos listed in the manifest.")
         parser.add_argument("--log_manifest", type=str, help="Plain text file consisting of list of demos to replay.")
         parser.add_argument("--out_dir", type=str, help="Directory to store results in.")
         parser.add_argument(
@@ -140,7 +144,7 @@ def parse_args(defaults=False):
         )
 
         args = parser.parse_args()
-        args_dict["demo_root"] = args.demo_root
+        args_dict["demo_dir"] = args.demo_dir
         args_dict["log_manifest"] = args.log_manifest
         args_dict["out_dir"] = args.out_dir
         args_dict["config"] = args.config
@@ -158,7 +162,7 @@ def main(selection="user", headless=False, short_exec=False):
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
 
-    generate_il_dataset(args_dict["demo_root"], args_dict["log_manifest"], args_dict["out_dir"], args_dict["config"])
+    generate_il_dataset(args_dict["demo_dir"], args_dict["log_manifest"], args_dict["out_dir"], args_dict["config"])
 
 
 RUN_AS_TEST = False  # Change to True to run this example in test mode

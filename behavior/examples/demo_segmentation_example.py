@@ -445,30 +445,42 @@ class DemoSegmentationProcessor(object):
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["log_path"] = os.path.join(
+    args_dict["demo_file"] = os.path.join(
         igibson.ig_dataset_path,
         "tests",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
     args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["replay_demo_file"] = os.path.splitext(args_dict["demo_file"])[0] + "_segm_replay.json"
     args_dict["profile"] = False
+    args_dict["check_determinism"] = False
     if not defaults:
         parser = argparse.ArgumentParser(description="Run segmentation on an ATUS demo.")
         parser.add_argument(
-            "--log_path", type=str, help="Path (and filename) of log to replay. If empty, test demo will be used."
+            "--demo_file", type=str, help="Path (and filename) of demo to replay. If empty, test demo will be used."
         )
         parser.add_argument(
             "--out_dir", type=str, help="Directory to store results in. If empty, test directory will be used."
+        )
+        parser.add_argument(
+            "--replay_demo_file", type=str, help="Path (and filename) of demo to save from the replay (for debugging)."
         )
         parser.add_argument(
             "--profile",
             action="store_true",
             help="Whether to profile the segmentation, outputting a profile HTML in the out path.",
         )
+        parser.add_argument(
+            "--check_determinism",
+            action="store_true",
+            help="Whether to check for determinism in the replay after segmenting.",
+        )
         args = parser.parse_args()
-        args_dict["log_path"] = args.log_path
+        args_dict["demo_file"] = args.demo_file
         args_dict["out_dir"] = args.out_dir
+        args_dict["replay_demo_file"] = args.replay_demo_file
         args_dict["profile"] = args.profile
+        args_dict["check_determinism"] = args.check_determinism
 
     return args_dict
 
@@ -539,14 +551,23 @@ def main(selection="user", headless=False, short_exec=False):
 
     # Run the segmentations.
     logging.info("Run segmentation")
-    demo_replaying_example.safe_replay_demo(
-        args_dict["log_path"],
-        start_callbacks=[sp.start_callback for sp in segmentation_processors.values()],
-        step_callbacks=[sp.step_callback for sp in segmentation_processors.values()],
-    )
+    if args_dict["check_determinism"]:
+        demo_replaying_example.replay_demo_with_determinism_check(
+            args_dict["demo_file"],
+            replay_demo_file=args_dict["out_path"],
+            start_callbacks=[sp.start_callback for sp in segmentation_processors.values()],
+            step_callbacks=[sp.step_callback for sp in segmentation_processors.values()],
+        )
+    else:
+        demo_replaying_example.replay_demo(
+            args_dict["demo_file"],
+            replay_demo_file=args_dict["replay_demo_file"],
+            start_callbacks=[sp.start_callback for sp in segmentation_processors.values()],
+            step_callbacks=[sp.step_callback for sp in segmentation_processors.values()],
+        )
 
     logging.info("Save segmentation")
-    demo_basename = os.path.splitext(os.path.basename(args_dict["log_path"]))[0]
+    demo_basename = os.path.splitext(os.path.basename(args_dict["demo_file"]))[0]
     for segmentation_name, segmentation_processor in segmentation_processors.items():
         json_file = "%s_%s_segm.json" % (demo_basename, segmentation_name)
         json_fullpath = os.path.join(args_dict["out_dir"], json_file)
@@ -557,14 +578,14 @@ def main(selection="user", headless=False, short_exec=False):
     combined_output = ""
     for segmentation_processor in segmentation_processors.values():
         combined_output += str(segmentation_processor) + "\n"
-
     print(combined_output)
 
     # Save profiling information.
     if args_dict["profile"]:
         logging.info("Save profiling")
         html = profiler.output_html()
-        html_path = os.path.join(args_dict["out_dir"], "segm_profile.html")
+        html_file = demo_basename + "_segm_profile.html"
+        html_path = os.path.join(args_dict["out_dir"], html_file)
         with open(html_path, "w") as f:
             f.write(html)
 

@@ -35,30 +35,30 @@ def frame_to_entry_idx(frame_count):
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["demo_root"] = os.path.join(igibson.ig_dataset_path, "tests")
-    args_dict["log_manifest"] = os.path.join(igibson.ig_dataset_path, "tests", "test_manifest.txt")
+    args_dict["demo_dir"] = os.path.join(igibson.ig_dataset_path, "tests")
+    args_dict["demo_manifest"] = os.path.join(igibson.ig_dataset_path, "tests", "test_manifest.txt")
     args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
 
     if not defaults:
 
         parser = argparse.ArgumentParser(description="Extract ImVoteNet training data from BEHAVIOR demos in manifest.")
         parser.add_argument(
-            "--demo_root",
+            "--demo_dir",
             type=str,
-            default=args_dict["demo_root"],
+            default=args_dict["demo_dir"],
             help="Directory containing demos listed in the manifest.",
         )
         parser.add_argument(
-            "--log_manifest",
+            "--demo_manifest",
             type=str,
-            default=args_dict["log_manifest"],
+            default=args_dict["demo_manifest"],
             help="Plain text file consisting of list of demos to replay.",
         )
         parser.add_argument("--out_dir", type=str, default=args_dict["out_dir"], help="Directory to store results in.")
         args = parser.parse_args()
         args = parser.parse_args()
-        args_dict["demo_root"] = args.demo_root
-        args_dict["log_manifest"] = args.log_manifest
+        args_dict["demo_dir"] = args.demo_dir
+        args_dict["demo_manifest"] = args.demo_manifest
         args_dict["out_dir"] = args.out_dir
 
     return args_dict
@@ -308,7 +308,7 @@ def main(selection="user", headless=False, short_exec=False):
     args_dict = parse_args(defaults=defaults)
 
     def get_imvotenet_callbacks(demo_name, out_dir):
-        path = os.path.join(out_dir, demo_name + "_data.h5py")
+        path = os.path.join(out_dir, demo_name + "_data.hdf5")
         h5py_file = h5py.File(path, "w")
         extractors = [PointCloudExtractor(h5py_file), BBoxExtractor(h5py_file)]
 
@@ -322,8 +322,8 @@ def main(selection="user", headless=False, short_exec=False):
     # TODO: Set resolution to match model.
     logging.info("Generating dataset of observations (pointclouds and bounding boxes)")
     replay_demo_batch(
-        args_dict["demo_root"],
-        args_dict["log_manifest"],
+        args_dict["demo_dir"],
+        args_dict["demo_manifest"],
         args_dict["out_dir"],
         get_imvotenet_callbacks,
         image_size=(480, 480),

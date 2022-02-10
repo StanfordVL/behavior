@@ -130,13 +130,13 @@ def get_actions_from_segmentation(demo_data):
     return actions
 
 
-def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file):
-    task = IGLogReader.read_metadata_attr(demo_path, "/metadata/atus_activity")
-    task_id = IGLogReader.read_metadata_attr(demo_path, "/metadata/activity_definition")
-    scene_id = IGLogReader.read_metadata_attr(demo_path, "/metadata/scene_id")
+def replay_demo_with_aps(demo_file, segm_file, ap_replay_demo_file, config_file):
+    task = IGLogReader.read_metadata_attr(demo_file, "/metadata/atus_activity")
+    task_id = IGLogReader.read_metadata_attr(demo_file, "/metadata/activity_definition")
+    scene_id = IGLogReader.read_metadata_attr(demo_file, "/metadata/scene_id")
 
     # Load the segmentation of a demo for this task.
-    with open(segmentation_path, "r") as f:
+    with open(segm_file, "r") as f:
         selected_demo_data = json.load(f)
 
     # Get the actions from the segmentation
@@ -191,7 +191,7 @@ def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file)
 
     # Dump the results
     data = {"actions": actions, "infos": infos, "action_successes": action_successes}
-    with open(output_path, "w") as f:
+    with open(ap_replay_demo_file, "w") as f:
         json.dump(data, f)
 
     logging.info(
@@ -204,21 +204,18 @@ def replay_demo_with_aps(demo_path, segmentation_path, output_path, config_file)
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["demo_path"] = os.path.join(
+    args_dict["demo_file"] = os.path.join(
         igibson.ig_dataset_path,
         "tests",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
-    args_dict["segmentation_path"] = os.path.join(
+    args_dict["segm_file"] = os.path.join(
         os.path.dirname(inspect.getfile(behavior.examples)),
         "data",
         "test_segm.json",
     )
-    args_dict["output_path"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)),
-        "data",
-        "ap_replay.json",
-    )
+    args_dict["ap_replay_demo_file"] = os.path.splitext(args_dict["demo_file"])[0] + "_ap_replay.json"
+
     # Todo: maybe better behavior_vr.yaml?
     args_dict["config"] = os.path.join(
         os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_full_observability.yaml"
@@ -226,15 +223,15 @@ def parse_args(defaults=False):
 
     if not defaults:
         parser = argparse.ArgumentParser()
-        parser.add_argument("demo_path", type=str, help="Path of the demo hdf5 to replay.")
-        parser.add_argument("segmentation_path", type=str, help="Path of the segmentation of the demo.")
-        parser.add_argument("output_path", type=str, help="Path to output result JSON file to.")
+        parser.add_argument("demo_file", type=str, help="Path of the demo hdf5 to replay.")
+        parser.add_argument("segm_file", type=str, help="Path of the segmentation of the demo.")
+        parser.add_argument("ap_replay_demo_file", type=str, help="Path to output result JSON file to.")
         parser.add_argument("--config", help="which config file to use [default: use yaml files in examples/configs]")
         args = parser.parse_args()
-        args_dict["demo_path"] = args.demo_path
-        args_dict["segmentation_path"] = args.segmentation_path
+        args_dict["demo_file"] = args.demo_file
+        args_dict["segm_file"] = args.segm_file
+        args_dict["ap_replay_demo_file"] = args.ap_replay_demo_file
         args_dict["config"] = args.config
-        args_dict["output_path"] = args.output_path
 
     return args_dict
 
@@ -251,7 +248,7 @@ def main(selection="user", headless=False, short_exec=False):
     args_dict = parse_args(defaults=defaults)
 
     replay_demo_with_aps(
-        args_dict["demo_path"], args_dict["segmentation_path"], args_dict["output_path"], args_dict["config"]
+        args_dict["demo_file"], args_dict["segm_file"], args_dict["ap_replay_demo_file"], args_dict["config"]
     )
 
 

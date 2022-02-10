@@ -40,7 +40,7 @@ def parse_args(defaults=False):
         os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_full_observability.yaml"
     )
     args_dict["mode"] = "headless"
-    args_dict["log_path"] = os.path.join(
+    args_dict["out_metric_log_file"] = os.path.join(
         os.path.dirname(inspect.getfile(behavior.examples)), "data", "metrics_log.json"
     )
     if not defaults:
@@ -59,14 +59,14 @@ def parse_args(defaults=False):
             help="which mode for simulation (default: headless)",
         )
         parser.add_argument(
-            "--log_path",
+            "--out_metric_log_file",
             help="where to save the logging results of the metric computation",
         )
         args = parser.parse_args()
 
         args_dict["config"] = args.config
         args_dict["mode"] = args.mode
-        args_dict["log_path"] = args.log_path
+        args_dict["out_metric_log_file"] = args.out_metric_log_file
     return args_dict
 
 
@@ -123,7 +123,7 @@ def main(selection="user", headless=False, short_exec=False):
         per_episode_metrics[episode] = metrics_summary
 
     logging.info("Writing metric computation results")
-    with open(args_dict["log_path"], "w") as file:
+    with open(args_dict["out_metric_log_file"], "w") as file:
         json.dump(per_episode_metrics, file)
 
     env.close()
