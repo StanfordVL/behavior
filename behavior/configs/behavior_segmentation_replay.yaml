@@ -1,6 +1,6 @@
 # scene
 scene: igibson
-scene_id: REPLACE_ME
+scene_id: Beechwood_1_int
 clutter: false
 build_graph: true
 load_texture: true
