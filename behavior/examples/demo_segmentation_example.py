@@ -532,7 +532,7 @@ def main(selection="user", headless=False, short_exec=False):
     It assumes a predefined map of logic changes to action primitives that cause them
     """
     logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)

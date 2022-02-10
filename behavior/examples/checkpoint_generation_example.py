@@ -26,7 +26,7 @@ def main(selection="user", headless=False, short_exec=False):
     Checkpoints can be used to initialize the simulation at those states, for example, for RL
     """
     logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     demo_file = os.path.join(
         igibson.ig_dataset_path,

@@ -40,24 +40,24 @@ def main(selection="user", headless=False, short_exec=False):
     Uses the code in replay_demo_with_action_primitives.py
     """
     logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
 
     skip_if_existing = not defaults  # Not skipping if testing
 
+    # Find all the segmentation files by searching for json files in the segmentation directory
     segm_files = list(glob.glob(os.path.join(args_dict["segm_dir"], "*_segm.json")))
+    demo_files = list(glob.glob(os.path.join(args_dict["demo_dir"], "*.hdf5")))
 
     logging.info("Segmentations to replay with action primitives: {}".format(len(segm_files)))
 
     # Load the demo to get info
-    for demo_fullpath in tqdm.tqdm(segm_files):
-        demo = os.path.splitext(os.path.basename(demo_fullpath))[0]
+    for demo_file in tqdm.tqdm(demo_files):
+        demo = os.path.splitext(os.path.basename(demo_file))[0]
         if "replay" in demo:
             continue
-
-        demo_file = os.path.join(args_dict["demo_dir"], demo + ".hdf5")
 
         for segm_file in segm_files:
             if demo in segm_file:

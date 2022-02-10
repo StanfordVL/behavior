@@ -48,7 +48,7 @@ def main(selection="user", headless=False, short_exec=False):
     This demonstrates how to check some logic states of interest at each step of a give demo (e.g. BEHAVIOR demos)
     """
     logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     DEMO_FILE = os.path.join(
         igibson.ig_dataset_path,

@@ -21,7 +21,7 @@ def main(selection="user", headless=False, short_exec=False):
     using the Gym interface, resetting it 10 times.
     """
     logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     available_configs = get_first_options()
     config_id = available_configs[let_user_pick(available_configs, selection=selection) - 1]

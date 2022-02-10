@@ -35,7 +35,7 @@ def main(selection="user", headless=False, short_exec=False):
     Use a manifest file to indicate the demos to segment
     """
     logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "*" * 80)
+    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     testing = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=testing)
