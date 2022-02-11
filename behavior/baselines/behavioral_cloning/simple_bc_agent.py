@@ -12,6 +12,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
+log = logging.getLogger(__name__)
+
 
 class BCNet_rgbp(nn.Module):
     """A behavioral cloning agent that uses RGB images and proprioception as state space"""
@@ -89,6 +91,6 @@ if __name__ == "__main__":
         loss.backward()
         optimizer.step()
 
-        logging.getLogger(__name__).info(loss.item())
+        log.info(loss.item())
 
     torch.save(bc_agent, PATH)
