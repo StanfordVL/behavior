@@ -11,6 +11,8 @@ import torch
 from igibson.envs.igibson_env import iGibsonEnv
 from simple_bc_agent import BCNet_rgbp, BCNet_taskObs
 
+log = logging.getLogger(__name__)
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Evaluate the trained behvaior_cloning agent in behavior")
@@ -44,4 +46,4 @@ with torch.no_grad():
         a_no_reset = np.concatenate((a[:19], a[20:27]))  # we do not allow reset action for agents here
         obs, reward, done, info = env.step(a_no_reset)
         total_reward += reward
-        logging.info("Reward {}, info {}".format(total_reward, info))
+        log.info("Reward {}, info {}".format(total_reward, info))
