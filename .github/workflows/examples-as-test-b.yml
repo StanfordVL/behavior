@@ -78,7 +78,7 @@ jobs:
         working-directory: behavior
         run: |
           source ../env/bin/activate
-          python tests/create_tests_of_examples.py --exhaustive
+          python tests/create_tests_of_examples_b.py --exhaustive
 
       - name: Run tests
         working-directory: behavior
@@ -87,9 +87,9 @@ jobs:
           pytest /tmp/tests_of_examples_b
 
       - name: Remove files
-          if: always()
-          run: rm -rf /tmp/tests_of_examples_b || true
+        if: always()
+        run: rm -rf /tmp/tests_of_examples_b || true
 
       - name: Cleanup virtual env
-          if: always()
-          run: rm -rf env/
+        if: always()
+        run: rm -rf env/
