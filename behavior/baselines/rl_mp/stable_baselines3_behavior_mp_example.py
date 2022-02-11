@@ -105,7 +105,7 @@ def main():
     def make_env(rank: int, seed: int = 0) -> Callable:
         def _init() -> BehaviorMPEnv:
             env = BehaviorMPEnv(
-                config_file=os.path.join(igibson.example_config_path, config_file),
+                config_file=os.path.join(igibson.configs_path, config_file),
                 mode="headless",
                 action_timestep=1 / 300.0,
                 physics_timestep=1 / 300.0,
@@ -121,7 +121,7 @@ def main():
     env = VecMonitor(env)
 
     eval_env = BehaviorMPEnv(
-        config_file=os.path.join(igibson.example_config_path, config_file),
+        config_file=os.path.join(igibson.configs_path, config_file),
         mode="headless",
         action_timestep=1 / 300.0,
         physics_timestep=1 / 300.0,

@@ -33,7 +33,7 @@ def main(selection="user", headless=False, short_exec=False):
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
     checkpoint_directory = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)),
+        behavior.examples_path,
         "data",
         "checkpoints",
     )

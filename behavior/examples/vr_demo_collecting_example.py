@@ -80,7 +80,7 @@ def collect_demo(scene_id, vr_demo_file=None, disable_save=False, no_vr=False, p
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         if vr_demo_file is None:
             vr_demo_name = "{}_{}_{}.hdf5".format("behavior_dummy_demo", scene_id, timestamp)
-            vr_demo_file = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data", vr_demo_name)
+            vr_demo_file = os.path.join(behavior.examples_path, "data", vr_demo_name)
 
         log_writer = IGLogWriter(
             s,

@@ -128,8 +128,8 @@ def parse_args(defaults=False):
     args_dict = dict()
     args_dict["demo_dir"] = os.path.join(igibson.ig_dataset_path, "tests")
     args_dict["log_manifest"] = os.path.join(igibson.ig_dataset_path, "tests", "test_manifest.txt")
-    args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
-    args_dict["config"] = os.path.join(os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_vr.yaml")
+    args_dict["out_dir"] = os.path.join(behavior.examples_path, "data")
+    args_dict["config"] = os.path.join(behavior.configs_path, "behavior_vr.yaml")
     if not defaults:
         parser = argparse.ArgumentParser(
             description="Extract pairs of (observation,action) for imitation learning from a batch of BEHAVIOR demos."

@@ -17,8 +17,8 @@ def parse_args(defaults=False):
 
     args_dict = dict()
     args_dict["demo_dir"] = os.path.join(igibson.ig_dataset_path, "tests")
-    args_dict["segm_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
-    args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["segm_dir"] = os.path.join(behavior.examples_path, "data")
+    args_dict["out_dir"] = os.path.join(behavior.examples_path, "data")
 
     if not defaults:
         parser = argparse.ArgumentParser(description="Script to batch-replay segmented demos using action primitives.")
@@ -70,9 +70,7 @@ def main(selection="user", headless=False, short_exec=False):
                     continue
 
                 # Batch me
-                script_file = os.path.join(
-                    os.path.dirname(inspect.getfile(behavior.examples)), "replay_demo_with_action_primitives_example.py"
-                )
+                script_file = os.path.join(behavior.examples_path, "replay_demo_with_action_primitives_example.py")
                 command = ["python", script_file, demo_file, segm_file, ap_replay_demo_file]
 
                 with open(out_log_file, "w") as log_file:

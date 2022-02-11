@@ -450,7 +450,7 @@ def parse_args(defaults=False):
         "tests",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
-    args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["out_dir"] = os.path.join(behavior.examples_path, "data")
     args_dict["replay_demo_file"] = os.path.splitext(args_dict["demo_file"])[0] + "_segm_replay.json"
     args_dict["profile"] = False
     args_dict["check_determinism"] = False

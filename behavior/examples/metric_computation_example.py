@@ -36,13 +36,9 @@ def get_metrics_callbacks(config):
 
 def parse_args(defaults=False):
     args_dict = dict()
-    args_dict["config"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_full_observability.yaml"
-    )
+    args_dict["config"] = os.path.join(behavior.configs_path, "behavior_full_observability.yaml")
     args_dict["mode"] = "headless"
-    args_dict["out_metric_log_file"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)), "data", "metrics_log.json"
-    )
+    args_dict["out_metric_log_file"] = os.path.join(behavior.examples_path, "data", "metrics_log.json")
     if not defaults:
         parser = argparse.ArgumentParser()
         parser.add_argument(

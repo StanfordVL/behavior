@@ -15,7 +15,7 @@ def parse_args(defaults=False):
     args_dict = dict()
     args_dict["demo_dir"] = os.path.join(igibson.ig_dataset_path, "tests")
     args_dict["demo_manifest"] = os.path.join(igibson.ig_dataset_path, "tests", "test_manifest.txt")
-    args_dict["out_dir"] = os.path.join(os.path.dirname(inspect.getfile(behavior.examples)), "data")
+    args_dict["out_dir"] = os.path.join(behavior.examples_path, "data")
     if not defaults:
         parser = argparse.ArgumentParser(description="Segment a batch of BEHAVIOR demos in manifest.")
         parser.add_argument("demo_dir", type=str, help="Directory containing demos listed in the manifest.")

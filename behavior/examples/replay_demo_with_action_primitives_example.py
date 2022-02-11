@@ -211,16 +211,14 @@ def parse_args(defaults=False):
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
     args_dict["segm_file"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior.examples)),
+        behavior.examples_path,
         "data",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46_flat_segm.json",
     )
     args_dict["ap_replay_log_file"] = os.path.splitext(args_dict["demo_file"])[0] + "_ap_replay.json"
 
     # Todo: maybe better behavior_vr.yaml?
-    args_dict["config"] = os.path.join(
-        os.path.dirname(inspect.getfile(behavior)), "configs", "behavior_full_observability.yaml"
-    )
+    args_dict["config"] = os.path.join(behavior.configs_path, "behavior_full_observability.yaml")
 
     if not defaults:
         parser = argparse.ArgumentParser()
