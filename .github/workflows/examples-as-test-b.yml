@@ -33,17 +33,26 @@ jobs:
           python-version: "3.8"
           architecture: x64
 
+      - name: Create virtual env
+        run: python -m venv env
+
       - name: Install dev requirements
         working-directory: behavior
-        run: pip install -r requirements-dev.txt
+        run: |
+          source ../env/bin/activate
+          pip install -r requirements-dev.txt
 
       - name: Install
         working-directory: behavior
-        run: pip install -e .
+        run: |
+          source ../env/bin/activate
+          pip install -e .
 
       - name: Uninstall pip bddl
         working-directory: behavior
-        run: pip uninstall -y bddl
+        run: |
+          source ../env/bin/activate
+          pip uninstall -y bddl
 
       - name: Checkout BDDL
         uses: actions/checkout@v2
@@ -57,7 +66,9 @@ jobs:
 
       - name: Install BDDL
         working-directory: bddl
-        run: pip install -e .
+        run: |
+          source ../env/bin/activate
+          pip install -e .
 
       - name: Link Dataset
         working-directory: igibson
@@ -65,13 +76,20 @@ jobs:
 
       - name: Create tests of examples
         working-directory: behavior
-        run: python tests/create_tests_of_examples_b.py --exhaustive
+        run: |
+          source ../env/bin/activate
+          python tests/create_tests_of_examples.py --exhaustive
 
       - name: Run tests
         working-directory: behavior
-        run: pytest /tmp/tests_of_examples_b
+        run: |
+          source ../env/bin/activate
+          pytest /tmp/tests_of_examples_b
 
-      - name: Remove Files
-        uses: JesseTG/rm@v1.0.2
-        with:
-          path: /tmp/tests_of_examples_b
+      - name: Remove files
+          if: always()
+          run: rm -rf /tmp/tests_of_examples_b || true
+
+      - name: Cleanup virtual env
+          if: always()
+          run: rm -rf env/
