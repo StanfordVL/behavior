@@ -23,6 +23,8 @@ def main(exhaustive=False):
             not package.ispkg
             and "example_selector" not in package.name[18:]
             # and "batch" not in package.name[18:]  # we do not run the batch examples as test
+            and "vr" not in package.name[18:]  # we do not run the vr collection examples as test
+            and "action_primitives" not in package.name[18:]  # we do not run the ap examples until we fix that
         ):  # Consider removing the last condition if we have runnable VR tests
             examples_list += [package.name[18:]]
 
