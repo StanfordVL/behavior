@@ -288,7 +288,7 @@ class DemoSegmentationProcessor(object):
         :return:
         """
         if not state_types:
-            logging.info("No state_types. Returning empty list")
+            print("No state_types. Returning empty list")
             return []
 
         segments = []
@@ -531,8 +531,8 @@ def main(selection="user", headless=False, short_exec=False):
     Segment a given demo into a sequence of predefined action primitives
     It assumes a predefined map of logic changes to action primitives that cause them
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
@@ -550,7 +550,7 @@ def main(selection="user", headless=False, short_exec=False):
     segmentation_processors = get_default_segmentation_processors(profiler)
 
     # Run the segmentations.
-    logging.info("Run segmentation")
+    print("Run segmentation")
     if args_dict["check_determinism"]:
         demo_replaying_example.replay_demo_with_determinism_check(
             args_dict["demo_file"],
@@ -566,7 +566,7 @@ def main(selection="user", headless=False, short_exec=False):
             step_callbacks=[sp.step_callback for sp in segmentation_processors.values()],
         )
 
-    logging.info("Save segmentation")
+    print("Save segmentation")
     demo_basename = os.path.splitext(os.path.basename(args_dict["demo_file"]))[0]
     for segmentation_name, segmentation_processor in segmentation_processors.items():
         json_file = "%s_%s_segm.json" % (demo_basename, segmentation_name)
@@ -582,7 +582,7 @@ def main(selection="user", headless=False, short_exec=False):
 
     # Save profiling information.
     if args_dict["profile"]:
-        logging.info("Save profiling")
+        print("Save profiling")
         html = profiler.output_html()
         html_file = demo_basename + "_segm_profile.html"
         html_path = os.path.join(args_dict["out_dir"], html_file)

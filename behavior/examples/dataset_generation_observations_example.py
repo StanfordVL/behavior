@@ -301,8 +301,8 @@ def main(selection="user", headless=False, short_exec=False):
     Extract a sequence of observations (ImVoteNet format: pointclouds and bounding boxes) from a batch of BEHAVIOR demos.
     The set of demos is specified in a manifest file
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
@@ -320,7 +320,7 @@ def main(selection="user", headless=False, short_exec=False):
         )
 
     # TODO: Set resolution to match model.
-    logging.info("Generating dataset of observations (pointclouds and bounding boxes)")
+    print("Generating dataset of observations (pointclouds and bounding boxes)")
     replay_demo_batch(
         args_dict["demo_dir"],
         args_dict["demo_manifest"],

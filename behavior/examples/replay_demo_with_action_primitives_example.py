@@ -25,7 +25,7 @@ def get_empty_hand(current_hands):
 
 
 def get_actions_from_segmentation(demo_data):
-    logging.info("Conversion of demo segmentation to action primitives:")
+    print("Conversion of demo segmentation to action primitives:")
 
     hand_by_object = {}
     actions = []
@@ -37,10 +37,10 @@ def get_actions_from_segmentation(demo_data):
     for segment in segmentation:
         state_records = segment["state_records"]
         if len(state_records) == 0:
-            logging.info("Found segment with no useful state changes: {}".format(segment))
+            print("Found segment with no useful state changes: {}".format(segment))
             continue
         elif len(state_records) > 1:
-            logging.info("Found segment with multiple state changes, using the first: {}".format(segment))
+            print("Found segment with multiple state changes, using the first: {}".format(segment))
 
         state_change = state_records[0]
         state_changes.append(state_change)
@@ -95,7 +95,7 @@ def get_actions_from_segmentation(demo_data):
             placed_object = state_change["objects"][0]
             target_object = state_change["objects"][1]
             if placed_object not in hand_by_object:
-                logging.info(
+                print(
                     "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?".format(
                         placed_object, i
                     )
@@ -110,7 +110,7 @@ def get_actions_from_segmentation(demo_data):
             placed_object = state_change["objects"][0]
             target_object = state_change["objects"][1]
             if placed_object not in hand_by_object:
-                logging.info(
+                print(
                     "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?".format(
                         placed_object, i
                     )
@@ -125,9 +125,9 @@ def get_actions_from_segmentation(demo_data):
         # Append the action.
         action = (primitive, target_object)
         actions.append(action)
-        logging.info("Action: {}".format(action))
+        print("Action: {}".format(action))
 
-    logging.info("Conversion completed")
+    print("Conversion completed")
     return actions
 
 
@@ -173,7 +173,7 @@ def replay_demo_with_aps(demo_file, segm_file, ap_replay_log_file, config_file):
     p.resetDebugVisualizerCamera(cameraTargetPosition=[1, -1, 0], cameraDistance=4, cameraYaw=240, cameraPitch=-45)
     for action_pair in actions:
         # try:
-        logging.info("Executing {}".format(action_pair))
+        print("Executing {}".format(action_pair))
         primitive, obj_name = action_pair
 
         # Convert the action
@@ -182,7 +182,7 @@ def replay_demo_with_aps(demo_file, segm_file, ap_replay_log_file, config_file):
 
         # Execute.
         state, reward, done, info = env.step(action)
-        logging.info("Reward: {}, Info: {}".format(reward, info))
+        print("Reward: {}, Info: {}".format(reward, info))
         infos.append(info)
         action_successes.append(True)
         if done:
@@ -195,7 +195,7 @@ def replay_demo_with_aps(demo_file, segm_file, ap_replay_log_file, config_file):
     with open(ap_replay_log_file, "w") as f:
         json.dump(data, f)
 
-    logging.info(
+    print(
         "Episode finished after {} timesteps, took {} seconds. Done: {}".format(
             env.current_step, time.time() - start, done
         )
@@ -242,8 +242,8 @@ def main(selection="user", headless=False, short_exec=False):
     Replays a demo using action primitives
     The demo must be segmented before into a valid sequence of action primitives
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)

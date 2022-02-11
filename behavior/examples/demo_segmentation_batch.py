@@ -34,8 +34,8 @@ def main(selection="user", headless=False, short_exec=False):
     Segment a batch of demos
     Use a manifest file to indicate the demos to segment
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     testing = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=testing)
@@ -49,7 +49,7 @@ def main(selection="user", headless=False, short_exec=False):
         def data_callback():
             data_cb_ret = dict()
             for name, sp in segmentation_processors.items():
-                logging.info("Serializing segmentation {}".format(name))
+                print("Serializing segmentation {}".format(name))
                 data_cb_ret[name] = sp.serialize_segments()
             return data_cb_ret
 
@@ -61,7 +61,7 @@ def main(selection="user", headless=False, short_exec=False):
             [data_callback],
         )
 
-    logging.info("Run segmentation")
+    print("Run segmentation")
     replay_demo_batch(
         args_dict["demo_dir"],
         args_dict["demo_manifest"],
@@ -70,7 +70,7 @@ def main(selection="user", headless=False, short_exec=False):
         skip_existing=not testing,  # Do not skip when testing
         ignore_errors=not testing,  # Do not ignore when testing
     )
-    logging.info("Batch of demos segmented!")
+    print("Batch of demos segmented!")
 
 
 RUN_AS_TEST = True  # Change to True to run this example in test mode

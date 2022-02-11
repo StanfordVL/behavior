@@ -39,8 +39,8 @@ def main(selection="user", headless=False, short_exec=False):
     Creates threads for a batch of demos to be replayed in parallel
     Uses the code in replay_demo_with_action_primitives.py
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
@@ -51,7 +51,7 @@ def main(selection="user", headless=False, short_exec=False):
     segm_files = list(glob.glob(os.path.join(args_dict["segm_dir"], "*_segm.json")))
     demo_files = list(glob.glob(os.path.join(args_dict["demo_dir"], "*.hdf5")))
 
-    logging.info("Segmentations to replay with action primitives: {}".format(len(segm_files)))
+    print("Segmentations to replay with action primitives: {}".format(len(segm_files)))
 
     # Load the demo to get info
     for demo_file in tqdm.tqdm(demo_files):
@@ -66,7 +66,7 @@ def main(selection="user", headless=False, short_exec=False):
                 out_log_file = os.path.join(args_dict["out_dir"], segm_name + "_ap_replay.log")
 
                 if os.path.exists(ap_replay_demo_file) and skip_if_existing:
-                    logging.info("Skipping demo because it exists already: {}".format(ap_replay_demo_file))
+                    print("Skipping demo because it exists already: {}".format(ap_replay_demo_file))
                     continue
 
                 # Batch me
@@ -76,9 +76,7 @@ def main(selection="user", headless=False, short_exec=False):
                 command = ["python", script_file, demo_file, segm_file, ap_replay_demo_file]
 
                 with open(out_log_file, "w") as log_file:
-                    logging.info(
-                        "Launching subprocess for demo. Command: {}. Log file: {}".format(command, out_log_file)
-                    )
+                    print("Launching subprocess for demo. Command: {}. Log file: {}".format(command, out_log_file))
                     tqdm.tqdm.write("Processing %s" % demo)
                     subprocess.run(command, stdout=log_file, stderr=subprocess.STDOUT)
 

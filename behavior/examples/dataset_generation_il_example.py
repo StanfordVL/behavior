@@ -85,14 +85,14 @@ def generate_il_dataset(
         out_log_file = os.path.join(out_dir, demo_name + "_log.json")
 
         if skip_existing and os.path.exists(out_log_file):
-            logging.info(
+            print(
                 "Skipping demo because an output log file already exists (we assume it has been processed): {}, {} out of {}".format(
                     demo, idx, len(demo_list["demos"])
                 )
             )
             continue
 
-        logging.info("Replaying demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
+        print("Replaying demo: {}, {} out of {}".format(demo, idx, len(demo_list["demos"])))
 
         curr_frame_save_path = None
         if save_frames:
@@ -119,7 +119,7 @@ def generate_il_dataset(
             logging.error("Demo failed withe error: {}".format(e))
             demo_information = {"demo_id": Path(demo).name, "failed": True, "failure_reason": str(e)}
 
-        logging.info("Saving data")
+        print("Saving data")
         with open(out_log_file, "w") as file:
             json.dump(demo_information, file)
 
@@ -156,8 +156,8 @@ def main(selection="user", headless=False, short_exec=False):
     """
     Extract pairs of (observation,action) for imitation learning from a batch of BEHAVIOR demos.
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)

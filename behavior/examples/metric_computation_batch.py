@@ -37,8 +37,8 @@ def main(selection="user", headless=False, short_exec=False):
     Compute metrics on a batch of previously recorded demos
     Uses a manifest file
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     testing = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=testing)

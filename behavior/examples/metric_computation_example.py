@@ -74,8 +74,8 @@ def main(selection="user", headless=False, short_exec=False):
     """
     Compute metrics "live" on a running environment with random actions
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
@@ -83,7 +83,7 @@ def main(selection="user", headless=False, short_exec=False):
     if headless:
         args_dict["mode"] = "headless"
 
-    logging.info("Create environment")
+    print("Create environment")
     env = iGibsonEnv(
         config_file=args_dict["config"],
         mode=args_dict["mode"],
@@ -95,16 +95,16 @@ def main(selection="user", headless=False, short_exec=False):
     for callback in start_callbacks:
         callback(env, None)
 
-    logging.info("Starting metric example")
+    print("Starting metric example")
     num_resets = 10 if not short_exec else 2
     num_steps = (
         1000 if not short_exec else 200
     )  # At least 150 steps to settle the simulator and cache the initial state
     for episode in range(num_resets):
-        logging.info("Resetting environment")
+        print("Resetting environment")
         env.reset()
         for i in range(num_steps):
-            logging.info("Stepping with random actions")
+            print("Stepping with random actions")
             action = env.action_space.sample()
             state, reward, done, _ = env.step(action)
             for callback in step_callbacks:
@@ -122,7 +122,7 @@ def main(selection="user", headless=False, short_exec=False):
 
         per_episode_metrics[episode] = metrics_summary
 
-    logging.info("Writing metric computation results")
+    print("Writing metric computation results")
     with open(args_dict["out_metric_log_file"], "w") as file:
         json.dump(per_episode_metrics, file)
 

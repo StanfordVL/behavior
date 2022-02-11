@@ -14,10 +14,11 @@ from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisar
 from igibson.metrics.task import TaskMetric
 from igibson.utils.utils import parse_config
 
-logging.getLogger().setLevel(logging.WARNING)
-
 from behavior.benchmark.agents.random_agent import RandomAgent
 from behavior.benchmark.agents.rl_agent import PPOAgent
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.WARNING)
 
 
 def get_metrics_callbacks():

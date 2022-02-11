@@ -16,7 +16,7 @@ def create_checkpoints(demo_file, checkpoint_directory, checkpoint_every_n_steps
         if not env.task.current_success and env.simulator.frame_count % checkpoint_every_n_steps == 0:
             save_checkpoint(env.simulator, checkpoint_directory)
 
-    logging.info("Replaying demo and saving checkpoints")
+    print("Replaying demo and saving checkpoints")
     replay_demo_with_determinism_check(demo_file, mode="headless", step_callbacks=[step_callback])
 
 
@@ -25,8 +25,7 @@ def main(selection="user", headless=False, short_exec=False):
     Opens a demo and creates checkpoints every N steps
     Checkpoints can be used to initialize the simulation at those states, for example, for RL
     """
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
 
     demo_file = os.path.join(
         igibson.ig_dataset_path,
