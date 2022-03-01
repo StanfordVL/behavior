@@ -25,7 +25,7 @@ def main(selection="user", headless=False, short_exec=False):
     Opens a demo and creates checkpoints every N steps
     Checkpoints can be used to initialize the simulation at those states, for example, for RL
     """
-    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "\n" + "*" * 80)
 
     demo_file = os.path.join(
         igibson.ig_dataset_path,

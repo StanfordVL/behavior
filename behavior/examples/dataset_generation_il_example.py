@@ -157,7 +157,7 @@ def main(selection="user", headless=False, short_exec=False):
     Extract pairs of (observation,action) for imitation learning from a batch of BEHAVIOR demos.
     """
 
-    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "\n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)

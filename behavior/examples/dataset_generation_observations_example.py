@@ -302,7 +302,7 @@ def main(selection="user", headless=False, short_exec=False):
     The set of demos is specified in a manifest file
     """
 
-    print("*" * 80 + "\nDescription:" + main.__doc__ + "/n" + "*" * 80)
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "\n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
     args_dict = parse_args(defaults=defaults)
