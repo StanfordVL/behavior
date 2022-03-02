@@ -73,4 +73,4 @@ More information about BDDL can be found at [https://github.com/StanfordVL/bddl]
 
 ### Examples
 
-We included multiple code examples in the folder `behavior/examples`. Take a look there to get started. Additional useful examples can be found in the folder `igibson\examples` in the iGibson repository.
+We included multiple code examples in the folder `behavior/examples`. Take a look there to get started. Additional useful examples can be found in the folder `igibson/examples` in the iGibson repository.
