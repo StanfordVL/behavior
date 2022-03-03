@@ -17,26 +17,17 @@ In the following, we summarize the steps to install iGibson, BDDL, and the BEHAV
     ```
     git clone git@github.com:stanfordvl/iGibson.git --recursive
    ```
-    b) The BDDL logic language:
-   ```
-    git clone git@github.com:stanfordvl/bddl.git
-   ```
-    c) The BEHAVIOR repository with the benchmarking utilities and baselines:
+    b) The BEHAVIOR repository with the benchmarking utilities and baselines:
    ```
     git clone git@github.com:stanfordvl/behavior.git
    ```
-3) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations) 
-    
-    a) Accept the license agreement filling the [form](https://forms.gle/GXAacjpnotKkM2An7). This allows you to use the assets within iGibson for free for your research.
-    
-    b) You will receive a encryption key (`igibson.key`). Move the key into the data folder of the iGibson repository, `iGibson/igibson/data`.
-    
-    c) Download the BEHAVIOR data bundle including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes from [form]().
-    
-    d) Decompress the BEHAVIOR data bundle:
-    ```
-    unzip behavior_data_bundle.zip -d iGibson/igibson/data
-    ```
+3) Download and obtain access to the iGibson Dataset of Scenes and the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations) 
+
+    a) Fill out the license agreement in this [form](https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform). This allows you to use the assets within iGibson for free for your research.
+    b) After submitting the form, you will receive a key (igibson.key). Copy it into the folder that will contain the dataset, as default: `iGibson/igibson/data`
+    c) Download the datasets from [here](https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz) (size ~20GB). 
+    d) Unzip the zip file into the desired folder
+
 4) (If you haven't done it already) Create a virtual environment and activate it
     ```
     conda create -n igibson python=3.8
@@ -45,7 +36,6 @@ In the following, we summarize the steps to install iGibson, BDDL, and the BEHAV
 5) Install the downloaded repositories in the environment
     ```
     pip install -e ./iGibson
-    pip install -e ./bddl
     pip install -e ./behavior
     ```
 6) Download the iGibson assets that include robot models
@@ -54,11 +44,11 @@ In the following, we summarize the steps to install iGibson, BDDL, and the BEHAV
     ```
 7) Run the getting started script to evaluate the installation
     ```
-    python iGibson/igibson/examples/behavior/behavior_env_metrics.py -m headless
+    python -m behavior.examples.metric_computation_example
     ```
-    If you are working on your local machine, you can drop the `-m headless` flag and visualize the test on a GUI.
+    If you are working on your local machine, you can add `-m gui_interactive` to visualize the test on a GUI (you may want to change the rendering resolution).
 
-Alternatively, you could install iGibson and BDDL using `pip`. In that case, you can skip the steps of cloning and installing their github repositories and do it only for the `behavior` repository.
+Alternatively, you could install iGibson using `pip`. In that case, you can skip the steps of cloning and installing the github repositories and do it only for the `behavior` repository.
 
 If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior.benchmark@gmail.com).
 
@@ -90,15 +80,10 @@ If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior
 
 4) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations). If you already did this before, for example because you also installed the repositories, you can skip this step. Otherwise:
     
-    a) Accept the license agreement filling the [form](https://forms.gle/GXAacjpnotKkM2An7). This allows you to use the assets within iGibson for free for your research.
-    
-    b) After signing and uploading the agreement, you will get access to the encryption key (`igibson.key`) and a data bundle for BEHAVIOR (`behavior_data_bundle.zip`) including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes. Download both.
-    
-    c) Decompress the BEHAVIOR data bundle into a folder, e.g. `dataset`:
-    ```
-    unzip behavior_data_bundle.zip -d dataset
-    ```
-    e) Place the `igibson.key` in the folder you decompressed the bundle (`dataset` in our example) 
+    a) Fill out the license agreement in this [form](https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform). This allows you to use the assets within iGibson for free for your research.
+    b) After submitting the form, you will receive a key (igibson.key). Create a folder for the dataset and copy the key into that folder.
+    c) Download the datasets from [here](https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz) (size ~20GB). 
+    d) Unzip the zip file into the created folder
     
 5) You are ready to train and test your solutions, or create a submission to EvalAI. See [Section Training and Evaluating](benchmarking.md)
    

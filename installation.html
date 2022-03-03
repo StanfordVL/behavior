@@ -47,7 +47,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Training and Evaluating Agents</a></li>
 <li class="toctree-l1"><a class="reference internal" href="baselines.html">Baselines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Code Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Components of BEHAVIOR</span></p>
 <ul>
@@ -57,10 +56,6 @@
 <li class="toctree-l1"><a class="reference internal" href="vr_demos.html">The BEHAVIOR Dataset of Human Demonstrations in Virtual Reality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="objects.html">The BEHAVIOR Dataset of Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Miscellaneous</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Code Examples</a></li>
 </ul>
 
         </div>
@@ -87,41 +82,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="tex2jax_ignore mathjax_ignore section" id="installation">
+  <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
 <p>Evaluating Embodied AI agents in BEHAVIOR requires to install three code blocks: the iGibson simulator, the BDDL library of logic language, and the benchmarking utilities (this repo).</p>
 <p>There are two alternatives for the installation:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>the common and most flexible way, installing the github repositories (or pip installing) manually. This is available under MacOS, Linux and Windows.</p></li>
 <li><p>the fastest but less flexible using a Docker image. This second alternative is only available for Linux and Windows users. It is the preferred mode if you plan to submit to our public leaderboard on EvalAI.</p></li>
 </ol>
 <div class="section" id="option-1-manual-installation">
 <h2>Option 1: Manual installation<a class="headerlink" href="#option-1-manual-installation" title="Permalink to this headline"></a></h2>
 <p>In the following, we summarize the steps to install iGibson, BDDL, and the BEHAVIOR code. If you have any issues with iGibson or BDDL, please refer to the extend installation instructions in the respective repositories (<a class="reference external" href="http://svl.stanford.edu/igibson/docs/installation.html">docs for iGibson installation</a> and <a class="reference external" href="https://github.com/StanfordVL/bddl/blob/master/README.md">docs for BDDL installation</a>).</p>
-<ol>
+<ol class="arabic">
 <li><p>Ensure you have the all prerequisites for the installation of iGibson by following the dependencies section <a class="reference external" href="http://svl.stanford.edu/igibson/docs/installation.html#installing-dependencies">here</a></p></li>
 <li><p>Clone all necessary repositories for the benchmark:</p>
 <p>a) The iGibson simulation environment:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">stanfordvl</span><span class="o">/</span><span class="n">iGibson</span><span class="o">.</span><span class="n">git</span> <span class="o">--</span><span class="n">recursive</span>
 </pre></div>
 </div>
-<p>b) The BDDL logic language:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">stanfordvl</span><span class="o">/</span><span class="n">bddl</span><span class="o">.</span><span class="n">git</span>
-</pre></div>
-</div>
-<p>c) The BEHAVIOR repository with the benchmarking utilities and baselines:</p>
+<p>b) The BEHAVIOR repository with the benchmarking utilities and baselines:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">stanfordvl</span><span class="o">/</span><span class="n">behavior</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
 </li>
-<li><p>Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations)</p>
-<p>a) Accept the license agreement filling the <a class="reference external" href="https://forms.gle/GXAacjpnotKkM2An7">form</a>. This allows you to use the assets within iGibson for free for your research.</p>
-<p>b) You will receive a encryption key (<code class="docutils literal notranslate"><span class="pre">igibson.key</span></code>). Move the key into the data folder of the iGibson repository, <code class="docutils literal notranslate"><span class="pre">iGibson/igibson/data</span></code>.</p>
-<p>c) Download the BEHAVIOR data bundle including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes from <span class="xref myst">form</span>.</p>
-<p>d) Decompress the BEHAVIOR data bundle:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unzip</span> <span class="n">behavior_data_bundle</span><span class="o">.</span><span class="n">zip</span> <span class="o">-</span><span class="n">d</span> <span class="n">iGibson</span><span class="o">/</span><span class="n">igibson</span><span class="o">/</span><span class="n">data</span>
-</pre></div>
-</div>
+<li><p>Download and obtain access to the iGibson Dataset of Scenes and the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations)</p>
+<p>a) Fill out the license agreement in this <a class="reference external" href="https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform">form</a>. This allows you to use the assets within iGibson for free for your research.
+b) After submitting the form, you will receive a key (igibson.key). Copy it into the folder that will contain the dataset, as default: <code class="docutils literal notranslate"><span class="pre">iGibson/igibson/data</span></code>
+c) Download the datasets from <a class="reference external" href="https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz">here</a> (size ~20GB).
+d) Unzip the zip file into the desired folder</p>
 </li>
 <li><p>(If you haven’t done it already) Create a virtual environment and activate it</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">igibson</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.8</span>
@@ -131,7 +119,6 @@
 </li>
 <li><p>Install the downloaded repositories in the environment</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">./</span><span class="n">iGibson</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">./</span><span class="n">bddl</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">./</span><span class="n">behavior</span>
 </pre></div>
 </div>
@@ -142,19 +129,19 @@
 </div>
 </li>
 <li><p>Run the getting started script to evaluate the installation</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">iGibson</span><span class="o">/</span><span class="n">igibson</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">behavior</span><span class="o">/</span><span class="n">behavior_env_metrics</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">m</span> <span class="n">headless</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">behavior</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">metric_computation_example</span>
 </pre></div>
 </div>
-<p>If you are working on your local machine, you can drop the <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">headless</span></code> flag and visualize the test on a GUI.</p>
+<p>If you are working on your local machine, you can add <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">gui_interactive</span></code> to visualize the test on a GUI (you may want to change the rendering resolution).</p>
 </li>
 </ol>
-<p>Alternatively, you could install iGibson and BDDL using <code class="docutils literal notranslate"><span class="pre">pip</span></code>. In that case, you can skip the steps of cloning and installing their github repositories and do it only for the <code class="docutils literal notranslate"><span class="pre">behavior</span></code> repository.</p>
+<p>Alternatively, you could install iGibson using <code class="docutils literal notranslate"><span class="pre">pip</span></code>. In that case, you can skip the steps of cloning and installing the github repositories and do it only for the <code class="docutils literal notranslate"><span class="pre">behavior</span></code> repository.</p>
 <p>If you run into any issues, refer to our <span class="xref myst">FAQ</span> or <a class="reference external" href="mailto:behavior&#46;benchmark&#37;&#52;&#48;gmail&#46;com">contact us</a>.</p>
 </div>
 <div class="section" id="option-2-using-docker">
 <h2>Option 2: Using Docker<a class="headerlink" href="#option-2-using-docker" title="Permalink to this headline"></a></h2>
 <p><strong>This section needs to be updated. Until that is done, please, follow the instructions above or modify the instructions below to adapt to the new Docker images.</strong></p>
-<ol>
+<ol class="arabic">
 <li><p>Clone this repository</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">stanfordvl</span><span class="o">/</span><span class="n">behavior</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
@@ -177,13 +164,10 @@ WORKDIR /
 <p>Then build your Docker container with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">.</span> <span class="pre">-t</span> <span class="pre">my_submission</span></code> replacing <code class="docutils literal notranslate"><span class="pre">my_submission</span></code> with the name you want to use for the Docker image.</p>
 </li>
 <li><p>Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations). If you already did this before, for example because you also installed the repositories, you can skip this step. Otherwise:</p>
-<p>a) Accept the license agreement filling the <a class="reference external" href="https://forms.gle/GXAacjpnotKkM2An7">form</a>. This allows you to use the assets within iGibson for free for your research.</p>
-<p>b) After signing and uploading the agreement, you will get access to the encryption key (<code class="docutils literal notranslate"><span class="pre">igibson.key</span></code>) and a data bundle for BEHAVIOR (<code class="docutils literal notranslate"><span class="pre">behavior_data_bundle.zip</span></code>) including the BEHAVIOR Dataset of Objects and the iGibson2 Dataset of scenes. Download both.</p>
-<p>c) Decompress the BEHAVIOR data bundle into a folder, e.g. <code class="docutils literal notranslate"><span class="pre">dataset</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unzip</span> <span class="n">behavior_data_bundle</span><span class="o">.</span><span class="n">zip</span> <span class="o">-</span><span class="n">d</span> <span class="n">dataset</span>
-</pre></div>
-</div>
-<p>e) Place the <code class="docutils literal notranslate"><span class="pre">igibson.key</span></code> in the folder you decompressed the bundle (<code class="docutils literal notranslate"><span class="pre">dataset</span></code> in our example)</p>
+<p>a) Fill out the license agreement in this <a class="reference external" href="https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform">form</a>. This allows you to use the assets within iGibson for free for your research.
+b) After submitting the form, you will receive a key (igibson.key). Create a folder for the dataset and copy the key into that folder.
+c) Download the datasets from <a class="reference external" href="https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz">here</a> (size ~20GB).
+d) Unzip the zip file into the created folder</p>
 </li>
 <li><p>You are ready to train and test your solutions, or create a submission to EvalAI. See <a class="reference internal" href="benchmarking.html"><span class="doc std std-doc">Section Training and Evaluating</span></a></p></li>
 </ol>

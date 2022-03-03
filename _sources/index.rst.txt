@@ -19,7 +19,6 @@ This documentation includes also useful information to get started with [example
    installation.md
    benchmarking.md
    baselines.md
-   examples.md
 
 .. toctree::
    :maxdepth: 1
@@ -37,15 +36,6 @@ This documentation includes also useful information to get started with [example
    :caption: API
 
    apidoc/modules.rst
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Miscellaneous
-
-   examples.md
-   issues.md
-   projects.md
-   acknowledgements.md
 
 
 Indices and tables
