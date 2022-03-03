@@ -25,7 +25,8 @@ In the following, we summarize the steps to install iGibson, BDDL, and the BEHAV
    1) Fill out the license agreement in this [form](https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform). This allows you to use the assets within iGibson for free for your research.
    2) After submitting the form, you will receive a key (igibson.key). Copy it into the folder that will contain the dataset, as default: `iGibson/igibson/data`
    3) Download the datasets from [here](https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz) (size ~20GB). 
-   4) Unzip the zip file into the desired folder
+   4) Unzip the zip file into the desired folder, as default: `iGibson/igibson/data`
+For more information, please visit the iGibson documentation [here](https://stanfordvl.github.io/iGibson/dataset.html#downloading-the-igibson-2-0-dataset-of-scenes-and-the-behavior-dataset-of-objects).
 
 4) (If you haven't done it already) Create a virtual environment and activate it
     ```
@@ -77,13 +78,13 @@ If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior
     ```
    Then build your Docker container with `docker build . -t my_submission` replacing `my_submission` with the name you want to use for the Docker image.
 
-4) Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations). If you already did this before, for example because you also installed the repositories, you can skip this step. Otherwise:
-    
-    a) Fill out the license agreement in this [form](https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform). This allows you to use the assets within iGibson for free for your research.
-    b) After submitting the form, you will receive a key (igibson.key). Create a folder for the dataset and copy the key into that folder.
-    c) Download the datasets from [here](https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz) (size ~20GB). 
-    d) Unzip the zip file into the created folder
+4) Download and obtain access to the iGibson Dataset of Scenes and the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations)
+   1) Fill out the license agreement in this [form](https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform). This allows you to use the assets within iGibson for free for your research.
+   2) After submitting the form, you will receive a key (igibson.key). Create a folder for the dataset and copy the key into that folder.
+   3) Download the datasets from [here](https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz) (size ~20GB). 
+   4) Unzip the zip file into the created folder in step 2)
+For more information, please visit the iGibson documentation [here](https://stanfordvl.github.io/iGibson/dataset.html#downloading-the-igibson-2-0-dataset-of-scenes-and-the-behavior-dataset-of-objects).
     
 5) You are ready to train and test your solutions, or create a submission to EvalAI. See [Section Training and Evaluating](benchmarking.md)
    
-If you run into any issues, refer to our [FAQ]() or [contact us](mailto:behavior.benchmark@gmail.com).
+If you run into any issues, [contact us](mailto:behavior.benchmark@gmail.com).
