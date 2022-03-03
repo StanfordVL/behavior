@@ -300,7 +300,6 @@ def main(selection="user", headless=False, short_exec=False):
     Extract a sequence of observations (ImVoteNet format: pointclouds and bounding boxes) from a batch of BEHAVIOR demos.
     The set of demos is specified in a manifest file
     """
-
     print("*" * 80 + "\nDescription:" + main.__doc__ + "\n" + "*" * 80)
 
     defaults = selection == "random" and headless and short_exec
@@ -328,10 +327,11 @@ def main(selection="user", headless=False, short_exec=False):
         image_size=(480, 480),
         ignore_errors=True,
         debug_display=DEBUG_DRAW,
+        deactivate_logger=False,
     )
 
 
-RUN_AS_TEST = False  # Change to True to run this example in test mode
+RUN_AS_TEST = True  # Change to True to run this example in test mode
 if __name__ == "__main__":
     if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
