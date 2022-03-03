@@ -1,8 +1,11 @@
+import logging
 import os
 from typing import Callable
 
 import igibson
-from igibson.envs.behavior_env import BehaviorEnv
+from igibson.envs.igibson_env import iGibsonEnv
+
+log = logging.getLogger(__name__)
 
 try:
     import gym
@@ -16,7 +19,7 @@ try:
     from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
 
 except ModuleNotFoundError:
-    print("stable-baselines3 is not installed. You would need to do: pip install stable-baselines3")
+    log.error("stable-baselines3 is not installed. You would need to do: pip install stable-baselines3")
     exit(1)
 
 
@@ -102,9 +105,9 @@ def main():
     num_cpu = 8
 
     def make_env(rank: int, seed: int = 0) -> Callable:
-        def _init() -> BehaviorEnv:
-            env = BehaviorEnv(
-                config_file=os.path.join(igibson.example_config_path, config_file),
+        def _init() -> iGibsonEnv:
+            env = iGibsonEnv(
+                config_file=os.path.join(igibson.configs_path, config_file),
                 mode="headless",
                 action_timestep=1 / 30.0,
                 physics_timestep=1 / 300.0,
@@ -118,8 +121,8 @@ def main():
     env = SubprocVecEnv([make_env(i) for i in range(num_cpu)])
     env = VecMonitor(env)
 
-    eval_env = BehaviorEnv(
-        config_file=os.path.join(igibson.example_config_path, config_file),
+    eval_env = iGibsonEnv(
+        config_file=os.path.join(igibson.configs_path, config_file),
         mode="headless",
         action_timestep=1 / 30.0,
         physics_timestep=1 / 300.0,
@@ -136,23 +139,23 @@ def main():
         tensorboard_log=tensorboard_log_dir,
         policy_kwargs=policy_kwargs,
     )
-    print(model.policy)
+    log.debug(model.policy)
 
     # Random Agent, before training
     mean_reward, std_reward = evaluate_policy(model, eval_env, n_eval_episodes=10)
-    print(f"Before Training: Mean reward: {mean_reward} +/- {std_reward:.2f}")
+    log.debug("Before Training: Mean reward: {mean_reward} +/- {std_reward:.2f}")
 
     model.learn(1000000)
 
     mean_reward, std_reward = evaluate_policy(model, eval_env, n_eval_episodes=20)
-    print(f"After Training: Mean reward: {mean_reward} +/- {std_reward:.2f}")
+    log.info("After Training: Mean reward: {mean_reward} +/- {std_reward:.2f}")
 
     model.save("ckpt")
     del model
 
     model = PPO.load("ckpt")
     mean_reward, std_reward = evaluate_policy(model, eval_env, n_eval_episodes=20)
-    print(f"After Loading: Mean reward: {mean_reward} +/- {std_reward:.2f}")
+    log.info("After Loading: Mean reward: {mean_reward} +/- {std_reward:.2f}")
 
 
 if __name__ == "__main__":

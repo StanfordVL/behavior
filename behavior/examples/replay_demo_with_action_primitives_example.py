@@ -1,12 +1,17 @@
 import argparse
+import inspect
 import json
+import logging
 import os
+import sys
 import time
 
 import igibson
 import yaml
 from igibson.envs.behavior_mp_env import ActionPrimitives, BehaviorMPEnv
 from igibson.utils.ig_logging import IGLogReader
+
+import behavior
 
 
 def get_empty_hand(current_hands):
@@ -19,21 +24,22 @@ def get_empty_hand(current_hands):
 
 
 def get_actions_from_segmentation(demo_data):
-    print("Conversion of demo segmentation to motion primitives:")
+    print("Conversion of demo segmentation to action primitives:")
 
     hand_by_object = {}
     actions = []
-    segmentation = demo_data["segmentations"]["flat"]["sub_segments"]
+
+    segmentation = demo_data["sub_segments"]
 
     # Convert the segmentation to a sequence of state changes.
     state_changes = []
     for segment in segmentation:
         state_records = segment["state_records"]
         if len(state_records) == 0:
-            print("Found segment with no useful state changes: %r" % segment)
+            print("Found segment with no useful state changes: {}".format(segment))
             continue
         elif len(state_records) > 1:
-            print("Found segment with multiple state changes, using the first: %r" % segment)
+            print("Found segment with multiple state changes, using the first: {}".format(segment))
 
         state_change = state_records[0]
         state_changes.append(state_change)
@@ -89,8 +95,9 @@ def get_actions_from_segmentation(demo_data):
             target_object = state_change["objects"][1]
             if placed_object not in hand_by_object:
                 print(
-                    "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?"
-                    % (placed_object, i)
+                    "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?".format(
+                        placed_object, i
+                    )
                 )
                 continue
             hand = hand_by_object[placed_object]
@@ -103,8 +110,9 @@ def get_actions_from_segmentation(demo_data):
             target_object = state_change["objects"][1]
             if placed_object not in hand_by_object:
                 print(
-                    "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?"
-                    % (placed_object, i)
+                    "Placed object %s in segment %d not currently grasped. Maybe some sort of segmentation error?".format(
+                        placed_object, i
+                    )
                 )
                 continue
             hand = hand_by_object[placed_object]
@@ -116,26 +124,25 @@ def get_actions_from_segmentation(demo_data):
         # Append the action.
         action = (primitive, target_object)
         actions.append(action)
-        print("%s(%s)" % action)
+        print("Action: {}".format(action))
 
-    print("Conversion complete.\n")
+    print("Conversion completed")
     return actions
 
 
-def run_demonstration(demo_path, segmentation_path, output_path):
-    task = IGLogReader.read_metadata_attr(demo_path, "/metadata/atus_activity")
-    task_id = IGLogReader.read_metadata_attr(demo_path, "/metadata/activity_definition")
-    scene_id = IGLogReader.read_metadata_attr(demo_path, "/metadata/scene_id")
+def replay_demo_with_aps(demo_file, segm_file, ap_replay_log_file, config_file):
+    task = IGLogReader.read_metadata_attr(demo_file, "/metadata/atus_activity")
+    task_id = IGLogReader.read_metadata_attr(demo_file, "/metadata/activity_definition")
+    scene_id = IGLogReader.read_metadata_attr(demo_file, "/metadata/scene_id")
 
     # Load the segmentation of a demo for this task.
-    with open(segmentation_path, "r") as f:
+    with open(segm_file, "r") as f:
         selected_demo_data = json.load(f)
 
     # Get the actions from the segmentation
     actions = get_actions_from_segmentation(selected_demo_data)
 
     # Prepare the environment
-    config_file = os.path.join(igibson.example_config_path, "behavior_segmentation_replay.yaml")
     with open(config_file, "r") as f:
         config = yaml.safe_load(f)
 
@@ -162,15 +169,10 @@ def run_demonstration(demo_path, segmentation_path, output_path):
     import pybullet as p
 
     p.configureDebugVisualizer(p.COV_ENABLE_GUI, False)
-    p.resetDebugVisualizerCamera(
-        cameraTargetPosition=[1, -1, 0],
-        cameraDistance=4,
-        cameraYaw=240,
-        cameraPitch=-45,
-    )
+    p.resetDebugVisualizerCamera(cameraTargetPosition=[1, -1, 0], cameraDistance=4, cameraYaw=240, cameraPitch=-45)
     for action_pair in actions:
         # try:
-        print("Executing %s(%s)" % action_pair)
+        print("Executing {}".format(action_pair))
         primitive, obj_name = action_pair
 
         # Convert the action
@@ -179,7 +181,7 @@ def run_demonstration(demo_path, segmentation_path, output_path):
 
         # Execute.
         state, reward, done, info = env.step(action)
-        print(reward, info)
+        print("Reward: {}, Info: {}".format(reward, info))
         infos.append(info)
         action_successes.append(True)
         if done:
@@ -189,7 +191,7 @@ def run_demonstration(demo_path, segmentation_path, output_path):
 
     # Dump the results
     data = {"actions": actions, "infos": infos, "action_successes": action_successes}
-    with open(output_path, "w") as f:
+    with open(ap_replay_log_file, "w") as f:
         json.dump(data, f)
 
     print(
@@ -200,15 +202,57 @@ def run_demonstration(demo_path, segmentation_path, output_path):
     env.close()
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("demo_path", type=str, help="Path of the demo hdf5 to replay.")
-    parser.add_argument("segmentation_path", type=str, help="Path of the segmentation of the demo.")
-    parser.add_argument("output_path", type=str, help="Path to output result JSON file to.")
-    args = parser.parse_args()
+def parse_args(defaults=False):
+    args_dict = dict()
+    args_dict["demo_file"] = os.path.join(
+        igibson.ig_dataset_path,
+        "tests",
+        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
+    )
+    args_dict["segm_file"] = os.path.join(
+        behavior.examples_path,
+        "data",
+        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46_flat_segm.json",
+    )
+    args_dict["ap_replay_log_file"] = os.path.splitext(args_dict["demo_file"])[0] + "_ap_replay.json"
 
-    run_demonstration(args.demo_path, args.segmentation_path, args.output_path)
+    # Todo: maybe better behavior_vr.yaml?
+    args_dict["config"] = os.path.join(behavior.configs_path, "behavior_full_observability.yaml")
+
+    if not defaults:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("demo_file", type=str, help="Path of the demo hdf5 to replay.")
+        parser.add_argument("segm_file", type=str, help="Path of the segmentation of the demo.")
+        parser.add_argument("ap_replay_log_file", type=str, help="Path to output the log of the replay.")
+        parser.add_argument("--config", help="which config file to use [default: use yaml files in examples/configs]")
+        args = parser.parse_args()
+        args_dict["demo_file"] = args.demo_file
+        args_dict["segm_file"] = args.segm_file
+        args_dict["ap_replay_log_file"] = args.ap_replay_log_file
+        args_dict["config"] = args.config
+
+    return args_dict
 
 
+def main(selection="user", headless=False, short_exec=False):
+    """
+    Replays a demo using action primitives
+    The demo must be segmented before into a valid sequence of action primitives
+    """
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "\n" + "*" * 80)
+
+    defaults = selection == "random" and headless and short_exec
+    args_dict = parse_args(defaults=defaults)
+
+    replay_demo_with_aps(
+        args_dict["demo_file"], args_dict["segm_file"], args_dict["ap_replay_log_file"], args_dict["config"]
+    )
+
+
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
-    main()
+    if RUN_AS_TEST:
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()

@@ -2,8 +2,8 @@ import os
 from typing import Callable
 
 import igibson
-from igibson.envs.behavior_env import BehaviorEnv
 from igibson.envs.behavior_mp_env import BehaviorMPEnv
+from igibson.envs.igibson_env import iGibsonEnv
 
 try:
     import gym
@@ -105,7 +105,7 @@ def main():
     def make_env(rank: int, seed: int = 0) -> Callable:
         def _init() -> BehaviorMPEnv:
             env = BehaviorMPEnv(
-                config_file=os.path.join(igibson.example_config_path, config_file),
+                config_file=os.path.join(igibson.configs_path, config_file),
                 mode="headless",
                 action_timestep=1 / 300.0,
                 physics_timestep=1 / 300.0,
@@ -121,7 +121,7 @@ def main():
     env = VecMonitor(env)
 
     eval_env = BehaviorMPEnv(
-        config_file=os.path.join(igibson.example_config_path, config_file),
+        config_file=os.path.join(igibson.configs_path, config_file),
         mode="headless",
         action_timestep=1 / 300.0,
         physics_timestep=1 / 300.0,

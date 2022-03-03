@@ -2,6 +2,7 @@
 Behavioral cloning agent network architecture and training
 """
 import argparse
+import logging
 import sys
 
 sys.path.insert(0, "../utils")
@@ -10,6 +11,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+
+log = logging.getLogger(__name__)
 
 
 class BCNet_rgbp(nn.Module):
@@ -88,6 +91,6 @@ if __name__ == "__main__":
         loss.backward()
         optimizer.step()
 
-        print(loss.item())
+        log.info(loss.item())
 
     torch.save(bc_agent, PATH)

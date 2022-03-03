@@ -8,23 +8,24 @@ from collections import defaultdict
 import bddl
 import igibson
 import numpy as np
-from igibson.envs.behavior_env import BehaviorEnv
-from igibson.metrics.agent import BehaviorRobotMetric
+from igibson.envs.igibson_env import iGibsonEnv
+from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.task import TaskMetric
 from igibson.utils.utils import parse_config
 
-logging.getLogger().setLevel(logging.WARNING)
-
 from behavior.benchmark.agents.random_agent import RandomAgent
 from behavior.benchmark.agents.rl_agent import PPOAgent
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.WARNING)
 
 
 def get_metrics_callbacks():
     metrics = [
         KinematicDisarrangement(),
         LogicalDisarrangement(),
-        BehaviorRobotMetric(),
+        RobotMetric(),
         TaskMetric(),
     ]
 
@@ -110,12 +111,12 @@ class BehaviorBenchmark(object):
                                 task, scene_id, instance_id, episode_id
                             )
                         )
-                        env = BehaviorEnv(
+                        env_config["instance_id"] = instance_id
+                        env = iGibsonEnv(
                             config_file=env_config,
                             mode="headless",
                             action_timestep=1.0 / 30.0,
                             physics_timestep=1.0 / 120.0,
-                            instance_id=instance_id,
                         )
                         (
                             start_callbacks,

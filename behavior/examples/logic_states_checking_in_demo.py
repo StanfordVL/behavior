@@ -1,17 +1,19 @@
+import inspect
+import logging
 import os
+import sys
 
 import bddl
 import igibson
 from igibson import object_states
+from igibson.examples.learning import demo_replaying_example
 
-from behavior.examples import behavior_demo_replay
-
-bddl.set_backend("iGibson")
+import behavior
 
 
-def robot_states_callback(igbhvr_act_inst, _):
-    window1 = (igbhvr_act_inst.object_scope["window.n.01_1"], "kitchen")
-    window2 = (igbhvr_act_inst.object_scope["window.n.01_2"], "living room")
+def robot_states_callback(env, _):
+    window1 = (env.task.object_scope["window.n.01_1"], "kitchen")
+    window2 = (env.task.object_scope["window.n.01_2"], "living room")
     windows = [window1, window2]
 
     for window, roomname in windows:
@@ -25,10 +27,10 @@ def robot_states_callback(igbhvr_act_inst, _):
             )
         )
 
-    rag = igbhvr_act_inst.object_scope["rag.n.01_1"]
+    rag = env.task.object_scope["rag.n.01_1"]
     print("Rag is in hand: %r" % rag.states[object_states.InHandOfRobot].get_value())
 
-    agent = igbhvr_act_inst.object_scope["agent.n.01_1"]
+    agent = env.task.object_scope["agent.n.01_1"]
     print(
         "Agent is in kitchen: %r, living room: %r, bedroom: %r."
         % (
@@ -39,20 +41,28 @@ def robot_states_callback(igbhvr_act_inst, _):
     )
 
 
-def main():
+def main(selection="user", headless=False, short_exec=False):
+    """
+    Replays a demo and prints some predefined logic states for the robot at each step
+    This demonstrates how to check some logic states of interest at each step of a give demo (e.g. BEHAVIOR demos)
+    """
+
+    print("*" * 80 + "\nDescription:" + main.__doc__ + "\n" + "*" * 80)
+
     DEMO_FILE = os.path.join(
         igibson.ig_dataset_path,
         "tests",
         "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
     )
 
-    behavior_demo_replay.replay_demo(
-        DEMO_FILE,
-        disable_save=True,
-        step_callbacks=[robot_states_callback],
-        mode="headless",
+    demo_replaying_example.replay_demo(
+        DEMO_FILE, disable_save=True, step_callbacks=[robot_states_callback], mode="headless"
     )
 
 
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
-    main()
+    if RUN_AS_TEST:
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()

@@ -70,3 +70,7 @@ General information about our benchmark can be found in our webpage: [http://beh
 For specific documentation about the iGibson simulator, please visit [http://svl.stanford.edu/igibson/docs](http://svl.stanford.edu/igibson/docs) or refer to our publications, the [iGibson 2.0 arxiv preprint](https://arxiv.org/abs/2108.03272) and the [iGibson 1.0 arxiv preprint](https://arxiv.org/abs/2012.02924).
 
 More information about BDDL can be found at [https://github.com/StanfordVL/bddl](https://github.com/StanfordVL/bddl) and in our [BEHAVIOR publication](https://arxiv.org/abs/2108.03332).
+
+### Examples
+
+We included multiple code examples in the folder `behavior/examples`. Take a look there to get started. Additional useful examples can be found in the folder `igibson/examples` in the iGibson repository.

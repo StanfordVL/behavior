@@ -2,13 +2,16 @@
 Test behavioral cloning agent's performance
 """
 import argparse
+import logging
 import os
 
 import igibson
 import numpy as np
 import torch
-from igibson.envs.behavior_env import BehaviorEnv
+from igibson.envs.igibson_env import iGibsonEnv
 from simple_bc_agent import BCNet_rgbp, BCNet_taskObs
+
+log = logging.getLogger(__name__)
 
 
 def parse_args():
@@ -23,12 +26,11 @@ bc_agent = torch.load(args.model)
 bc_agent.eval()
 
 config_file = "behavior_onboard_sensing.yaml"
-env = BehaviorEnv(
-    config_file=os.path.join(igibson.example_config_path, config_file),
+env = iGibsonEnv(
+    config_file=os.path.join(igibson.configs_path, config_file),
     mode="headless",
     action_timestep=1 / 30.0,
     physics_timestep=1 / 300.0,
-    action_filter="all",
 )
 
 obs = env.reset()
@@ -44,4 +46,4 @@ with torch.no_grad():
         a_no_reset = np.concatenate((a[:19], a[20:27]))  # we do not allow reset action for agents here
         obs, reward, done, info = env.step(a_no_reset)
         total_reward += reward
-        print(total_reward, info)
+        log.info("Reward {}, info {}".format(total_reward, info))
