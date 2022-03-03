@@ -16,7 +16,6 @@ from igibson.utils import utils
 from igibson.utils.constants import MAX_INSTANCE_COUNT, SemanticClass
 
 import behavior
-import behavior.examples
 
 FRAME_BATCH_SIZE = 100
 START_FRAME = 500

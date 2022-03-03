@@ -19,7 +19,7 @@ from igibson.metrics.dataset import DatasetMetric
 from igibson.utils.ig_logging import IGLogReader
 from igibson.utils.utils import parse_config
 
-import behavior.examples
+import behavior
 
 
 def save_episode(demo_file, dataset_metric):

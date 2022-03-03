@@ -12,7 +12,6 @@ from igibson.metrics.gaze import GazeMetric
 from igibson.metrics.task import TaskMetric
 
 import behavior
-import behavior.examples
 
 
 def parse_args(defaults=False):

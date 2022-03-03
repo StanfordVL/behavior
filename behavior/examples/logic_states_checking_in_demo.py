@@ -9,7 +9,6 @@ from igibson import object_states
 from igibson.examples.learning import demo_replaying_example
 
 import behavior
-import behavior.examples
 
 
 def robot_states_callback(env, _):

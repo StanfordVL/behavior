@@ -7,7 +7,6 @@ import igibson
 from igibson.examples.learning.demo_replaying_batch import replay_demo_batch
 
 import behavior
-import behavior.examples
 from behavior.examples.demo_segmentation_example import get_default_segmentation_processors
 
 

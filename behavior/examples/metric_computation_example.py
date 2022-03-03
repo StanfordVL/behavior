@@ -10,7 +10,7 @@ from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
 from igibson.metrics.task import TaskMetric
 
-import behavior.examples
+import behavior
 
 
 def get_metrics_callbacks(config):

@@ -10,7 +10,6 @@ import igibson
 import tqdm
 
 import behavior
-import behavior.examples
 
 
 def parse_args(defaults=False):

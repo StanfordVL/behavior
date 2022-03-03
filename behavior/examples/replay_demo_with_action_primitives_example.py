@@ -12,7 +12,6 @@ from igibson.envs.behavior_mp_env import ActionPrimitives, BehaviorMPEnv
 from igibson.utils.ig_logging import IGLogReader
 
 import behavior
-import behavior.examples
 
 
 def get_empty_hand(current_hands):

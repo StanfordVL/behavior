@@ -7,7 +7,7 @@ import igibson
 from igibson.examples.learning.demo_replaying_example import replay_demo_with_determinism_check
 from igibson.utils.checkpoint_utils import save_checkpoint
 
-import behavior.examples
+import behavior
 
 
 def create_checkpoints(demo_file, checkpoint_directory, checkpoint_every_n_steps):
