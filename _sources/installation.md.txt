@@ -21,12 +21,11 @@ In the following, we summarize the steps to install iGibson, BDDL, and the BEHAV
    ```
     git clone git@github.com:stanfordvl/behavior.git
    ```
-3) Download and obtain access to the iGibson Dataset of Scenes and the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations) 
-
-    a) Fill out the license agreement in this [form](https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform). This allows you to use the assets within iGibson for free for your research.
-    b) After submitting the form, you will receive a key (igibson.key). Copy it into the folder that will contain the dataset, as default: `iGibson/igibson/data`
-    c) Download the datasets from [here](https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz) (size ~20GB). 
-    d) Unzip the zip file into the desired folder
+3) Download and obtain access to the iGibson Dataset of Scenes and the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations)
+   1) Fill out the license agreement in this [form](https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform). This allows you to use the assets within iGibson for free for your research.
+   2) After submitting the form, you will receive a key (igibson.key). Copy it into the folder that will contain the dataset, as default: `iGibson/igibson/data`
+   3) Download the datasets from [here](https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz) (size ~20GB). 
+   4) Unzip the zip file into the desired folder
 
 4) (If you haven't done it already) Create a virtual environment and activate it
     ```
