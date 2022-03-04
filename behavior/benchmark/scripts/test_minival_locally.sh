@@ -31,6 +31,6 @@ docker run -v ${DATASET_PATH}/igibson.key:/opt/iGibson/igibson/data/igibson.key 
     --gpus=all \
     ${DOCKER_NAME} \
     /bin/bash -c \
-    "export CONFIG_FILE=/opt/iGibson/igibson/examples/configs/behavior_onboard_sensing.yaml; export SPLIT=minival; export OUTPUT_DIR=/results; bash submission.sh"
+    "export CONFIG_FILE=/opt/behavior/behavior/configs/behavior_onboard_sensing.yaml; export SPLIT=minival; export OUTPUT_DIR=/results; bash submission.sh"
 
 # for older docker versions, use --runtime=nvidia instead of --gpus=all
