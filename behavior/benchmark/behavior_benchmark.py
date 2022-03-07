@@ -252,7 +252,6 @@ class BehaviorBenchmark(object):
         # This provides a dictionary of scenes where each activity can be successfully performed
         scene_json = os.path.join(
             os.path.dirname(bddl.__file__),
-            "../utils",
             "activity_to_preselected_scenes.json",
         )
         with open(scene_json) as f:
