@@ -110,7 +110,8 @@
 <li><p>Fill out the license agreement in this <a class="reference external" href="https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform">form</a>. This allows you to use the assets within iGibson for free for your research.</p></li>
 <li><p>After submitting the form, you will receive a key (igibson.key). Copy it into the folder that will contain the dataset, as default: <code class="docutils literal notranslate"><span class="pre">iGibson/igibson/data</span></code></p></li>
 <li><p>Download the datasets from <a class="reference external" href="https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz">here</a> (size ~20GB).</p></li>
-<li><p>Unzip the zip file into the desired folder</p></li>
+<li><p>Unzip the zip file into the desired folder, as default: <code class="docutils literal notranslate"><span class="pre">iGibson/igibson/data</span></code>
+For more information, please visit the iGibson documentation <a class="reference external" href="https://stanfordvl.github.io/iGibson/dataset.html#downloading-the-igibson-2-0-dataset-of-scenes-and-the-behavior-dataset-of-objects">here</a>.</p></li>
 </ol>
 </li>
 <li><p>(If you haven’t done it already) Create a virtual environment and activate it</p>
@@ -165,15 +166,18 @@ WORKDIR /
 </div>
 <p>Then build your Docker container with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">.</span> <span class="pre">-t</span> <span class="pre">my_submission</span></code> replacing <code class="docutils literal notranslate"><span class="pre">my_submission</span></code> with the name you want to use for the Docker image.</p>
 </li>
-<li><p>Download and obtain access to the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations). If you already did this before, for example because you also installed the repositories, you can skip this step. Otherwise:</p>
-<p>a) Fill out the license agreement in this <a class="reference external" href="https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform">form</a>. This allows you to use the assets within iGibson for free for your research.
-b) After submitting the form, you will receive a key (igibson.key). Create a folder for the dataset and copy the key into that folder.
-c) Download the datasets from <a class="reference external" href="https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz">here</a> (size ~20GB).
-d) Unzip the zip file into the created folder</p>
+<li><p>Download and obtain access to the iGibson Dataset of Scenes and the BEHAVIOR Dataset of Objects (3D assets with physical and semantic annotations)</p>
+<ol class="arabic simple">
+<li><p>Fill out the license agreement in this <a class="reference external" href="https://docs.google.com/forms/d/e/1FAIpQLScPwhlUcHu_mwBqq5kQzT2VRIRwg_rJvF0IWYBk_LxEZiJIFg/viewform">form</a>. This allows you to use the assets within iGibson for free for your research.</p></li>
+<li><p>After submitting the form, you will receive a key (igibson.key). Create a folder for the dataset and copy the key into that folder.</p></li>
+<li><p>Download the datasets from <a class="reference external" href="https://storage.googleapis.com/gibson_scenes/ig_dataset.tar.gz">here</a> (size ~20GB).</p></li>
+<li><p>Unzip the zip file into the created folder in step 2)
+For more information, please visit the iGibson documentation <a class="reference external" href="https://stanfordvl.github.io/iGibson/dataset.html#downloading-the-igibson-2-0-dataset-of-scenes-and-the-behavior-dataset-of-objects">here</a>.</p></li>
+</ol>
 </li>
 <li><p>You are ready to train and test your solutions, or create a submission to EvalAI. See <a class="reference internal" href="benchmarking.html"><span class="doc std std-doc">Section Training and Evaluating</span></a></p></li>
 </ol>
-<p>If you run into any issues, refer to our <span class="xref myst">FAQ</span> or <a class="reference external" href="mailto:behavior&#46;benchmark&#37;&#52;&#48;gmail&#46;com">contact us</a>.</p>
+<p>If you run into any issues, <a class="reference external" href="mailto:behavior&#46;benchmark&#37;&#52;&#48;gmail&#46;com">contact us</a>.</p>
 </div>
 </div>
 
