@@ -72,8 +72,9 @@ def main(selection="user", headless=False, short_exec=False):
     print("Batch of demos segmented!")
 
 
-RUN_AS_TEST = True  # Change to True to run this example in test mode
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
     else:

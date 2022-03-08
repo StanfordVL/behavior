@@ -64,6 +64,7 @@ def get_first_options():
 
 RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
     else:

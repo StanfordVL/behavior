@@ -1,9 +1,7 @@
 import argparse
-import inspect
-import json
 import logging
+import json
 import os
-import sys
 
 from igibson.envs.igibson_env import iGibsonEnv
 from igibson.metrics.agent import RobotMetric
@@ -127,6 +125,7 @@ def main(selection="user", headless=False, short_exec=False):
 
 RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     if RUN_AS_TEST:
         main(selection="random", headless=True, short_exec=True)
     else:
