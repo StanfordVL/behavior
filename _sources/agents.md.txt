@@ -48,7 +48,8 @@ Reference frames for the robot state in the BehaviorRobot:
 
 ### Actuation and Control
 
-TODO!!!!!
+**This section needs to be updated**
+
 Base, head, and hands are directly controlled in Cartesian space.
 We provide a control interface for agents to control the motions of the BehaviorRobot by specifying:
 - Base: Desired change in pose (delta pose, 6D) relative to the base frame in the previous time step.
