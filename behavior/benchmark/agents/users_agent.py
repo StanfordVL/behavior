@@ -1,13 +1,16 @@
-class Agent(object):
+from behavior.benchmark.agents.agent import Agent
+
+
+class CustomAgent(Agent):
     """
-    Abstract class that an agent should implement to be used in our benchmarking pipeline
+    Entry point for BEHAVIOR users
     """
 
     def __init__(self):
         """
         Constructor
         """
-        pass
+        raise NotImplementedError
 
     def reset(self):
         """
@@ -15,7 +18,7 @@ class Agent(object):
         To be called every time that the environment resets
         Usually clears the state and motion
         """
-        pass
+        raise NotImplementedError
 
     def act(self, obs):
         """
@@ -24,4 +27,4 @@ class Agent(object):
         :param obs: observation from the environment to decide the next action
         :returns: action taken by the agent given the observation (and any internal information)
         """
-        pass
+        raise NotImplementedError

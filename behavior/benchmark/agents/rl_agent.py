@@ -1,9 +1,4 @@
-import collections
-import os
-
 import numpy as np
-import torch
-from IPython import embed
 from stable_baselines3 import PPO
 
 from behavior.benchmark.agents.agent import Agent
@@ -14,6 +9,11 @@ PROPRIOCEPTION_DIM = 20
 
 
 class PPOAgent(Agent):
+    """
+    Implementation of the Agent class that loads a checkpoint of a previously trained PPO policy and queries the policy
+    with the received observations to obtain actions
+    """
+
     def __init__(self, ckpt_path="checkpoints/onboard_sensing_ppo_random"):
         self.agent = PPO.load(ckpt_path)
 

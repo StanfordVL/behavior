@@ -9,13 +9,17 @@ PROPRIOCEPTION_DIM = 20
 
 
 class RandomAgent(Agent):
+    """
+    Implementation of the Agent class that generates random actions given an observation
+    """
+
     def __init__(self):
         pass
 
     def reset(self):
         pass
 
-    def act(self, observations):
+    def act(self, obs):
         action = np.random.uniform(low=-1, high=1, size=(ACTION_DIM,))
         return action
 

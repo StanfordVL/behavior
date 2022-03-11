@@ -1,7 +1,5 @@
-import inspect
 import logging
 import os
-import sys
 from sys import platform
 
 import igibson

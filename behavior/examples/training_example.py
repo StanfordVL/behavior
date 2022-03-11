@@ -114,8 +114,8 @@ def main(short_exec=False):
             env = iGibsonEnv(
                 config_file=os.path.join(behavior.configs_path, config_file),
                 mode="headless",
-                action_timestep=1 / 10.0,
-                physics_timestep=1 / 120.0,
+                action_timestep=1.0 / 30.0,
+                physics_timestep=1.0 / 120.0,
             )
             env.seed(seed + rank)
             return env
@@ -131,8 +131,8 @@ def main(short_exec=False):
     eval_env = iGibsonEnv(
         config_file=os.path.join(igibson.configs_path, config_file),
         mode="headless",
-        action_timestep=1 / 10.0,
-        physics_timestep=1 / 120.0,
+        action_timestep=1.0 / 30.0,
+        physics_timestep=1.0 / 120.0,
     )
 
     # Obtain the arguments/parameters for the policy and create the PPO model

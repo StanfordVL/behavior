@@ -1,5 +1,4 @@
 """Save checkpoints from a BEHAVIOR demo."""
-import inspect
 import logging
 import os
 
