@@ -10,10 +10,17 @@ case $key in
       --docker-name)
       shift
       DOCKER_NAME="${1}"
+      echo ${DOCKER_NAME}
+      shift
+      ;;
+      --dataset-path)
+      shift
+      DATASET_PATH="${1}"
+      echo ${DATASET_PATH}
       shift
       ;;
     *) # unknown arg
-      echo unkown arg ${1}
+      echo unknown arg ${1}
       exit
       ;;
 esac
@@ -24,6 +31,6 @@ docker run -v ${DATASET_PATH}/igibson.key:/opt/iGibson/igibson/data/igibson.key 
     --gpus=all \
     ${DOCKER_NAME} \
     /bin/bash -c \
-    "export CONFIG_FILE=/opt/behavior/behavior/configs/behavior_onboard_sensing.yaml; export SPLIT=dev; export OUTPUT_DIR=/results; bash submission.sh"
+    "export CONFIG_FILE=/opt/behavior/behavior/configs/behavior_onboard_sensing.yaml; export SPLIT=minival; export OUTPUT_DIR=/results; cd /opt/behavior/behavior/benchmark/scripts; bash evaluate_agent.sh"
 
 # for older docker versions, use --runtime=nvidia instead of --gpus=all

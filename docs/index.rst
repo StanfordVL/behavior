@@ -17,6 +17,7 @@ This documentation includes also useful information to get started with [example
 
    intro.md
    installation.md
+   evaluating.md
    benchmarking.md
    baselines.md
 
