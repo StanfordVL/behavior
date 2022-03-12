@@ -150,7 +150,7 @@ class BehaviorBenchmark(object):
                 # "unseen scene" (different furniture))
                 scene_instance_ids = {scenes[0]: [0, 1, 2, 10, 11, 12, 20, 21, 22]}
 
-            self.evaluate_agent_on_one_activity(activities, scene_instance_ids)
+            self.evaluate_agent_on_one_activity(activity, scene_instance_ids)
 
     def evaluate_agent_on_one_activity(self, task, scene_instance_ids):
         """
