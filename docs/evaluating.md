@@ -27,7 +27,7 @@ export CONFIG_FILE=path/to/your/config/for/example/behavior/configs/behavior_onb
 export OUTPUT_DIR=path/to/your/output/dir/for/example/tmp
 python -m behavior.benchmark.behavior_benchmark --agent-class PPO --ckpt-path /tmp/my_checkpoint --split cleaning_toilet
 ```
-We provide pretrained checkpoints in `behavior/benchmark/agents/checkpoints`
+We provide pretrained checkpoints in `behavior/benchmark/agents/checkpoints`. Due to refactoring changes in the `BehaviorRobot`, the dimensionality of the action space may have changed.
 
 
 #### Evaluating on a single activity instance
