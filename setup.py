@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="behavior",
-    version="0.0.1",
+    version="1.0.0",
     author="Stanford University",
     long_description=long_description,
     long_description_content_type="text/markdown",
