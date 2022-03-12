@@ -193,12 +193,17 @@ class BehaviorBenchmark(object):
         env_config["max_step"] = human_demo_mean_step * 2  # adjust env_config['max_step'] based on the human
         # demonstration, we give agent 2x steps of average human demonstration across all possible scenes
 
+        # The robot name is "popped" from the config when loading into iG. We need to load it again in the loop
+        # This is because the same parsed config is not expected to be reused consecutively
+        robot_name = env_config["robot"]["name"]
+
         for scene_id, instance_ids in scene_instance_ids.items():
             env_config["scene_id"] = scene_id
             env_config["task"] = task
             env_config["task_id"] = 0
             for instance_id in instance_ids:
                 for episode_id in range(self.episodes_per_instance):
+                    env_config["robot"]["name"] = robot_name
                     per_episode_metrics[episode] = self.evaluate_episode(
                         task, scene_id, instance_id, episode_id, env_config
                     )
