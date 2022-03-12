@@ -265,18 +265,18 @@ class BehaviorBenchmark(object):
             data_callbacks,
         ) = get_metrics_callbacks()
         for callback in start_callbacks:
-            callback(env.task, None)
+            callback(env, None)
         self.agent.reset()
         state = env.reset()
         while True:
             action = self.agent.act(state)
             state, reward, done, info = env.step(action)
             for callback in step_callbacks:
-                callback(env.task, None)
+                callback(env, None)
             if done:
                 break
         for callback in end_callbacks:
-            callback(env.task, None)
+            callback(env, None)
         metrics_summary = {}
         for callback in data_callbacks:
             print("Generating report for the episode")
