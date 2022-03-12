@@ -30,7 +30,7 @@ python -m behavior.benchmark.behavior_benchmark --agent-class PPO --ckpt-path /t
 We provide pretrained checkpoints in `behavior/benchmark/agents/checkpoints`
 
 
-#### Evaluating on a single instance
+#### Evaluating on a single activity instance
 
 Instead of evaluating agents following the benchmark rules (nine instances per activity), you can also evaluate in one or a custom set of activity instances by calling directly the method `BehaviorBenchmark.evaluate_agent_on_one_activity` and providing a list of instances.
 
