@@ -1,7 +1,7 @@
 import logging
 import os
 
-__version__ = "0.0.1"
+__version__ = "1.0.0"
 
 log = logging.getLogger(__name__)
 _LOG_LEVEL = os.environ.get("IG_LOG_LEVEL", "INFO").upper()
