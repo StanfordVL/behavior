@@ -129,7 +129,7 @@ def main(short_exec=False):
 
     # Create a new environment for evaluation
     eval_env = iGibsonEnv(
-        config_file=os.path.join(igibson.configs_path, config_file),
+        config_file=os.path.join(behavior.configs_path, config_file),
         mode="headless",
         action_timestep=1.0 / 30.0,
         physics_timestep=1.0 / 120.0,
