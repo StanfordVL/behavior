@@ -27,7 +27,7 @@ bc_agent.eval()
 
 config_file = "behavior_onboard_sensing.yaml"
 env = iGibsonEnv(
-    config_file=os.path.join(igibson.configs_path, config_file),
+    config_file=os.path.join(behavior.configs_path, config_file),
     mode="headless",
     action_timestep=1 / 30.0,
     physics_timestep=1 / 300.0,
