@@ -448,7 +448,7 @@ def parse_args(defaults=False):
     args_dict["demo_file"] = os.path.join(
         igibson.ig_dataset_path,
         "tests",
-        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
+        "cleaning_windows_example.hdf5",
     )
     args_dict["out_dir"] = os.path.join(behavior.examples_path, "data")
     args_dict["replay_demo_file"] = os.path.splitext(args_dict["demo_file"])[0] + "_segm_replay.json"

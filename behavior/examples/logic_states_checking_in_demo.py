@@ -52,7 +52,7 @@ def main(selection="user", headless=False, short_exec=False):
     DEMO_FILE = os.path.join(
         igibson.ig_dataset_path,
         "tests",
-        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
+        "cleaning_windows_example.hdf5",
     )
 
     demo_replaying_example.replay_demo(
