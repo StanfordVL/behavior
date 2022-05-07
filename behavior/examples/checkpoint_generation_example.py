@@ -3,7 +3,7 @@ import logging
 import os
 
 import igibson
-from igibson.examples.learning.demo_replaying_example import replay_demo_with_determinism_check
+from igibson.examples.learning.demo_replaying_example import replay_demo, replay_demo_with_determinism_check
 from igibson.utils.checkpoint_utils import save_checkpoint
 
 import behavior
@@ -16,7 +16,11 @@ def create_checkpoints(demo_file, checkpoint_directory, checkpoint_every_n_steps
             save_checkpoint(env.simulator, checkpoint_directory)
 
     print("Replaying demo and saving checkpoints")
-    replay_demo_with_determinism_check(demo_file, mode="headless", step_callbacks=[step_callback])
+    check_determinism = False
+    if check_determinism:
+        replay_demo_with_determinism_check(demo_file, mode="headless", step_callbacks=[step_callback])
+    else:
+        replay_demo(demo_file, mode="headless", step_callbacks=[step_callback])
 
 
 def main(selection="user", headless=False, short_exec=False):
