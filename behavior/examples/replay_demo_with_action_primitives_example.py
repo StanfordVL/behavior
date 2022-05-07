@@ -207,12 +207,12 @@ def parse_args(defaults=False):
     args_dict["demo_file"] = os.path.join(
         igibson.ig_dataset_path,
         "tests",
-        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46.hdf5",
+        "cleaning_windows_example.hdf5",
     )
     args_dict["segm_file"] = os.path.join(
         behavior.examples_path,
         "data",
-        "cleaning_windows_0_Rs_int_2021-05-23_23-11-46_flat_segm.json",
+        "cleaning_windows_example_flat_segm.json",
     )
     args_dict["ap_replay_log_file"] = os.path.splitext(args_dict["demo_file"])[0] + "_ap_replay.json"
 
