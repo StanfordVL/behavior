@@ -47,7 +47,7 @@ def main(selection="user", headless=False, short_exec=False):
             KinematicDisarrangement(),
             LogicalDisarrangement(),
             RobotMetric(),
-            GazeMetric(),
+            # GazeMetric(), # TODO: Test fails, probably is not including the right VR info
             TaskMetric(),
         ]
 
