@@ -70,8 +70,8 @@ jobs:
           pip install -e .
 
       - name: Link Dataset
-        working-directory: behavior
-        run: ln -s /scr/ig-data ../env/lib/python3.8/site-packages/igibson/data
+        working-directory: igibson
+        run: ln -s /scr/ig-data igibson/data
 
       - name: Create tests of examples
         working-directory: behavior
