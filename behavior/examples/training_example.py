@@ -97,7 +97,7 @@ class CustomCombinedExtractor(BaseFeaturesExtractor):
         return th.cat(encoded_tensor_list, dim=1)
 
 
-def main(short_exec=False):
+def main(selection="user", headless=False, short_exec=False):
     """
     Example to set a training process for BEHAVIOR with Stable Baselines 3
     Loads a scene and starts the training process for a BEHAVIOR activities with images using PPO
@@ -167,6 +167,10 @@ def main(short_exec=False):
     print(f"After Loading: Mean reward: {mean_reward} +/- {std_reward:.2f}")
 
 
+RUN_AS_TEST = False  # Change to True to run this example in test mode
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    main()
+    if RUN_AS_TEST:
+        main(selection="random", headless=True, short_exec=True)
+    else:
+        main()
