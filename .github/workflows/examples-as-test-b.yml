@@ -48,6 +48,28 @@ jobs:
           source ../env/bin/activate
           pip install -e .
 
+      - name: Uninstall pip igibson
+          working-directory: behavior
+          run: |
+            source ../env/bin/activate
+            pip uninstall -y igibson
+
+      - name: Checkout iGibson
+        uses: actions/checkout@v2
+        with:
+          repository: StanfordVL/iGibson-dev
+          ref: 581be50e7cfd2b3a1447aaa1b4fc2424b673339c
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # PAT is required since this is a different repo
+          path: igibson
+          submodules: recursive
+          lfs: true
+
+      - name: Install iGibson
+          working-directory: igibson
+          run: |
+            source ../env/bin/activate
+            pip install -e .
+
       - name: Link Dataset
         working-directory: behavior
         run: ln -s /scr/ig-data ../env/lib/python3.8/site-packages/igibson/data
