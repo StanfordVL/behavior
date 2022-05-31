@@ -1,3 +1,4 @@
+protobuf~=3.19.0
 sphinx-markdown-tables~=0.0.15
 sphinx~=3.5.3
 recommonmark~=0.7.1
