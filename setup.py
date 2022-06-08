@@ -16,8 +16,8 @@ setuptools.setup(
     },
     packages=find_packages(),
     install_requires=[
-        "igibson",
-        "bddl~=1.0.1",
-        "stable-baselines3",  # Very heavy dependency, only necessary for the baselines.
+        # "igibson",
+        # "bddl~=1.0.1",
+        # "stable-baselines3",  # Very heavy dependency, only necessary for the baselines.
     ],
 )

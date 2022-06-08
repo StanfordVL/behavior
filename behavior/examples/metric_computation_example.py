@@ -3,6 +3,7 @@ import logging
 import json
 import os
 
+from igibson import example_config_path
 from igibson.envs.igibson_env import iGibsonEnv
 from igibson.metrics.agent import RobotMetric
 from igibson.metrics.disarrangement import KinematicDisarrangement, LogicalDisarrangement
@@ -18,8 +19,8 @@ def get_metrics_callbacks(config):
         TaskMetric(),
     ]
 
-    robot_type = config["robot"]
-    if robot_type == "Fetch" or robot_type == "BehaviorRobot":
+    robot_type = config['robots'][0]['type']
+    if robot_type in ["Tiago"]:
         metrics.append(RobotMetric())
     else:
         Exception("Metrics only implemented for Fetch and BehaviorRobot")
@@ -54,6 +55,7 @@ def parse_args(defaults=False):
         )
         parser.add_argument(
             "--out_metric_log_file",
+            default="metrics_example.json",
             help="where to save the logging results of the metric computation",
         )
         args = parser.parse_args()
@@ -78,10 +80,8 @@ def main(selection="user", headless=False, short_exec=False):
         args_dict["mode"] = "headless"
 
     print("Create environment")
-    env = iGibsonEnv(
-        config_file=args_dict["config"],
-        mode=args_dict["mode"],
-    )
+    cfg = f"{example_config_path}/behavior_mp_tiago.yaml"
+    env = iGibsonEnv(configs=cfg, physics_timestep=1/120., action_timestep=1/30.)
 
     start_callbacks, step_callbacks, end_callbacks, data_callbacks = get_metrics_callbacks(env.config)
 
