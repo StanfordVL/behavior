@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 # Constants
 IMG_DIM = 128
 ACT_DIM = 28
-PROPRIOCEPTION_DIM = 20
+PROPRIOCEPTION_DIM = 22
 TASK_OBS_DIM = 456
 
 

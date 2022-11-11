@@ -4,7 +4,7 @@ Behavioral cloning agent network architecture and training
 import argparse
 import logging
 import sys
-
+import os
 sys.path.insert(0, "../utils")
 import base_input_utils as BIU
 import torch
@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 class BCNet_rgbp(nn.Module):
     """A behavioral cloning agent that uses RGB images and proprioception as state space"""
 
-    def __init__(self, img_channels=3, proprioception_dim=20, num_actions=28):
+    def __init__(self, img_channels=3, proprioception_dim=22, num_actions=28):
         super(BCNet_rgbp, self).__init__()
         # image feature
         self.features1 = nn.Sequential(
@@ -46,7 +46,7 @@ class BCNet_rgbp(nn.Module):
 
 
 class BCNet_taskObs(nn.Module):
-    def __init__(self, task_obs_dim=456, proprioception_dim=20, num_actions=28):
+    def __init__(self, task_obs_dim=456, proprioception_dim=22, num_actions=28):
         super(BCNet_taskObs, self).__init__()
         # image feature
         self.fc1 = nn.Linear(task_obs_dim + proprioception_dim, 1024)
@@ -76,16 +76,17 @@ if __name__ == "__main__":
 
     # Training
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    # bc_agent = BCNet_rgbp().to(device)
-    bc_agent = BCNet_taskObs().to(device)
+    bc_agent = BCNet_rgbp().to(device)
+    # bc_agent = BCNet_taskObs().to(device)
     optimizer = optim.Adam(bc_agent.parameters())
 
     NUM_EPOCH = 5
-    PATH = "trained_models/model.pth"
+    PATH = "./trained_models"
 
     for epoch in range(NUM_EPOCH):
         optimizer.zero_grad()
-        output = bc_agent(data.task_obss, data.proprioceptions)
+        # output = bc_agent(data.task_obss, data.proprioceptions)
+        output = bc_agent(data.rgbs, data.proprioceptions)
         loss_func = nn.MSELoss()
         loss = loss_func(output, data.actions)
         loss.backward()
@@ -93,4 +94,6 @@ if __name__ == "__main__":
 
         log.info(loss.item())
 
-    torch.save(bc_agent, PATH)
+    if not os.path.exists(PATH):
+        os.makedirs(PATH)
+        torch.save(bc_agent, (f"{PATH}/model.pth"))
