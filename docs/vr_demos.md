@@ -7,8 +7,8 @@ There are two available HDF5 datasets. The first is processed for imitation lear
 Note: Since every small change in the simulator may cause deviating changes in execution, if you want to replay the demos (run the actions stored in the demonstration file, and reproduce the exact same outcomes, e.g. states/images), this comes with some caveats. You must:
 1) Be on Windows
 2) Use the `behavior-replay-vrdemo` branch of iGibson
-3) Use the 'behavior-replay' branch of bddl
-4) Use the 'behavior-replay' branch of [ig_assets](https://github.com/StanfordVL/ig_assets/tree/behavior-replay), put it under ```iGibson/igibson/data```, and rename it as ```assets```.
+3) Use the `behavior-replay` branch of bddl
+4) Use the `behavior-replay` branch of [ig_assets](https://github.com/StanfordVL/ig_assets/tree/behavior-replay), put it under ```iGibson/igibson/data```, and rename it as ```assets```.
 5) Download the behavior-replay version of BEHAVIOR dataset via [this link](https://storage.googleapis.com/gibson_scenes/ig_dataset_replay.zip)
 
 Following the instructions above, we have verified that the 500 demos can be replayed and reproduced perfectly.
