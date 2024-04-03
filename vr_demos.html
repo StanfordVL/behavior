@@ -99,11 +99,13 @@
 <p>Note: Since every small change in the simulator may cause deviating changes in execution, if you want to replay the demos (run the actions stored in the demonstration file, and reproduce the exact same outcomes, e.g. states/images), this comes with some caveats. You must:</p>
 <ol class="arabic simple">
 <li><p>Be on Windows</p></li>
-<li><p>Use the <code class="docutils literal notranslate"><span class="pre">pybullet-svl</span></code> fork (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pybullet-svl</span></code>, as in setup.py of iGibson)</p></li>
 <li><p>Use the <code class="docutils literal notranslate"><span class="pre">behavior-replay</span></code> branch of iGibson</p></li>
-<li><p>Download the behavior-replay version of BEHAVIOR dataset bundle (BEHAVIOR Dataset of Objects and iGibson Dataset) via <a class="reference external" href="https://forms.gle/GXAacjpnotKkM2An7">this link</a></p></li>
+<li><p>Clone the <code class="docutils literal notranslate"><span class="pre">behavior-replay</span></code> branch of bddl, uninstall any existing version of bddl by doing <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">uninstall</span> <span class="pre">bddl</span></code>, then install the cloned version by running <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code> in the bddl directory.</p></li>
+<li><p>Download the behavior-replay version of the iGibson assets via <a class="reference external" href="https://storage.googleapis.com/gibson_scenes/assets-behavior-replay.tar.gz">this link</a>, put it under <code class="docutils literal notranslate"><span class="pre">iGibson/igibson/data</span></code>, and rename it as <code class="docutils literal notranslate"><span class="pre">assets</span></code>.</p></li>
+<li><p>Download the behavior-replay version of BEHAVIOR dataset via <a class="reference external" href="https://storage.googleapis.com/gibson_scenes/ig_dataset_replay.zip">this link</a>, put it under <code class="docutils literal notranslate"><span class="pre">iGibson/igibson/data</span></code>, and rename it as <code class="docutils literal notranslate"><span class="pre">ig_dataset</span></code>.</p></li>
 </ol>
-<p>Following the instructions above, we have verified that the 500 demos can be replayed and reproduced perfectly.</p>
+<p>Following the instructions above, we have verified that the 500 demos can be replayed and reproduced perfectly.
+Try command <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">igibson.examples.behavior.behavior_demo_replay</span> <span class="pre">--mode</span> <span class="pre">headless</span> <span class="pre">--vr_log_path</span> <span class="pre">xxx.hdf5</span></code></p>
 <div class="section" id="virtual-reality-demonstration-dataset-vr-demos">
 <h2>Virtual reality demonstration dataset (VR_demos)<a class="headerlink" href="#virtual-reality-demonstration-dataset-vr-demos" title="Permalink to this headline"></a></h2>
 <p>We provide a processed dataset generated from the raw files and that includes images and proprioceptive sensing.
